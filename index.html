@@ -261,11 +261,12 @@ main{min-height:60vh}
 .line .vh{display:flex;align-items:center;gap:14px}
 .vfacts{margin-top:0;border-top:1px solid var(--line)}
 @media (max-width:820px){.btns .btn{flex:1 1 auto}}
-.steps.s6{grid-template-columns:repeat(6,1fr)}
-@media (max-width:1000px){.steps.s6{grid-template-columns:repeat(3,1fr)}}
-@media (max-width:600px){.steps.s6{grid-template-columns:1fr 1fr}}
-.cmp th:nth-child(2),.cmp td:nth-child(2){color:var(--stone)}
-.cmp th:nth-child(3),.cmp td:nth-child(3){color:var(--ink);font-weight:500;background:var(--accent-soft)}
+.steps.s8{grid-template-columns:repeat(4,1fr)}
+.steps.s8 .step{padding-bottom:28px}
+.steps.s8 .step a{display:block;margin:4px 0;color:var(--accent);text-decoration:none;font-size:14px;overflow-wrap:anywhere}
+.steps.s8 .step a:hover{text-decoration:underline}
+@media (max-width:820px){.steps.s8{grid-template-columns:1fr 1fr}}
+.cmp th:nth-child(2),.cmp td:nth-child(2){color:var(--ink);font-weight:500;background:var(--accent-soft)}
 .cmp td:first-child{color:var(--ink-2)}
 .who{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
 .who div{border:1px solid var(--line);background:var(--surface);padding:24px;display:grid;gap:10px;align-content:start}
@@ -913,8 +914,8 @@ function vConfeccion(){
 
 function vVestuario(){
   const moda=P.filter(p=>p.line==="moda");const telas=[...moda.filter(p=>p.use==="Algodón Lycra").slice(0,5),...moda.filter(p=>["Microfibra","Tull","Encajes"].includes(p.use))].slice(0,8).map(card).join("");
-  const pasos=[["Cotización","Nos cuentas la prenda, las cantidades y las tallas. Te respondemos con precio por unidad y fechas."],["Desarrollo y muestra","Elegimos tela y color del catálogo, definimos la ficha técnica y confeccionamos una muestra física."],["Aprobación","Revisas talla, tela y acabados. Con tu visto bueno programamos la producción."],["Producción","Tejido, teñido o estampado, corte y confección, todo en nuestra planta."],["Calidad y empaque","Revisión del lote, marquilla y empaque con tu marca."],["Entrega","Despacho a tu ciudad en la fecha acordada."]];
-  const cmp=[["Diseño y ficha técnica","La traes tú","La definimos contigo"],["Tela","La compras tú","La tejemos en planta"],["Teñido y estampado","Lo contratas tú","En nuestra planta"],["Insumos: hilos, elásticos, marquillas","Los traes tú","Los ponemos nosotros"],["Muestra física","Según el taller","Incluida, antes de producir"],["Corte y confección","Taller externo","Nuestra planta"],["Control de calidad y empaque","Lo haces tú","Lo hacemos nosotros"],["Entrega","Recoges en el taller","Despacho a tu ciudad"]];
+  const pasos=[["Contáctanos",`Escríbenos a <a href="mailto:servicioalcliente@rascheltex.com.co">servicioalcliente@rascheltex.com.co</a> detallando tus requerimientos.`],["Respuesta","Te responderemos para explorar los detalles de tus necesidades."],["Cotización","Te enviaremos una cotización y los términos del negocio."],["Muestras","Si la cotización es aceptada, haremos muestras de los artículos solicitados."],["Orden de compra","Una vez aprobada la muestra, generaremos una orden de compra detallada."],["Producción","Pasamos a hacer la producción de acuerdo con la orden de compra."],["Auditorías","Una vez completada la producción, agendaremos auditorías."],["Entrega","Te hacemos llegar tu pedido hasta tu puerta."]];
+  const cmp=[["Diseño y ficha técnica","La definimos contigo"],["Tela","La tejemos en planta"],["Teñido y estampado","En nuestra planta"],["Insumos: hilos, elásticos, marquillas","Los ponemos nosotros"],["Muestra física","Incluida, antes de producir"],["Corte y confección","Nuestra planta"],["Control de calidad y empaque","Lo hacemos nosotros"],["Entrega","Despacho a tu ciudad"]];
   const spec=[["Mínimo por referencia y color","Pendiente"],["Tiempo de muestra","Pendiente"],["Tiempo de producción desde la aprobación","Pendiente"],["Capacidad mensual","Pendiente"],["Curva de tallas","Pendiente"],["Marca del cliente: marquilla, etiqueta y empaque","Pendiente"]];
   const who=[["Marcas que empiezan","Sin equipo técnico ni proveedores de tela. Llegas con la idea o una prenda de referencia y sales con la producción lista."],["Marcas y mayoristas","Amplía tu catálogo de ropa interior y pijamas sin invertir en planta, maquinaria ni inventario de tela."],["Grandes superficies y marca propia","Producción de marca propia con un solo proveedor integrado. Atendemos desde locales de población hasta grandes superficies."]];
   const faq=[["¿Qué diferencia hay entre maquila y paquete completo?","En la maquila el taller solo corta y cose lo que tú le entregas: diseño, tela, insumos y ficha técnica. En el paquete completo Rascheltex se encarga de todo el proceso, desde tejer la tela hasta empacar la prenda, y tú apruebas la muestra antes de producir."],["¿Necesito tener diseño, patrones o ficha técnica?","No es indispensable. Puedes llegar con una prenda de referencia, una foto o una descripción. Durante el desarrollo de la muestra definimos contigo la ficha técnica de la prenda."],["¿Hay una muestra antes de producir?","Sí, siempre. Confeccionamos una muestra física con la tela y el color elegidos para que apruebes talla, caída y acabados antes de programar la producción."],["¿Puedo usar mi propia marca?","Sí. Las prendas se entregan con tu marquilla, etiqueta y empaque. Los insumos de marca se definen en la ficha técnica junto con la muestra."],["¿Cuál es la cantidad mínima?","Se define por referencia y color. Cuéntanos tu cantidad aproximada y te la confirmamos en la cotización."],["¿Qué telas puedo usar?","Las de nuestro catálogo de moda: algodón lycra (Caricia, Edu, Elite, Náutica, Rasch, Dakota), microfibra, tull y encaje, en color liso o estampado en nuestra planta."],["¿Cuánto tarda?","Depende de la cantidad y de si la tela requiere teñido o estampado. El tiempo queda fijado en la cotización y se confirma al aprobar la muestra."]];
@@ -932,15 +933,15 @@ function vVestuario(){
         <li><span><b>Muestra física antes de producir</b>, para aprobar tela, talla y acabados.</span></li>
         <li><span><b>Una sola cotización</b> con precio por prenda y fecha de entrega.</span></li>
       </ul>
-      <div class="btns"><a class="btn" href="#contacto">Cotizar paquete completo</a><a class="btn ghost" href="#telas-moda">Ver telas de moda</a></div></div>
+    </div>
     <div class="sw" role="img" aria-label="Ilustración de tela algodón lycra" style="${bgi(swatch("jersey","#E2C2A6",["#B98B6A"],"pack",640,false))}"></div>
   </div></section>
   <div class="wrap">
   <section class="sec"><div class="sec-h"><div><span class="eyebrow">Maquila o paquete completo</span><h2 style="margin-top:10px">¿Qué cambia con el paquete completo?</h2></div></div>
     <p style="color:var(--ink-2);max-width:62ch;margin-bottom:28px">En la maquila tradicional, corte y confección, el taller cose lo que tú le entregas. En el paquete completo nos encargamos de cada etapa y tú solo apruebas la muestra.</p>
-    <div class="tscroll"><table class="sizes cmp"><thead><tr><th>Etapa</th><th>Maquila</th><th>Paquete completo Rascheltex</th></tr></thead><tbody>${cmp.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td></tr>`).join("")}</tbody></table></div></section>
-  <section class="sec" style="padding-top:0"><div class="sec-h"><div><span class="eyebrow">Cómo funciona</span><h2 style="margin-top:10px">Seis pasos, un solo interlocutor</h2></div></div>
-    <div class="steps s6">${pasos.map(([t,d])=>`<div class="step"><b>${t}</b><p>${d}</p></div>`).join("")}</div></section>
+    <div class="tscroll"><table class="sizes cmp"><thead><tr><th>Etapa</th><th>Paquete completo Rascheltex</th></tr></thead><tbody>${cmp.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td></tr>`).join("")}</tbody></table></div></section>
+  <section class="sec" style="padding-top:0"><div class="sec-h"><div><span class="eyebrow">Cómo funciona</span><h2 style="margin-top:10px">Llevamos tus ideas a la realidad en ocho simples pasos</h2></div></div>
+    <div class="steps s8">${pasos.map(([t,d])=>`<div class="step"><b>${t}</b><p>${d}</p></div>`).join("")}</div></section>
   <section class="sec split" style="padding-top:0;align-items:start">
     <div><span class="eyebrow">Datos del servicio</span><h2>Lo que debes saber antes de cotizar</h2>
       <p style="margin-bottom:24px">Estos datos se confirman en cada cotización según la prenda, la tela y la cantidad.</p>
