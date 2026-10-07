@@ -278,6 +278,14 @@ main{min-height:60vh}
 .spec div{display:flex;justify-content:space-between;gap:16px;padding:14px 0;border-bottom:1px solid var(--line)}
 .spec span{color:var(--ink-2)}
 .spec b{font-weight:500;text-align:right}
+/* confección deco · catálogo y fichas */
+.dnav{display:flex;gap:8px;flex-wrap:wrap;padding-top:24px}
+.dnav .chip{display:inline-flex;gap:8px;align-items:center}
+.dnav .chip span{color:var(--stone);font-size:12px;font-variant-numeric:tabular-nums}
+.szl{display:grid;gap:4px;justify-items:end}
+.szl div{display:flex;gap:10px;font-size:14px}
+.szl span{color:var(--stone)}
+.szl b{font-weight:400;color:var(--ink);font-family:var(--f-mono);font-size:13px}
 .sizes{width:100%;border-collapse:collapse;font-size:15px}
 .sizes th,.sizes td{padding:12px 10px;border-bottom:1px solid var(--line);text-align:left}
 .sizes th{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--stone);font-weight:500}
@@ -638,6 +646,23 @@ const TOLDILLOS=[["Sencillo","100 × 140 × 190"],["Semidoble","120 × 140 × 19
 const TOLD_COLORS=[["Blanco","#F4F3EF"],["Crema","#EEE2C6"],["Celeste","#A9CCE8"],["Rosado","#E3A3B4"],["Verde menta","#A6D8C0"],["Amarillo","#EFD66A"],["Azul rey","#2446A8"],["Curuba","#E58AA6"],["Lila","#B9A2D6"]];
 const PANELES=[["Panel tipo velo · Opalina","150 × 220 cm","opalina"],["Panel tipo pesado · XTX","150 × 220 cm","xtx"]];
 const MANTEL_SIZES=[["Redondo","180 cm de diámetro"],["Rectangular","160 × 220 cm"],["Cuadrado","150 × 150 cm"],["Ovalado","A pedido"]];
+/* ====== PRODUCTOS CONFECCIONADOS · Deco (con ficha técnica propia) ====== */
+const DECO_CATS={
+  cortinas:{name:"Cortinas",icon:"cortina",blurb:"Paneles listos en opalina y XTX. También confeccionamos a medida con cualquier tela de cortina del catálogo."},
+  manteles:{name:"Manteles",icon:"mantel",blurb:"Manteles en jacquard, opalina, satín y XTX, en medidas redondas, rectangulares y cuadradas."},
+  toldillos:{name:"Toldillos",icon:"toldillo",blurb:"Toldillos en tul de poliéster, de sencillo a queen, en nueve colores."}
+};
+const PC=[];
+function addC(o){o.id=slug(o.name);o.colors=o.colors||[];o.hang=!!o.hang;o.comp=o.comp||"100% poliéster";o.care=o.care||CARE_POLY;PC.push(o);}
+addC({cat:"cortinas",name:"Panel Opalina",base:"Opalina",pattern:"opalina",hang:true,sizes:[["Panel","150 × 220 cm"]],hangTypes:"Clásico · Loops · Aros",
+  desc:"Panel tipo velo en opalina translúcida. Deja pasar la luz y da privacidad. Listo para colgar en 1,50 × 2,20 m.",colors:[plain("—","Blanco","#F4F3EF"),plain("—","Crema","#EEE2C6")]});
+addC({cat:"cortinas",name:"Panel XTX",base:"XTX",pattern:"xtx",hang:true,fabric:"xtex",sizes:[["Panel","150 × 220 cm"]],hangTypes:"Clásico · Loops · Aros",
+  desc:"Panel tipo pesado en XTX, base de tejido cerrado que filtra más la luz. Listo para colgar en 1,50 × 2,20 m.",colors:[plain("—","Blanco","#EFEEEA")]});
+const MDESC={Jacquard:"Mantel en jacquard con diseño tejido, para mesa de diario y de ocasión.",Opalina:"Mantel en opalina, liviano y de fácil cuidado.",Satín:"Mantel en satín de brillo marcado, para eventos y mesas de celebración.",XTX:"Mantel en XTX, base pesada de tejido cerrado."};
+MANTELES.forEach(m=>{const sz=m.sizes.split("·").map(x=>x.trim());addC({cat:"manteles",name:"Mantel "+m.name,base:m.base,pattern:m.pattern,sizes:sz.map(x=>/\d/.test(x)?["Medida",x]:["Forma",x.charAt(0).toUpperCase()+x.slice(1)]),
+  desc:MDESC[m.base]+(m.name.includes("antifluido")?" Acabado antifluido.":""),colors:m.colors});});
+[["Barcelona","8,11 m/kg ± 7%"],["Marqueza","8,7 – 14,3 m/kg ± 7%"],["Shust","14,1 m/kg ± 7%"]].forEach(([n])=>addC({cat:"toldillos",name:"Toldillo "+n,base:"Tul "+n,pattern:"tull",fabric:slug(n),sizes:TOLDILLOS.map(([a,b])=>[a,b+" cm"]),
+  desc:`Toldillo confeccionado en tul ${n} de poliéster, en cinco tamaños de sencillo a queen y nueve colores.`,colors:TOLD_COLORS.map(([c,h])=>plain("—",c,h))}));
 /* ====== ILUSTRACIONES DE TELA (provisionales hasta tener fotos) ====== */
 function rng(seed){let s=0;for(const ch of String(seed))s=(s*31+ch.charCodeAt(0))>>>0;return()=>((s=(s*1664525+1013904223)>>>0)/4294967296);}
 const CACHE=new Map();
@@ -770,7 +795,7 @@ function vInicio(){
     <div class="sw" style="${bgi(swatch("jacquard","#EEE2C6",["#C29A4B"],"mantel",620,false))}"></div>
     <div><span class="eyebrow">Servicio de confección</span><h2>Tú eliges la tela, nosotros la confeccionamos</h2>
       <p>Confeccionamos ropa interior y pijamas, además de cortinas, manteles y toldillos en medidas estándar o a pedido.</p>
-      <div class="chips">${[...TREE.confeccion.vestuario.uses.map(u=>[u,"#confeccion-vestuario"]),...TREE.confeccion.deco.uses.map(u=>[u,"#confeccion-deco"])].map(([u,h])=>`<a class="chip" href="${h}">${u}</a>`).join("")}</div>
+      <div class="chips">${[...TREE.confeccion.vestuario.uses.map(u=>[u,"#confeccion-vestuario"]),...TREE.confeccion.deco.uses.map(u=>[u,"#deco-"+slug(u)])].map(([u,h])=>`<a class="chip" href="${h}">${u}</a>`).join("")}</div>
       <div style="margin-top:28px"><a class="btn" href="#confeccion">Conocer confección</a></div></div>
   </div></section>`;
 }
@@ -841,9 +866,9 @@ function vFicha(p){
       <div class="thumbs"><button class="arr" type="button" id="tp" aria-label="Anterior">‹</button><div class="row" id="trow">${p.colors.map((c,i)=>`<button class="t" type="button" data-i="${i}" style="${bgi(img(p,i,140))}" aria-label="${esc(c.label)}"></button>`).join("")}</div><button class="arr" type="button" id="tn" aria-label="Siguiente">›</button></div>
       <p class="desc">${esc(p.desc)}</p>
       ${lineUses?`<div class="eyebrow" style="margin-top:32px">Confecciona con esta tela</div><div class="made">
-        <a href="#confeccion-deco">${ICON.cortina[1]?`<svg viewBox="0 0 26 26">${ICON.cortina[1]}</svg>`:""}<span>Cortinas</span></a>
-        <a href="#confeccion-deco"><svg viewBox="0 0 26 26">${ICON.mantel[1]}</svg><span>Manteles</span></a>
-        <a href="#confeccion-deco"><svg viewBox="0 0 26 26">${ICON.toldillo[1]}</svg><span>Toldillos</span></a></div>`:""}
+        <a href="#deco-cortinas"><svg viewBox="0 0 26 26">${ICON.cortina[1]}</svg><span>Cortinas</span></a>
+        <a href="#deco-manteles"><svg viewBox="0 0 26 26">${ICON.mantel[1]}</svg><span>Manteles</span></a>
+        <a href="#deco-toldillos"><svg viewBox="0 0 26 26">${ICON.toldillo[1]}</svg><span>Toldillos</span></a></div>`:""}
     </div>
     <div>
       <table class="specs"><tbody>
@@ -881,19 +906,20 @@ function bindFicha(){
 }
 
 function vConfeccion(){
-  const mt=MANTELES.map(m=>{const p={id:"mt-"+slug(m.name),pattern:m.pattern,colors:m.colors,hang:false};return `<div class="card"><div class="img" style="${bgi(img(p,0,360,false))}">${m.colors[1]?`<div class="alt" style="${bgi(img(p,1,360,false))}"></div>`:""}</div><h3>${esc(m.name)}</h3><div class="meta"><span>${m.base}</span><span>${m.colors.length} colores</span></div><div class="meta"><span>${m.sizes}</span></div></div>`}).join("");
+  const n=k=>PC.filter(p=>p.cat===k).length;
   return `<div class="wrap"><nav class="crumbs"><a href="#inicio">Inicio</a>/<span>Confección</span></nav>
   <div class="cat-h"><div><h1>Confección</h1><p>Confeccionamos con nuestras propias telas en dos líneas: vestuario y decoración para el hogar.</p></div>
   <div class="tabs"><a class="tab" href="#confeccion-vestuario">Vestuario</a><a class="tab" href="#confeccion-deco">Deco</a></div></div>
   <section class="sec" style="padding-top:40px"><div class="lines">
-    <div class="line" id="confeccion-vestuario"><div class="sw" style="${bgi(swatch("jersey","#E2C2A6",["#000"],"v",640,false))}"></div><div class="b"><span class="eyebrow">Línea</span><h3>Vestuario</h3>
+    <div class="line" id="confeccion-vestuario-card"><div class="sw" style="${bgi(swatch("jersey","#E2C2A6",["#000"],"v",640,false))}"></div><div class="b"><span class="eyebrow">Línea</span><h3>Vestuario</h3>
       <p style="color:var(--ink-2)">Confección de prendas en algodón lycra, microfibra, tull y encaje.</p>
       <ul><li><span style="color:var(--ink)">Ropa interior</span><span>Algodón lycra · microfibra · encaje</span></li><li><span style="color:var(--ink)">Pijamas</span><span>Algodón lycra</span></li></ul>
       <p style="color:var(--ink-2)">Ahora también como <b style="font-weight:500;color:var(--ink)">paquete completo</b>: de nuestra tela a tu prenda terminada.</p>
       <a class="link" href="#confeccion-vestuario">Conocer vestuario</a></div></div>
-    <div class="line" id="confeccion-deco"><div class="sw" style="${bgi(swatch("muselina","#F4F3EF",["#C29A4B","#9A9C9F"],"d",640,true))}"></div><div class="b"><span class="eyebrow">Línea</span><h3>Deco</h3>
-      <p style="color:var(--ink-2)">Cortinas, manteles y toldillos listos o a medida.</p>
-      <ul><li><a href="#deco-cortinas">Cortinas y paneles</a><span>150 × 220 cm · opalina y XTX</span></li><li><a href="#deco-manteles">Manteles</a><span>Redondo · rectangular · cuadrado · ovalado</span></li><li><a href="#deco-toldillos">Toldillos</a><span>Sencillo a queen · 9 colores</span></li></ul></div></div>
+    <div class="line" id="confeccion-deco-card"><div class="sw" style="${bgi(swatch("muselina","#F4F3EF",["#C29A4B","#9A9C9F"],"d",640,true))}"></div><div class="b"><span class="eyebrow">Línea</span><h3>Deco</h3>
+      <p style="color:var(--ink-2)">Cortinas, manteles y toldillos listos o a medida, cada uno con su ficha técnica.</p>
+      <ul><li><a href="#deco-cortinas">Cortinas y paneles</a><span>${n("cortinas")} productos · 150 × 220 cm</span></li><li><a href="#deco-manteles">Manteles</a><span>${n("manteles")} productos · redondo, rectangular y cuadrado</span></li><li><a href="#deco-toldillos">Toldillos</a><span>${n("toldillos")} productos · sencillo a queen · 9 colores</span></li></ul>
+      <a class="link" href="#confeccion-deco">Conocer deco</a></div></div>
   </div></section>
   <section class="sec" style="padding-top:0"><div class="sec-h"><h2>Cómo funciona</h2></div><div class="steps">
     <div class="step"><b>Elige la tela</b><p>Del catálogo o con ayuda de un asesor.</p></div>
@@ -901,14 +927,61 @@ function vConfeccion(){
     <div class="step"><b>Recibe la cotización</b><p>Por WhatsApp, con precio y tiempo de entrega.</p></div>
     <div class="step"><b>Producción</b><p>Corte y confección en planta.</p></div>
     <div class="step"><b>Entrega</b><p>Despacho a tu ciudad.</p></div></div></section>
-  <section class="sec" id="deco-cortinas" style="padding-top:0"><div class="sec-h"><h2>Cortinas y paneles</h2></div>
-    <div class="split" style="align-items:start"><div class="tscroll"><table class="sizes"><thead><tr><th>Producto</th><th>Medida</th></tr></thead><tbody>${PANELES.map(r=>`<tr><td>${r[0]}</td><td class="mono">${r[1]}</td></tr>`).join("")}</tbody></table>
-      <p style="margin-top:16px;color:var(--ink-2)">Tipos de colgado: clásico, loops y aros. También confeccionamos a medida con cualquier tela de cortina del catálogo.</p></div>
-      <div class="sw" style="${bgi(swatch("opalina","#F4F3EF",["#9A9C9F"],"panel",620,true))}"></div></div></section>
-  <section class="sec" id="deco-manteles" style="padding-top:0"><div class="sec-h"><h2>Manteles</h2><span class="n" style="color:var(--stone)">${MANTEL_SIZES.map(s=>s[0]+" "+s[1]).join(" · ")}</span></div><div class="grid">${mt}</div></section>
-  <section class="sec" id="deco-toldillos" style="padding-top:0"><div class="sec-h"><h2>Toldillos</h2></div>
-    <div class="split" style="align-items:start"><div class="tscroll"><table class="sizes"><thead><tr><th>Tamaño</th><th>Medidas (cm)</th></tr></thead><tbody>${TOLDILLOS.map(r=>`<tr><td>${r[0]}</td><td class="mono">${r[1]}</td></tr>`).join("")}</tbody></table></div>
-      <div><div class="eyebrow" style="margin-bottom:16px">Colores</div><div class="colors">${TOLD_COLORS.map(([n,h])=>`<div><i style="background:${h}"></i>${n}</div>`).join("")}</div></div></div></section>
+  </div>`;
+}
+
+function cardC(p){
+  const dots=p.colors.slice(0,8).map(c=>`<i style="background:${c.fg[0]&&c.fg[0]!==shade(c.bg,-.14)?`linear-gradient(135deg,${c.bg} 50%,${c.fg[0]} 50%)`:c.bg}" title="${esc(c.label)}"></i>`).join("");
+  const alt=p.colors.length>1?img(p,1,360):img(p,0,360,!p.hang);
+  const meds=p.sizes.filter(x=>x[0]!=="Forma");
+  return `<a class="card" href="#c-${p.id}"><div class="img" style="${bgi(img(p,0,360))}"><div class="alt" style="${bgi(alt)}"></div>${p.isNew?'<span class="badge">Nuevo</span>':""}</div>
+  <h3>${esc(p.name)}</h3><div class="ref">${esc(DECO_CATS[p.cat].name)}</div><div class="meta"><span>${esc(p.base)}</span><span>${p.colors.length} ${p.colors.length===1?"color":"colores"}</span></div><div class="meta"><span>${meds.length===1?esc(meds[0][1]):meds.length+" medidas"}</span></div><div class="dots">${dots}</div></a>`;
+}
+function vDeco(){
+  const cats=Object.entries(DECO_CATS);
+  return `<div class="wrap"><nav class="crumbs" aria-label="Ruta"><a href="#inicio">Inicio</a>/<a href="#confeccion">Confección</a>/<span>Deco</span></nav>
+  <div class="cat-h"><div><h1>Deco</h1><p>Cortinas, manteles y toldillos confeccionados en nuestra planta con nuestras propias telas, listos o a medida. Cada producto tiene su ficha técnica.</p></div>
+    <div class="tabs"><a class="tab" href="#confeccion-vestuario">Vestuario</a><a class="tab on" href="#confeccion-deco">Deco</a></div></div>
+  <div class="dnav">${cats.map(([k,v])=>`<a class="chip" href="#deco-${k}">${v.name}<span>${PC.filter(p=>p.cat===k).length}</span></a>`).join("")}</div>
+  ${cats.map(([k,v])=>{const items=PC.filter(p=>p.cat===k);return `<section class="sec" id="deco-${k}" style="scroll-margin-top:24px"><div class="sec-h"><div><span class="eyebrow">Confección deco</span><h2 style="margin-top:10px">${v.name}</h2><p style="color:var(--ink-2);max-width:60ch;margin-top:10px">${v.blurb}</p></div><span class="n">${items.length} ${items.length===1?"producto":"productos"}</span></div>
+    <div class="grid">${items.map(cardC).join("")}</div>
+    ${k==="cortinas"?`<p style="margin-top:28px;color:var(--ink-2)">Tipos de colgado: clásico, loops y aros. Para medidas distintas o cualquier otra tela de cortina del catálogo, <a href="#contacto">escríbenos</a>.</p>`:""}
+    ${k==="manteles"?`<p style="margin-top:28px;color:var(--ink-2)">Medidas estándar: ${MANTEL_SIZES.map(x=>x[0].toLowerCase()+" "+x[1]).join(" · ")}.</p>`:""}
+  </section>`}).join("")}
+  </div>`;
+}
+function vFichaC(p){
+  CUR={p,ci:0};
+  const cat=DECO_CATS[p.cat];const rel=PC.filter(x=>x.cat===p.cat&&x.id!==p.id).slice(0,4);
+  const fab=p.fabric?P.find(x=>x.id===p.fabric):null;
+  const forma=p.sizes.filter(x=>x[0]==="Forma").map(x=>x[1]);const meds=p.sizes.filter(x=>x[0]!=="Forma");
+  return `<div class="wrap"><nav class="crumbs" aria-label="Ruta"><a href="#inicio">Inicio</a>/<a href="#confeccion">Confección</a>/<a href="#confeccion-deco">Deco</a>/<a href="#deco-${p.cat}">${cat.name}</a></nav>
+  <article class="pd"><h1>${esc(p.name)}</h1><div class="coll">Confección deco · ${esc(cat.name)}</div>
+    <div class="gal"><div class="main" id="gmain"><span class="tag">Ilustración · foto real pendiente</span></div>
+      <div class="thumbs"><button class="arr" type="button" id="tp" aria-label="Anterior">‹</button><div class="row" id="trow">${p.colors.map((c,i)=>`<button class="t" type="button" data-i="${i}" style="${bgi(img(p,i,140))}" aria-label="${esc(c.label)}"></button>`).join("")}</div><button class="arr" type="button" id="tn" aria-label="Siguiente">›</button></div>
+      <p class="desc">${esc(p.desc)}</p>
+      <div class="eyebrow" style="margin-top:32px">Hecho con nuestra tela</div><div class="made" style="grid-template-columns:1fr">
+        <a href="${fab?`#p-${fab.id}`:"#telas-decoracion"}"><svg viewBox="0 0 26 26">${ICON[cat.icon][1]}</svg><span>${fab?`Ver ficha de la tela ${esc(fab.name)}`:`Ver telas de decoración`}</span></a></div>
+    </div>
+    <div>
+      <table class="specs"><tbody>
+        <tr><th scope="row">Referencia</th><td class="mono" id="sref"></td></tr>
+        <tr><th scope="row">Producto</th><td>${esc(p.name)}</td></tr>
+        <tr><th scope="row">Categoría</th><td>${esc(cat.name)}</td></tr>
+        <tr><th scope="row">Tela</th><td>${esc(p.base)}</td></tr>
+        <tr><th scope="row">Composición</th><td>${esc(p.comp)}</td></tr>
+        ${forma.length?`<tr><th scope="row">Forma</th><td>${esc(forma.join(" · "))}</td></tr>`:""}
+        <tr><th scope="row">${meds.length>1?"Medidas":"Medida"}</th><td><div class="szl">${meds.map(([a,b])=>`<div>${meds.length>1&&a!=="Medida"?`<span>${esc(a)}</span>`:""}<b>${esc(b)}</b></div>`).join("")}</div></td></tr>
+        ${p.hang?`<tr><th scope="row">Tipo de colgado</th><td>${esc(p.hangTypes||"Clásico · Loops · Aros")}</td></tr>`:""}
+        <tr><th scope="row">Colores</th><td>${p.colors.length} ${p.colors.length===1?"opción":"opciones"}</td></tr>
+        <tr><th scope="row">Instrucciones de lavado <em class="pend">Por validar</em></th><td><span class="icons">${p.care.map(ico).join("")}</span></td></tr>
+        <tr><th scope="row">Uso</th><td><span class="icons">${ico(cat.icon)}</span></td></tr>
+      </tbody></table>
+      <div class="colorway"><span>Color: <b id="cname"></b></span><span class="n" style="color:var(--stone)">${p.colors.length} ${p.colors.length===1?"opción":"opciones"}</span></div>
+      <p class="disc">Las pantallas pueden mostrar variaciones en el color, y las medidas son aproximadas. Pide una muestra física antes de confirmar tu pedido.</p>
+    </div>
+  </article>
+  ${rel.length?`<section class="sec" style="padding-top:24px"><div class="sec-h"><h2>Más en ${esc(cat.name)}</h2><a class="link" href="#deco-${p.cat}">Ver ${cat.name.toLowerCase()}</a></div><div class="grid">${rel.map(cardC).join("")}</div></section>`:""}
   </div>`;
 }
 
@@ -1060,7 +1133,7 @@ function vPoliticas(){const S=[["Pedidos y cantidades mínimas","Pendiente: mín
 
 /* ====== MENÚ ====== */
 function buildMenus(){
-  const col=(k,v,base)=>`<div><h4><a href="#${base}-${k}">${v.name}</a></h4><ul>${v.uses.map(u=>`<li><a href="#${base==="telas"?"telas-"+k:"confeccion-"+k}" data-use="${esc(u)}">${u}</a></li>`).join("")}</ul></div>`;
+  const col=(k,v,base)=>`<div><h4><a href="#${base}-${k}">${v.name}</a></h4><ul>${v.uses.map(u=>`<li><a href="${base==="telas"?"#telas-"+k:k==="deco"?"#deco-"+slug(u):"#confeccion-"+k}" data-use="${esc(u)}">${u}</a></li>`).join("")}</ul></div>`;
   $("#mega").innerHTML=`<div class="wrap mega-in"><div class="grp"><div class="lab"><h5>Telas</h5></div>${Object.entries(TREE.telas).map(([k,v])=>col(k,v,"telas")).join("")}</div><div class="sep"></div><div class="grp2"><div class="lab"><h5>Confección</h5></div>${Object.entries(TREE.confeccion).map(([k,v])=>col(k,v,"confeccion")).join("")}</div></div>`;
   $("#mnav").innerHTML=`<div class="lvl">Telas</div>${Object.entries(TREE.telas).map(([k,v])=>`<a href="#telas-${k}">${v.name}</a>`).join("")}<div class="lvl">Confección</div>${Object.entries(TREE.confeccion).map(([k,v])=>`<a href="#confeccion-${k}">${v.name}</a>`).join("")}<div class="lvl">Empresa</div><a href="#nosotros">Quiénes somos</a><a href="#contacto">Contacto</a><a href="#politicas">Políticas</a>`;
   const bp=$("#btnProd"),mg=$("#mega");
@@ -1105,18 +1178,20 @@ addEventListener("resize",()=>{clearTimeout(hero.t);hero.t=setTimeout(hero,150);
 function route(){
   const h=(location.hash||"#inicio").slice(1);const app=$("#app");
   document.querySelectorAll(".nav [data-nav]").forEach(a=>a.classList.toggle("on",h.startsWith(a.dataset.nav)));
-  $("#btnProd").classList.toggle("on",/^(telas|confeccion|deco-|p-)/.test(h));
+  $("#btnProd").classList.toggle("on",/^(telas|confeccion|deco-|p-|c-)/.test(h));
   let after=null;
   if(h==="inicio"||h===""){app.innerHTML=vInicio();after=()=>{hero();bindHome();};}
   else if(h==="telas"||h.startsWith("telas-")){const l=h.split("-")[1]||null;const L=TREE.telas[l]?l:null;if(PENDING_USE||PENDING_Q){resetF(L);if(PENDING_USE)F.uses.add(PENDING_USE);if(PENDING_Q)F.q=PENDING_Q;PENDING_USE=PENDING_Q=null;}app.innerHTML=vTelas(L);after=bindTelas;}
   else if(h.startsWith("p-")){const p=P.find(x=>x.id===h.slice(2));if(p){app.innerHTML=vFicha(p);after=bindFicha;}else{location.hash="#telas";return;}}
+  else if(h.startsWith("c-")){const p=PC.find(x=>x.id===h.slice(2));if(p){app.innerHTML=vFichaC(p);after=bindFicha;}else{location.hash="#confeccion-deco";return;}}
   else if(h==="confeccion-vestuario"){app.innerHTML=vVestuario();}
-  else if(h.startsWith("confeccion")||h.startsWith("deco-")){app.innerHTML=vConfeccion();after=()=>{const el=document.getElementById(h);if(el&&h!=="confeccion")setTimeout(()=>el.scrollIntoView({behavior:"smooth",block:"start"}),30);};}
+  else if(h==="confeccion-deco"||h.startsWith("deco-")){app.innerHTML=vDeco();after=()=>{const el=document.getElementById(h);if(el&&h!=="confeccion-deco")setTimeout(()=>el.scrollIntoView({behavior:"smooth",block:"start"}),30);};}
+  else if(h.startsWith("confeccion")){app.innerHTML=vConfeccion();}
   else if(h==="nosotros"){app.innerHTML=vNosotros();after=bindGal;}
   else if(h==="contacto"){app.innerHTML=vContacto();after=bindContacto;}
   else if(h==="politicas"){app.innerHTML=vPoliticas();}
   else{app.innerHTML=vInicio();after=()=>{hero();bindHome();};}
-  if(h==="confeccion-vestuario"||!(h.startsWith("confeccion-")||h.startsWith("deco-")))window.scrollTo(0,0);
+  if(!h.startsWith("deco-"))window.scrollTo(0,0);
   after&&after();
 }
 buildMenus();
