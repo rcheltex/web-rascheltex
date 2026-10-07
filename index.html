@@ -501,7 +501,7 @@ const plain=(code,name,hex)=>({code,label:name,bg:hex,fg:[shade(hex,-0.14)]});
 /* ====== ÁRBOL DE NAVEGACIÓN (aprobado 25-sep-2026) ====== */
 const TREE = {
   telas:{
-    decoracion:{name:"Decoración",uses:["Telas Cortinas","Tela Manteles","Tela Toldillo"],blurb:"Velos, muselinas, opalinas y jacquard para cortinas; bases para manteles y toldillos."},
+    decoracion:{name:"Decoración",uses:["Telas Cortinas","Tela Toldillo"],blurb:"Velos, muselinas, opalinas y jacquard para cortinas; bases para toldillos."},
     industria:{name:"Industria",uses:["Telas Colchoneras","Mallas Industriales","Tapicería"],blurb:"Soluciones técnicas para colchonería, recubrimientos y tapicería, con peso y rendimiento controlados."},
     moda:{name:"Moda",uses:["Algodón Lycra","Microfibra","Tull","Encajes","Mallas (vestuario)"],blurb:"Tejidos para confección de ropa interior, deportiva y exterior."}
   },
@@ -553,13 +553,6 @@ add({line:"decoracion",use:"Telas Cortinas",base:"Brillantina",name:"Napa Valley
   desc:"Brillantina semipesada con brillo satinado, para cortinas con buena caída.",colors:[plain("01913EZB8A","Crema","#E8D9B8")]});
 add({line:"decoracion",use:"Telas Cortinas",base:"XTX",name:"Xtex",comp:"100% poliéster",width:"280 cm ± 2% · 150 cm ± 2%",yield:"2,37 – 4,35 m/kg ± 7%",pattern:"xtx",care:CARE_POLY,usos:["cortina","mantel"],hang:true,
   desc:"Base pesada de tejido cerrado, para cortinas que filtran más la luz.",colors:[plain("09009AAB8A","Blanco","#EFEEEA")]});
-
-/* --- Decoración · Tela Manteles --- */
-const tm=(name,width,yld,pat,hexes,desc)=>add({line:"decoracion",use:"Tela Manteles",base:name,name:name+" para mantel",comp:"100% poliéster",width,yield:yld,pattern:pat,care:CARE_POLY,usos:["mantel"],desc,colors:hexes.map(([n,h],i)=>plain("—",n,h))});
-tm("Opalina","320 · 290 · 250 · 200 cm ± 2%","4,25 m/kg ± 7%","opalina",[["Blanco","#F4F3EF"],["Crema","#EEE2C6"]],"Opalina en cuatro anchos, hasta 3,20 m, para cortar manteles sin uniones.");
-tm("Satín","190 · 200 · 240 cm ± 2%","1,78 m/kg ± 7%","brillantina",[["Arena","#D5C29F"],["Dorado","#C29A4B"],["Vinotinto","#6D1F2E"]],"Satín de brillo marcado para mantelería de eventos.");
-tm("Jacquard","300 · 280 · 266 · 215 · 183 · 180 cm ± 2%","Pendiente","jacquard",[["Blanco","#F1EFE9"],["Champaña","#E4D1AC"]],"Jacquard de mesa con diseños tejidos.");
-tm("Dormit","210 cm ± 2%","6,67 m/kg ± 7%","xtx",[["Crudo","#ECE5D3"]],"Base liviana y económica para mantelería.");
 
 /* --- Decoración · Tela Toldillo --- */
 const tt=(name,yld,pat)=>add({line:"decoracion",use:"Tela Toldillo",base:"Tul para toldillo",name,comp:"100% poliéster",width:name==="Shust"?"300 cm ± 2%":"280 cm ± 2%",yield:yld,pattern:pat,care:CARE_POLY,usos:["toldillo"],
