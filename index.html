@@ -585,7 +585,8 @@ const cw=list=>list.map(([c,r])=>colorway(c,r));
 /* Fotos por línea de producto, en img/. Se aplican por clase CSS y se reemplazan cambiando el archivo. */
 const FOTOS={
   cort:{cls:"ph-cort",url:"img/cortina-prueba.jpg",pos:"center",tag:"Foto de prueba",alt:"Foto de la cortina"},
-  colch:{cls:"ph-colch",url:"img/colchonera.jpg",pos:"center 60%",tag:"Foto de referencia",alt:"Foto de colchón con tela colchonera"}
+  colch:{cls:"ph-colch",url:"img/colchonera.jpg",pos:"center 60%",tag:"Foto de referencia",alt:"Foto de colchón con tela colchonera"},
+  lycra:{cls:"ph-lycra",url:"img/algodon-lycra.jpg",pos:"center",tag:"Foto de referencia",alt:"Muestra de tela algodón lycra"}
 };
 document.head.insertAdjacentHTML("beforeend",`<style>${Object.values(FOTOS).map(f=>`.${f.cls}{background-image:url(${f.url});background-position:${f.pos}}`).join("")}</style>`);
 const CORTINAS=[{"line":"decoracion","use":"Telas Cortinas","tipo":"Lisas","base":"Brillantina","name":"Brillantina","comp":"100% poliéster","width":"280 cm ± 2%","yield":"4,02 m/kg ± 7%","pattern":"brillantina","usos":["cortina"],"hang":true,"pop":0.003971,"desc":"Tela lisa para cortina, base Brillantina, de 2,80 m de ancho, en blanco.","colors":[{"code":"01001AAB8A","label":"Blanco","bg":"#F4F3EF","fg":["#d2d1ce"]}]},
@@ -775,6 +776,7 @@ alg("Rasch","62% poliéster · 33% algodón · 5% spandex","182 cm ± 3%","157 g
 alg("Rasch Antifluido","62% poliéster · 33% algodón · 5% spandex","182 cm ± 3%","157 g ± 7%","3,5 m/kg ± 7%",true);
 alg("Dakota","61% poliéster · 32% algodón · 7% spandex","182 cm ± 3%","183 g ± 7%","3,0 m/kg ± 7%");
 alg("Elite Polialgodón","62% poliéster · 33% algodón · 5% spandex","185 cm ± 3%","163 g ± 7%","3,3 m/kg ± 7%");
+P.filter(p=>p.use==="Algodón Lycra").forEach(p=>p.photo="lycra");
 add({line:"moda",use:"Microfibra",base:"Microfibra",name:"Microfibra",comp:"Poliéster · spandex",width:"160 cm",yield:"Pendiente",pattern:"microfibra",care:["lavar30","noblanq","nosecar"],usos:["interior","deportiva"],desc:"Punto liso de tacto frío y mano suave, para ropa interior y deportiva.",colors:[plain("—","Negro","#2A2A2D"),plain("—","Piel","#E2C2A6"),plain("—","Blanco","#F4F3EF")]});
 add({line:"moda",use:"Tull",base:"Tull",name:"Tull",comp:"100% poliéster",width:"148 cm",yield:"Pendiente",pattern:"tull",care:["lavar30","noblanq","nosecar"],usos:["interior","exterior"],desc:"Tull fino para forros, transparencias y aplicaciones en lencería.",colors:[plain("—","Negro","#2A2A2D"),plain("—","Blanco","#F4F3EF"),plain("—","Piel","#E2C2A6")]});
 add({line:"moda",use:"Encajes",base:"Encaje",name:"Encajes",comp:"100% poliéster",width:"Tira de 1,4 a 6,9 cm",weight:"1,4 – 6,9 g",yield:"—",pattern:"encaje",care:["lavar30","noblanq","nosecar"],usos:["interior"],desc:"Más de 10 referencias de encaje en tira para lencería y acabados.",colors:[plain("—","Negro","#2A2A2D"),plain("—","Blanco","#F4F3EF"),plain("—","Vinotinto","#6D1F2E")]});
