@@ -221,13 +221,14 @@ main{min-height:60vh}
 .icons svg circle[fill],.icons svg text{fill:var(--ink)}
 .icons .ic{display:inline-flex;flex-direction:column;align-items:center;gap:2px;font-size:10px;color:var(--stone);min-width:44px}
 .specs tr.care td{text-align:left}
-.specs tr.care .ch{font-weight:500;color:var(--ink);margin-bottom:10px}
+.specs tr.care .ch{font-weight:500;color:var(--ink)}
+.care-w{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px 16px}
 .specs tr.care .icons{display:flex;justify-content:space-between;flex-wrap:nowrap;gap:4px}
 .specs tr.care .ic{text-align:center;line-height:1.25}
 .icons .care-i{min-width:0;color:var(--ink)}
 .icons .care-i svg{width:32px;height:32px;stroke-width:1.4}
-.specs tr.care .icons{justify-content:flex-start;gap:22px}
-@media (max-width:600px){.specs tr.care .icons{gap:16px;flex-wrap:wrap}}
+.specs tr.care .icons{margin-left:auto;justify-content:flex-end;gap:14px}
+@media (max-width:600px){.specs tr.care .icons{gap:12px}}
 .colorway{margin:22px 0 4px;display:flex;justify-content:space-between;gap:12px;font-size:14px}
 .colorway b{font-weight:500}
 .pd .ctas{display:grid;gap:10px;margin-top:24px}
@@ -1027,7 +1028,7 @@ function vFicha(p){
         ${p.weight?`<tr><th scope="row">Peso</th><td class="mono">${esc(p.weight)}</td></tr>`:""}
         <tr><th scope="row">Rendimiento</th><td class="mono">${p.yield==="Pendiente"?'<em class="pend">Pendiente</em>':esc(p.yield)}</td></tr>
         ${p.hang?`<tr><th scope="row">Tipo de colgado</th><td>Clásico · Loops · Aros</td></tr>`:""}
-        <tr class="care"><td colspan="2"><div class="ch">Instrucciones de lavado${p.careOk?"":` <em class="pend">Por validar</em>`}</div><span class="icons">${p.care.map(icoCare).join("")}</span></td></tr>
+        <tr class="care"><td colspan="2"><div class="care-w"><div class="ch">Instrucciones de lavado${p.careOk?"":` <em class="pend">Por validar</em>`}</div><span class="icons">${p.care.map(icoCare).join("")}</span></div></td></tr>
         <tr><th scope="row">Usos de tela</th><td><span class="icons">${p.usos.map(ico).join("")}</span></td></tr>
       </tbody></table>
       <div class="colorway"><span>Color: <b id="cname"></b></span><span class="n" style="color:var(--stone)">${p.colors.length} ${p.colors.length===1?"opción":"opciones"}</span></div>
