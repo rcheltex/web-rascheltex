@@ -218,12 +218,16 @@ main{min-height:60vh}
 .specs td.mono{font-size:14px}
 .icons{display:inline-flex;gap:8px;justify-content:flex-end;flex-wrap:wrap}
 .icons svg{width:26px;height:26px;stroke:var(--ink);fill:none;stroke-width:1.3}
+.icons svg circle[fill],.icons svg text{fill:var(--ink)}
 .icons .ic{display:inline-flex;flex-direction:column;align-items:center;gap:2px;font-size:10px;color:var(--stone);min-width:44px}
 .specs tr.care td{text-align:left}
 .specs tr.care .ch{font-weight:500;color:var(--ink);margin-bottom:10px}
 .specs tr.care .icons{display:flex;justify-content:space-between;flex-wrap:nowrap;gap:4px}
 .specs tr.care .ic{text-align:center;line-height:1.25}
-@media (max-width:600px){.specs tr.care .icons{display:grid;grid-template-columns:repeat(3,1fr);justify-items:center;gap:14px 8px}}
+.icons .care-i{min-width:0;color:var(--ink)}
+.icons .care-i svg{width:32px;height:32px;stroke-width:1.4}
+.specs tr.care .icons{justify-content:flex-start;gap:22px}
+@media (max-width:600px){.specs tr.care .icons{gap:16px;flex-wrap:wrap}}
 .colorway{margin:22px 0 4px;display:flex;justify-content:space-between;gap:12px;font-size:14px}
 .colorway b{font-weight:500}
 .pd .ctas{display:grid;gap:10px;margin-top:24px}
@@ -872,7 +876,7 @@ const bgi=u=>`background-image:url(${u})`;
 const ICON={
   lavar30:['Lavar 30 °C','<path d="M3 8h20l-2.5 12h-15z"/><path d="M3 8c2-2 4 0 6-1s4 1 6 0 4 1 8-1"/><text x="13" y="18" font-size="7" text-anchor="middle" fill="currentColor" stroke="none">30</text>'],
   noblanq:['No blanquear','<path d="M13 4 3 21h20z"/><path d="m5 6 16 16M21 6 5 22"/>'],
-  planchar1:['Plancha baja','<path d="M4 19h18l-1-6c-.5-3-3-5-6-5H8"/><circle cx="13" cy="15.5" r="1" fill="currentColor"/>'],
+  planchar1:['Plancha baja','<path d="M6.5 5.5h15l1.8 15.5H2.2v-3.2c0-3.9 3-6.3 7-6.3h13.3"/><circle cx="12" cy="16.6" r="1.8" fill="currentColor" stroke="none"/>'],
   noescurrir:['No retorcer','<path d="M2 10h5l3 3-3 3H2zM24 10h-5l-3 3 3 3h5z"/><path d="m10 13 3-3 3 3-3 3z"/><path d="M8 4l10 18M18 4 8 22"/>'],
   sombra:['Secar a la sombra','<rect x="3" y="3" width="20" height="20"/><path d="M3 10 10 3M15 8v11"/>'],
   nosecar:['No secadora','<rect x="3" y="3" width="20" height="20"/><circle cx="13" cy="13" r="7"/><path d="m3 3 20 20M23 3 3 23"/>'],
@@ -888,6 +892,7 @@ const ICON={
   exterior:['Exterior','<path d="M8 3 3 7l3 3 2-1v14h10V9l2 1 3-3-5-4"/><path d="M13 5v18"/>']
 };
 const ico=k=>`<span class="ic"><svg viewBox="0 0 26 26" aria-hidden="true">${ICON[k][1]}</svg>${ICON[k][0]}</span>`;
+const icoCare=k=>`<span class="ic care-i" role="img" aria-label="${ICON[k][0]}" title="${ICON[k][0]}"><svg viewBox="0 0 26 26" aria-hidden="true">${ICON[k][1]}</svg></span>`;
 
 /* ====== UTILIDADES ====== */
 const $=s=>document.querySelector(s);
@@ -1022,7 +1027,7 @@ function vFicha(p){
         ${p.weight?`<tr><th scope="row">Peso</th><td class="mono">${esc(p.weight)}</td></tr>`:""}
         <tr><th scope="row">Rendimiento</th><td class="mono">${p.yield==="Pendiente"?'<em class="pend">Pendiente</em>':esc(p.yield)}</td></tr>
         ${p.hang?`<tr><th scope="row">Tipo de colgado</th><td>Clásico · Loops · Aros</td></tr>`:""}
-        <tr class="care"><td colspan="2"><div class="ch">Instrucciones de lavado${p.careOk?"":` <em class="pend">Por validar</em>`}</div><span class="icons">${p.care.map(ico).join("")}</span></td></tr>
+        <tr class="care"><td colspan="2"><div class="ch">Instrucciones de lavado${p.careOk?"":` <em class="pend">Por validar</em>`}</div><span class="icons">${p.care.map(icoCare).join("")}</span></td></tr>
         <tr><th scope="row">Usos de tela</th><td><span class="icons">${p.usos.map(ico).join("")}</span></td></tr>
       </tbody></table>
       <div class="colorway"><span>Color: <b id="cname"></b></span><span class="n" style="color:var(--stone)">${p.colors.length} ${p.colors.length===1?"opción":"opciones"}</span></div>
@@ -1116,7 +1121,7 @@ function vFichaC(p){
         <tr><th scope="row">${meds.length>1?"Medidas":"Medida"}</th><td><div class="szl">${meds.map(([a,b])=>`<div>${meds.length>1&&a!=="Medida"?`<span>${esc(a)}</span>`:""}<b>${esc(b)}</b></div>`).join("")}</div></td></tr>
         ${p.hang?`<tr><th scope="row">Tipo de colgado</th><td>${esc(p.hangTypes||"Clásico · Loops · Aros")}</td></tr>`:""}
         <tr><th scope="row">Colores</th><td>${p.colors.length} ${p.colors.length===1?"opción":"opciones"}</td></tr>
-        <tr><th scope="row">Instrucciones de lavado <em class="pend">Por validar</em></th><td><span class="icons">${p.care.map(ico).join("")}</span></td></tr>
+        <tr><th scope="row">Instrucciones de lavado <em class="pend">Por validar</em></th><td><span class="icons">${p.care.map(icoCare).join("")}</span></td></tr>
         <tr><th scope="row">Uso</th><td><span class="icons">${ico(cat.icon)}</span></td></tr>
       </tbody></table>
       <div class="colorway"><span>Color: <b id="cname"></b></span><span class="n" style="color:var(--stone)">${p.colors.length} ${p.colors.length===1?"opción":"opciones"}</span></div>
