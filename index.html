@@ -582,9 +582,12 @@ function add(o){o.id=slug(o.name);o.colors=o.colors||[];P.push(o);}
 const cw=list=>list.map(([c,r])=>colorway(c,r));
 /* --- Decoración · Telas Cortinas (fuente: DOCUMENTO_FINAL.xlsx, hoja DECO-CORTINAS) --- */
 /* pop = participación en ventas dentro de la categoría; solo se usa para ordenar "Destacadas", no se muestra. */
-/* Foto de prueba para cortinas (1600 × 1600 px), en img/. Reemplazar por las fotos reales por color. */
-const FOTO_CORTINA="img/cortina-prueba.jpg";
-document.head.insertAdjacentHTML("beforeend",`<style>.ph-cort{background-image:url(${FOTO_CORTINA})}</style>`);
+/* Fotos por línea de producto, en img/. Se aplican por clase CSS y se reemplazan cambiando el archivo. */
+const FOTOS={
+  cort:{cls:"ph-cort",url:"img/cortina-prueba.jpg",pos:"center",tag:"Foto de prueba",alt:"Foto de la cortina"},
+  colch:{cls:"ph-colch",url:"img/colchonera.jpg",pos:"center 60%",tag:"Foto de referencia",alt:"Foto de colchón con tela colchonera"}
+};
+document.head.insertAdjacentHTML("beforeend",`<style>${Object.values(FOTOS).map(f=>`.${f.cls}{background-image:url(${f.url});background-position:${f.pos}}`).join("")}</style>`);
 const CORTINAS=[{"line":"decoracion","use":"Telas Cortinas","tipo":"Lisas","base":"Brillantina","name":"Brillantina","comp":"100% poliéster","width":"280 cm ± 2%","yield":"4,02 m/kg ± 7%","pattern":"brillantina","usos":["cortina"],"hang":true,"pop":0.003971,"desc":"Tela lisa para cortina, base Brillantina, de 2,80 m de ancho, en blanco.","colors":[{"code":"01001AAB8A","label":"Blanco","bg":"#F4F3EF","fg":["#d2d1ce"]}]},
 {"line":"decoracion","use":"Telas Cortinas","tipo":"Lisas","base":"Brillantina","name":"Anacapri","comp":"100% poliéster","width":"280 cm ± 2%","yield":"4,01 m/kg ± 7%","pattern":"brillantina","usos":["cortina"],"hang":true,"pop":0.0041,"desc":"Tela lisa para cortina, base Brillantina, de 2,80 m de ancho, en 2 colores.","colors":[{"code":"01001EXB8A","label":"Blanco","bg":"#F4F3EF","fg":["#d2d1ce"]},
 {"code":"01913EXB8A","label":"Crema","bg":"#EEE2C6","fg":["#cdc2aa"]}]},
@@ -734,7 +737,7 @@ const CORTINAS=[{"line":"decoracion","use":"Telas Cortinas","tipo":"Lisas","base
 {"line":"decoracion","use":"Telas Cortinas","tipo":"Estampadas","base":"Muselina Super","name":"Selene","comp":"100% poliéster","width":"280 cm ± 2%","yield":"5,41 m/kg ± 7%","pattern":"muselina","usos":["cortina"],"hang":true,"pop":0.01,"desc":"Tela estampada para cortina, base Muselina Super, de 2,80 m de ancho, en 3 colores.","colors":[{"code":"4602BCWB8A","label":"Blanco / Gris y Azul turquesa","bg":"#F4F3EF","fg":["#9A9C9F","#1F8FA8"]},
 {"code":"4601BCWB8A","label":"Blanco / Negro y Gris","bg":"#F4F3EF","fg":["#2A2A2D","#9A9C9F"]},
 {"code":"4603BCWB8A","label":"Marfil / Café y Dorado","bg":"#EFE6CF","fg":["#6E4B34","#C29A4B"]}]}];
-CORTINAS.forEach(o=>add({...o,care:CARE_CORT,careOk:true,photo:true}));
+CORTINAS.forEach(o=>add({...o,care:CARE_CORT,careOk:true,photo:"cort"}));
 
 /* --- Decoración · Tela Toldillo --- */
 const tt=(name,yld,pat)=>add({line:"decoracion",use:"Tela Toldillo",base:"Tul para toldillo",name,comp:"100% poliéster",width:name==="Shust"?"300 cm ± 2%":"280 cm ± 2%",yield:yld,pattern:pat,care:CARE_POLY,usos:["toldillo"],
@@ -757,6 +760,8 @@ ind("Tapicería","Babilonia","155 cm ± 2%","140 g/m² ± 5 g","4,6 m/kg ± 7%",
 ind("Tapicería","Faldex","180 cm ± 2%","71 g/m² ± 5 g","7,81 m/kg ± 7%","tapiceria",["Negro","#2A2A2D"],"Base liviana para faldones y respaldos.",["tapiceria"]);
 ind("Tapicería","Cretex Nº2-155","155 cm ± 2%","132 g/m² ± 5 g","4,88 m/kg ± 7%","tapiceria",["Gris","#9A9C9F"],"Soporte resistente para recubrimiento.",["tapiceria"]);
 ind("Tapicería","Nápoles","150 cm ± 2%","136 g/m² ± 5 g","4,9 m/kg ± 5%","tapiceria",["Beige","#D8C8AB"],"Tela tapicera para bondeo.",["tapiceria"]);
+
+P.filter(p=>p.use==="Telas Colchoneras").forEach(p=>p.photo="colch");
 
 /* --- Moda --- */
 const alg=(name,comp,width,gsm,yld,isNew)=>add({line:"moda",use:"Algodón Lycra",base:"Algodón lycra",name,comp,width,weight:gsm,yield:yld,pattern:"jersey",care:["lavar30","noblanq","planchar1","nosecar"],usos:["interior","pijama"],isNew,
@@ -798,7 +803,7 @@ const DECO_CATS={
   toldillos:{name:"Toldillos",icon:"toldillo",blurb:"Toldillos en tul de poliéster, de sencillo a queen, en nueve colores."}
 };
 const PC=[];
-function addC(o){o.id=slug(o.name);if(o.cat==="cortinas")o.photo=true;o.colors=o.colors||[];o.hang=!!o.hang;o.comp=o.comp||"100% poliéster";o.care=o.care||CARE_POLY;PC.push(o);}
+function addC(o){o.id=slug(o.name);if(o.cat==="cortinas")o.photo="cort";o.colors=o.colors||[];o.hang=!!o.hang;o.comp=o.comp||"100% poliéster";o.care=o.care||CARE_POLY;PC.push(o);}
 addC({cat:"cortinas",name:"Panel Opalina",base:"Opalina",pattern:"opalina",hang:true,fabric:"opalina-lisa",sizes:[["Panel","150 × 220 cm"]],hangTypes:"Clásico · Loops · Aros",
   desc:"Panel tipo velo en opalina translúcida. Deja pasar la luz y da privacidad. Listo para colgar en 1,50 × 2,20 m.",colors:[plain("—","Blanco","#F4F3EF"),plain("—","Crema","#EEE2C6")]});
 addC({cat:"cortinas",name:"Panel XTX",base:"XTX",pattern:"xtx",hang:true,fabric:"xtex-2-80",sizes:[["Panel","150 × 220 cm"]],hangTypes:"Clásico · Loops · Aros",
@@ -918,7 +923,7 @@ function card(p){
   const dots=p.colors.slice(0,8).map(c=>`<i style="background:${c.fg[0]&&c.fg[0]!==shade(c.bg,-.14)?`linear-gradient(135deg,${c.bg} 50%,${c.fg[0]} 50%)`:c.bg}" title="${esc(c.label)}"></i>`).join("");
   const alt=p.colors.length>1?img(p,1,360):img(p,0,360,!p.hang);
   const ref=p.colors[0]&&p.colors[0].code!=="—"?"#"+p.colors[0].code:esc(p.use);
-  return `<a class="card" href="#p-${p.id}"><div class="img${p.photo?" ph-cort":""}" ${p.photo?"":`style="${bgi(img(p,0,360))}"`}><div class="alt" style="${bgi(alt)}"></div>${p.isNew?'<span class="badge">Nuevo</span>':""}</div>
+  return `<a class="card" href="#p-${p.id}"><div class="img${p.photo?" "+FOTOS[p.photo].cls:""}" ${p.photo?"":`style="${bgi(img(p,0,360))}"`}><div class="alt" style="${bgi(alt)}"></div>${p.isNew?'<span class="badge">Nuevo</span>':""}</div>
   <h3>${esc(p.name)}</h3><div class="ref">${ref}</div><div class="meta"><span>${esc(p.base)}</span><span>${p.colors.length} ${p.colors.length===1?"color":"colores"}</span></div><div class="dots">${dots}</div></a>`;
 }
 const SEARCH_ICON='<svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="6.5" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="m13.5 13.5 5 5" stroke="currentColor" stroke-width="1.4"/></svg>';
@@ -937,7 +942,7 @@ function vInicio(){
   <section class="wrap sec prods" aria-labelledby="prodH">
     <h2 id="prodH" class="prods-t">Productos</h2>
     <div class="pcats">${Object.entries(TREE.telas).map(([k,v])=>{const pick={decoracion:["jardin-japones",0],industria:["opalina-50",0],moda:["caricia",0]}[k];const s=P.find(p=>p.id===pick[0])||P.find(p=>p.line===k);
-      return `<div class="pcat"><a class="pimg${s.photo?" ph-cort":""}" href="#telas-${k}" aria-label="${v.name}" ${s.photo?"":`style="${bgi(img(s,pick[1],640))}"`}></a>
+      return `<div class="pcat"><a class="pimg${s.photo?" "+FOTOS[s.photo].cls:""}" href="#telas-${k}" aria-label="${v.name}" ${s.photo?"":`style="${bgi(img(s,pick[1],640))}"`}></a>
         <h3><a href="#telas-${k}">${v.name}</a></h3><p>${v.blurb}</p>
         <ul>${v.uses.map(u=>`<li><a href="#telas-${k}" data-use="${esc(u)}">${u}</a><span>${P.filter(p=>p.use===u).length}</span></li>`).join("")}</ul>
         <a class="link" href="#telas-${k}">Ver ${v.name.toLowerCase()}</a></div>`}).join("")}</div>
@@ -1016,7 +1021,7 @@ function vFicha(p){
   return `<div class="wrap"><nav class="crumbs" aria-label="Ruta"><a href="#inicio">Inicio</a>/<a href="#telas">Telas</a>/<a href="#telas-${p.line}">${LINE_NAME[p.line]}</a>/<span>${esc(p.use)}</span></nav>
   <article class="pd"><h1>${esc(p.name)}</h1><div class="coll">${esc(LINE_NAME[p.line])} · ${esc(p.use)}</div>
     <div class="gal"><div class="main" id="gmain"><span class="tag" id="gtag">Ilustración · foto real pendiente</span></div>
-      <div class="thumbs"><button class="arr" type="button" id="tp" aria-label="Anterior">‹</button><div class="row" id="trow">${p.photo?`<button class="t ph-cort" type="button" data-ph="1" aria-label="Foto de la cortina"></button>`:""}${p.colors.map((c,i)=>`<button class="t" type="button" data-i="${i}" style="${bgi(img(p,i,140))}" aria-label="${esc(c.label)}"></button>`).join("")}</div><button class="arr" type="button" id="tn" aria-label="Siguiente">›</button></div>
+      <div class="thumbs"><button class="arr" type="button" id="tp" aria-label="Anterior">‹</button><div class="row" id="trow">${p.photo?`<button class="t ${FOTOS[p.photo].cls}" type="button" data-ph="1" aria-label="${FOTOS[p.photo].alt}"></button>`:""}${p.colors.map((c,i)=>`<button class="t" type="button" data-i="${i}" style="${bgi(img(p,i,140))}" aria-label="${esc(c.label)}"></button>`).join("")}</div><button class="arr" type="button" id="tn" aria-label="Siguiente">›</button></div>
       <p class="desc">${esc(p.desc)}</p>
       ${lineUses?`<div class="eyebrow" style="margin-top:32px">Confecciona con esta tela</div><div class="made">
         <a href="#deco-cortinas"><svg viewBox="0 0 26 26">${ICON.cortina[1]}</svg><span>Cortinas</span></a>
@@ -1047,14 +1052,14 @@ function vFicha(p){
 }
 function setColor(i){
   const p=CUR.p;CUR.ci=(i+p.colors.length)%p.colors.length;const c=p.colors[CUR.ci];
-  const g=$("#gmain");g.classList.remove("ph-cort");g.style.backgroundImage=`url(${img(p,CUR.ci,720)})`;$("#gtag").textContent="Ilustración · foto real pendiente";
+  const g=$("#gmain");Object.values(FOTOS).forEach(f=>g.classList.remove(f.cls));g.style.backgroundImage=`url(${img(p,CUR.ci,720)})`;$("#gtag").textContent="Ilustración · foto real pendiente";
   $("#sref").textContent=c.code==="—"?"Por asignar":c.code;
   $("#cname").textContent=c.label;
   document.querySelectorAll("#trow .t").forEach(t=>t.classList.toggle("on",+t.dataset.i===CUR.ci&&!t.dataset.ph));
   const t=document.querySelector(`#trow .t[data-i="${CUR.ci}"]`);t&&t.scrollIntoView({block:"nearest",inline:"nearest"});
 }
 function showPhoto(){
-  const g=$("#gmain");g.style.backgroundImage="";g.classList.add("ph-cort");$("#gtag").textContent="Foto de prueba";
+  const f=FOTOS[CUR.p.photo],g=$("#gmain");g.style.backgroundImage="";g.classList.add(f.cls);$("#gtag").textContent=f.tag;
   document.querySelectorAll("#trow .t").forEach(t=>t.classList.toggle("on",!!t.dataset.ph));
 }
 function bindFicha(){
@@ -1092,7 +1097,7 @@ function cardC(p){
   const dots=p.colors.slice(0,8).map(c=>`<i style="background:${c.fg[0]&&c.fg[0]!==shade(c.bg,-.14)?`linear-gradient(135deg,${c.bg} 50%,${c.fg[0]} 50%)`:c.bg}" title="${esc(c.label)}"></i>`).join("");
   const alt=p.colors.length>1?img(p,1,360):img(p,0,360,!p.hang);
   const meds=p.sizes.filter(x=>x[0]!=="Forma");
-  return `<a class="card" href="#c-${p.id}"><div class="img${p.photo?" ph-cort":""}" ${p.photo?"":`style="${bgi(img(p,0,360))}"`}><div class="alt" style="${bgi(alt)}"></div>${p.isNew?'<span class="badge">Nuevo</span>':""}</div>
+  return `<a class="card" href="#c-${p.id}"><div class="img${p.photo?" "+FOTOS[p.photo].cls:""}" ${p.photo?"":`style="${bgi(img(p,0,360))}"`}><div class="alt" style="${bgi(alt)}"></div>${p.isNew?'<span class="badge">Nuevo</span>':""}</div>
   <h3>${esc(p.name)}</h3><div class="ref">${esc(DECO_CATS[p.cat].name)}</div><div class="meta"><span>${esc(p.base)}</span><span>${p.colors.length} ${p.colors.length===1?"color":"colores"}</span></div><div class="meta"><span>${meds.length===1?esc(meds[0][1]):meds.length+" medidas"}</span></div><div class="dots">${dots}</div></a>`;
 }
 function vDeco(){
@@ -1116,7 +1121,7 @@ function vFichaC(p){
   return `<div class="wrap"><nav class="crumbs" aria-label="Ruta"><a href="#inicio">Inicio</a>/<a href="#confeccion">Confección</a>/<a href="#confeccion-deco">Deco</a>/<a href="#deco-${p.cat}">${cat.name}</a></nav>
   <article class="pd"><h1>${esc(p.name)}</h1><div class="coll">Confección deco · ${esc(cat.name)}</div>
     <div class="gal"><div class="main" id="gmain"><span class="tag" id="gtag">Ilustración · foto real pendiente</span></div>
-      <div class="thumbs"><button class="arr" type="button" id="tp" aria-label="Anterior">‹</button><div class="row" id="trow">${p.photo?`<button class="t ph-cort" type="button" data-ph="1" aria-label="Foto de la cortina"></button>`:""}${p.colors.map((c,i)=>`<button class="t" type="button" data-i="${i}" style="${bgi(img(p,i,140))}" aria-label="${esc(c.label)}"></button>`).join("")}</div><button class="arr" type="button" id="tn" aria-label="Siguiente">›</button></div>
+      <div class="thumbs"><button class="arr" type="button" id="tp" aria-label="Anterior">‹</button><div class="row" id="trow">${p.photo?`<button class="t ${FOTOS[p.photo].cls}" type="button" data-ph="1" aria-label="${FOTOS[p.photo].alt}"></button>`:""}${p.colors.map((c,i)=>`<button class="t" type="button" data-i="${i}" style="${bgi(img(p,i,140))}" aria-label="${esc(c.label)}"></button>`).join("")}</div><button class="arr" type="button" id="tn" aria-label="Siguiente">›</button></div>
       <p class="desc">${esc(p.desc)}</p>
       <div class="eyebrow" style="margin-top:32px">Hecho con nuestra tela</div><div class="made" style="grid-template-columns:1fr">
         <a href="${fab?`#p-${fab.id}`:"#telas-decoracion"}"><svg viewBox="0 0 26 26">${ICON[cat.icon][1]}</svg><span>${fab?`Ver ficha de la tela ${esc(fab.name)}`:`Ver telas de decoración`}</span></a></div>
