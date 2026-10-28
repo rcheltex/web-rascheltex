@@ -588,7 +588,8 @@ const cw=list=>list.map(([c,r])=>colorway(c,r));
 const FOTOS={
   cort:{cls:"ph-cort",url:"img/cortina-prueba.jpg",pos:"center",tag:"Foto de prueba",alt:"Foto de la cortina"},
   colch:{cls:"ph-colch",url:"img/colchonera.jpg",pos:"center 60%",tag:"Foto de referencia",alt:"Foto de colchón con tela colchonera"},
-  lycra:{cls:"ph-lycra",url:"img/algodon-lycra.jpg",pos:"center",tag:"Foto de referencia",alt:"Muestra de tela algodón lycra"}
+  lycra:{cls:"ph-lycra",url:"img/algodon-lycra.jpg",pos:"center",tag:"Foto de referencia",alt:"Muestra de tela algodón lycra"},
+  mantel:{cls:"ph-mantel",url:"img/mantel.jpg",pos:"center 55%",tag:"Foto de referencia",alt:"Foto de mantel de encaje sobre una mesa"}
 };
 document.head.insertAdjacentHTML("beforeend",`<style>${Object.values(FOTOS).map(f=>`.${f.cls}{background-image:url(${f.url});background-position:${f.pos}}`).join("")}</style>`);
 const CORTINAS=[{"line":"decoracion","use":"Telas Cortinas","tipo":"Lisas","base":"Brillantina","name":"Brillantina","comp":"100% poliéster","width":"280 cm ± 2%","yield":"4,02 m/kg ± 7%","pattern":"brillantina","usos":["cortina"],"hang":true,"pop":0.003971,"desc":"Tela lisa para cortina, base Brillantina, de 2,80 m de ancho, en blanco.","colors":[{"code":"01001AAB8A","label":"Blanco","bg":"#F4F3EF","fg":["#d2d1ce"]}]},
@@ -807,7 +808,7 @@ const DECO_CATS={
   toldillos:{name:"Toldillos",icon:"toldillo",blurb:"Toldillos en tul de poliéster, de sencillo a queen, en nueve colores."}
 };
 const PC=[];
-function addC(o){o.id=slug(o.name);if(o.cat==="cortinas")o.photo="cort";o.colors=o.colors||[];o.hang=!!o.hang;o.comp=o.comp||"100% poliéster";o.care=o.care||CARE_POLY;PC.push(o);}
+function addC(o){o.id=slug(o.name);if(o.cat==="cortinas")o.photo="cort";if(o.cat==="manteles")o.photo="mantel";o.colors=o.colors||[];o.hang=!!o.hang;o.comp=o.comp||"100% poliéster";o.care=o.care||CARE_POLY;PC.push(o);}
 addC({cat:"cortinas",name:"Panel Opalina",base:"Opalina",pattern:"opalina",hang:true,fabric:"opalina-lisa",sizes:[["Panel","150 × 220 cm"]],hangTypes:"Clásico · Loops · Aros",
   desc:"Panel tipo velo en opalina translúcida. Deja pasar la luz y da privacidad. Listo para colgar en 1,50 × 2,20 m.",colors:[plain("—","Blanco","#F4F3EF"),plain("—","Crema","#EEE2C6")]});
 addC({cat:"cortinas",name:"Panel XTX",base:"XTX",pattern:"xtx",hang:true,fabric:"xtex-2-80",sizes:[["Panel","150 × 220 cm"]],hangTypes:"Clásico · Loops · Aros",
