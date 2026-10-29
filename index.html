@@ -615,7 +615,9 @@ const FOTOS={
   cort:{cls:"ph-cort",url:"img/cortina-prueba.jpg",pos:"center",tag:"Foto de prueba",alt:"Foto de la cortina"},
   colch:{cls:"ph-colch",url:"img/colchonera.jpg",pos:"center 60%",tag:"Foto de referencia",alt:"Foto de colchón con tela colchonera"},
   lycra:{cls:"ph-lycra",url:"img/algodon-lycra.jpg",pos:"center",tag:"Foto de referencia",alt:"Muestra de tela algodón lycra"},
-  mantel:{cls:"ph-mantel",url:"img/mantel.jpg",pos:"center 55%",tag:"Foto de referencia",alt:"Foto de mantel de encaje sobre una mesa"}
+  mantel:{cls:"ph-mantel",url:"img/mantel.jpg",pos:"center 55%",tag:"Foto de referencia",alt:"Foto de mantel de encaje sobre una mesa"},
+  tela1:{cls:"ph-tela1",url:"img/tela-1.jpg",pos:"center",tag:"Foto provisional",alt:"Foto de tela en color durazno"},
+  tela2:{cls:"ph-tela2",url:"img/tela-2.jpg",pos:"center",tag:"Foto provisional",alt:"Foto de tela en color rosa palo"}
 };
 document.head.insertAdjacentHTML("beforeend",`<style>${Object.values(FOTOS).map(f=>`.${f.cls}{background-image:url(${f.url});background-position:${f.pos}}`).join("")}</style>`);
 const CORTINAS=[{"line":"decoracion","use":"Telas Cortinas","tipo":"Lisas","base":"Brillantina","name":"Brillantina","comp":"100% poliéster","width":"280 cm ± 2%","yield":"4,02 m/kg ± 7%","pattern":"brillantina","usos":["cortina"],"hang":true,"pop":0.003971,"desc":"Tela lisa para cortina, base Brillantina, de 2,80 m de ancho, en blanco.","colors":[{"code":"01001AAB8A","label":"Blanco","bg":"#F4F3EF","fg":["#d2d1ce"]}]},
@@ -811,6 +813,9 @@ add({line:"moda",use:"Tull",base:"Tull",name:"Tull",comp:"100% poliéster",width
 add({line:"moda",use:"Encajes",base:"Encaje",name:"Encajes",comp:"100% poliéster",width:"Tira de 1,4 a 6,9 cm",weight:"1,4 – 6,9 g",yield:"—",pattern:"encaje",care:["lavar30","noblanq","nosecar"],usos:["interior"],desc:"Más de 10 referencias de encaje en tira para lencería y acabados.",colors:[plain("—","Negro","#2A2A2D"),plain("—","Blanco","#F4F3EF"),plain("—","Vinotinto","#6D1F2E")]});
 const md=(name,width,gsm,yld)=>add({line:"moda",use:"Mallas (vestuario)",base:"Malla deportiva",name,comp:"100% poliéster",width,weight:gsm,yield:yld,pattern:"malla",care:["lavar30","noblanq","nosecar"],usos:["deportiva"],desc:"Malla transpirable para prendas deportivas, uniformes y forros.",colors:[plain("—","Azul rey","#2446A8"),plain("—","Negro","#2A2A2D"),plain("—","Blanco","#F4F3EF")]});
 md("Malla Dep SL","150 cm ± 2%","39 g/m² ± 3 g","17 m/kg ± 7%");md("Malla Dep Nº1","150 cm ± 2%","60 g/m² ± 5 g","10,93 m/kg ± 7%");md("Malla Dep Nº2","150 cm ± 2%","122 g/m² ± 5 g","5,25 m/kg ± 7%");md("Malla Dep Nº3","148 cm ± 2%","75 – 84 g/m² ± 5 g","8 – 9 m/kg ± 5%");
+
+/* Fotos provisionales para las telas que aún no tienen foto propia (se alternan entre las dos). */
+P.filter(p=>!p.photo).forEach((p,i)=>p.photo=i%2?"tela2":"tela1");
 
 /* ====== CONFECCIÓN · Deco ====== */
 const MANTELES=[
