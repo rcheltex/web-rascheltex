@@ -404,7 +404,10 @@ main{min-height:60vh}
 .nhero{position:relative;height:clamp(300px,40vw,620px);background:#B79E78 center/cover no-repeat;overflow:hidden}
 .nhero canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
 /* Portada principal: foto en img/portada.jpg (reemplazar el archivo para cambiarla) */
-.hero-ph{background-image:url(img/portada.jpg);background-position:center 12%}
+.hero-ph{background-image:url(img/portada-video.jpg);background-position:center 30%}
+/* Video de portada en bucle (video/portada.mp4 y video/portada-movil.mp4) */
+.hero-vid{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 30%;display:block}
+@media (prefers-reduced-motion:reduce){.hero-vid{display:none}}
 .hero-ph::after{content:"";position:absolute;inset:0;background:radial-gradient(120% 70% at 0% 100%,rgba(20,16,12,.5) 0%,rgba(20,16,12,.18) 45%,rgba(20,16,12,0) 70%),linear-gradient(to bottom,rgba(20,16,12,.18) 0%,rgba(20,16,12,0) 18%)}
 .hero-ph .bc,.hero-ph .cap{z-index:1}
 /* Foto del bloque Servicio de confección del inicio (img/confeccion.jpg) */
@@ -961,7 +964,7 @@ function vInicio(){
   resetF(null);
   return `
   <section class="frame">
-    <div class="nhero hero-ph" role="img" aria-label="Cortinas de velo blanco frente a un ventanal">
+    <div class="nhero hero-ph" role="img" aria-label="Video: cortinas de velo blanco que se abren y se cierran frente a un ventanal"><video class="hero-vid" id="heroVid" muted loop playsinline autoplay preload="auto" poster="img/portada-video.jpg" aria-hidden="true"></video>
       <div class="bc">Rascheltex &gt; Telas</div>
       <a class="cap" href="#telas-decoracion" style="text-decoration:none"><b>DECORACIÓN</b><span>Telas para cortina en 2,80 m de ancho</span></a>
     </div>
@@ -1387,6 +1390,13 @@ function bindHome(){
 
 /* ====== HERO: malla raschel animada ====== */
 /* ====== HERO: cortina jacquard drapeada (ilustración) ====== */
+function heroVideo(){
+  const v=document.getElementById("heroVid");if(!v)return;
+  if(matchMedia("(prefers-reduced-motion: reduce)").matches){v.remove();return;}
+  const ext=v.canPlayType('video/mp4; codecs="avc1.640028"')?"mp4":"webm";
+  v.src=(innerWidth<760?"video/portada-movil.":"video/portada.")+ext;
+  v.muted=true;const pr=v.play();if(pr&&pr.catch)pr.catch(()=>{});
+}
 function hero(){
   const cv=$("#heroCv");if(!cv)return;const x=cv.getContext("2d");
   const w=cv.clientWidth,h=cv.clientHeight,d=Math.min(2,devicePixelRatio||1);cv.width=w*d;cv.height=h*d;x.setTransform(d,0,0,d,0,0);
@@ -1412,7 +1422,7 @@ function route(){
   document.querySelectorAll(".nav [data-nav]").forEach(a=>a.classList.toggle("on",h.startsWith(a.dataset.nav)));
   $("#btnProd").classList.toggle("on",/^(telas|confeccion|deco-|p-|c-)/.test(h));
   let after=null;
-  if(h==="inicio"||h===""){app.innerHTML=vInicio();after=()=>{hero();bindHome();};}
+  if(h==="inicio"||h===""){app.innerHTML=vInicio();after=()=>{hero();bindHome();heroVideo();};}
   else if(h==="telas"||h.startsWith("telas-")){const l=h.split("-")[1]||null;const L=TREE.telas[l]?l:null;if(PENDING_USE||PENDING_Q||PENDING_TIPO){resetF(L);if(PENDING_USE)F.uses.add(PENDING_USE);if(PENDING_TIPO)F.tipos.add(PENDING_TIPO);if(PENDING_Q)F.q=PENDING_Q;PENDING_USE=PENDING_Q=PENDING_TIPO=null;}app.innerHTML=vTelas(L);after=bindTelas;}
   else if(h.startsWith("p-")){const p=P.find(x=>x.id===h.slice(2));if(p){app.innerHTML=vFicha(p);after=bindFicha;}else{location.hash="#telas";return;}}
   else if(h.startsWith("c-")){const p=PC.find(x=>x.id===h.slice(2));if(p){app.innerHTML=vFichaC(p);after=bindFicha;}else{location.hash="#confeccion-deco";return;}}
@@ -1422,7 +1432,7 @@ function route(){
   else if(h==="nosotros"){app.innerHTML=vNosotros();after=bindGal;}
   else if(h==="contacto"){app.innerHTML=vContacto();after=bindContacto;}
   else if(h==="politicas"){app.innerHTML=vPoliticas();}
-  else{app.innerHTML=vInicio();after=()=>{hero();bindHome();};}
+  else{app.innerHTML=vInicio();after=()=>{hero();bindHome();heroVideo();};}
   if(!h.startsWith("deco-"))window.scrollTo(0,0);
   after&&after();
 }
