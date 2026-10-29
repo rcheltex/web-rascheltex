@@ -294,6 +294,27 @@ main{min-height:60vh}
 .spec div{display:flex;justify-content:space-between;gap:16px;padding:14px 0;border-bottom:1px solid var(--line)}
 .spec span{color:var(--ink-2)}
 .spec b{font-weight:500;text-align:right}
+/* confección deco · presentación de cortinas (sin imágenes) */
+.cl{display:grid;grid-template-columns:1.25fr 1fr;gap:clamp(28px,5vw,72px);align-items:end;padding-block:clamp(24px,4vw,48px);border-block:1px solid var(--line)}
+.cl-h{font-size:clamp(30px,4.2vw,54px);font-weight:300;line-height:1.08;letter-spacing:-.005em;margin:14px 0 18px;text-wrap:balance}
+.cl-lead{color:var(--ink-2);font-size:18px;max-width:54ch}
+.cl-facts{display:grid;grid-template-columns:1fr 1fr;gap:0;margin:0;border-top:1px solid var(--line)}
+.cl-facts div{padding:18px 16px 16px 0;border-bottom:1px solid var(--line)}
+.cl-facts div:nth-child(odd){border-right:1px solid var(--line-2)}
+.cl-facts div:nth-child(even){padding-left:18px}
+.cl-facts dt{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--stone)}
+.cl-facts dd{margin:6px 0 0;font-size:clamp(28px,3vw,40px);font-weight:300;font-variant-numeric:tabular-nums;line-height:1.1}
+.cl-facts dd small{display:block;font-size:13px;color:var(--ink-2);margin-top:4px;line-height:1.4}
+.cl-sub{display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap;margin:clamp(32px,4vw,48px) 0 16px}
+.cl-sub h3{font-size:22px;font-weight:400}
+.cl-types{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,11rem),1fr));gap:12px}
+.cl-types a{display:grid;grid-template-rows:auto 1fr auto auto;gap:4px;text-decoration:none;border:1px solid var(--line);background:var(--surface);padding:18px 18px 16px;transition:border-color .2s}
+.cl-types a:hover{border-color:var(--ink)}
+.cl-types b{font-size:17px;font-weight:500}
+.cl-types span{color:var(--stone);font-size:14px}
+.cl-types em{font-style:normal;font-size:13px;letter-spacing:.12em;text-transform:uppercase;margin-top:8px;color:var(--accent)}
+.steps.s4{grid-template-columns:repeat(4,1fr)}
+@media (max-width:820px){.cl{grid-template-columns:1fr}.steps.s4{grid-template-columns:1fr 1fr}}
 /* confección deco · catálogo y fichas */
 .dnav{display:flex;gap:8px;flex-wrap:wrap;padding-top:24px}
 .dnav .chip{display:inline-flex;gap:8px;align-items:center}
@@ -1086,7 +1107,7 @@ function vConfeccion(){
       <a class="link" href="#confeccion-vestuario">Conocer vestuario</a></div></div>
     <div class="line" id="confeccion-deco-card"><div class="sw" style="${bgi(swatch("muselina","#F4F3EF",["#C29A4B","#9A9C9F"],"d",640,true))}"></div><div class="b"><span class="eyebrow">Línea</span><h3>Deco</h3>
       <p style="color:var(--ink-2)">Cortinas, manteles y toldillos listos o a medida, cada uno con su ficha técnica.</p>
-      <ul><li><a href="#deco-cortinas">Cortinas y paneles</a><span>${n("cortinas")} productos · 150 × 220 cm</span></li><li><a href="#deco-manteles">Manteles</a><span>${n("manteles")} productos · redondo, rectangular y cuadrado</span></li><li><a href="#deco-toldillos">Toldillos</a><span>${n("toldillos")} productos · sencillo a queen · 9 colores</span></li></ul>
+      <ul><li><a href="#deco-cortinas">Cortinas a medida</a><span>${P.filter(p=>p.use==="Telas Cortinas").length} telas para elegir · clásico, loops o aros</span></li><li><a href="#deco-manteles">Manteles</a><span>${n("manteles")} productos · redondo, rectangular y cuadrado</span></li><li><a href="#deco-toldillos">Toldillos</a><span>${n("toldillos")} productos · sencillo a queen · 9 colores</span></li></ul>
       <a class="link" href="#confeccion-deco">Conocer deco</a></div></div>
   </div></section>
   <section class="sec" style="padding-top:0"><div class="sec-h"><h2>Cómo funciona</h2></div><div class="steps">
@@ -1105,15 +1126,46 @@ function cardC(p){
   return `<a class="card" href="#c-${p.id}"><div class="img${p.photo?" "+FOTOS[p.photo].cls:""}" ${p.photo?"":`style="${bgi(img(p,0,360))}"`}><div class="alt" style="${bgi(alt)}"></div>${p.isNew?'<span class="badge">Nuevo</span>':""}</div>
   <h3>${esc(p.name)}</h3><div class="ref">${esc(DECO_CATS[p.cat].name)}</div><div class="meta"><span>${esc(p.base)}</span><span>${p.colors.length} ${p.colors.length===1?"color":"colores"}</span></div><div class="meta"><span>${meds.length===1?esc(meds[0][1]):meds.length+" medidas"}</span></div><div class="dots">${dots}</div></a>`;
 }
+function decoCortinas(){
+  const tc=P.filter(p=>p.use==="Telas Cortinas");
+  const colores=tc.reduce((s,p)=>s+p.colors.length,0);
+  const anchoMax=Math.max(...tc.map(p=>parseFloat(p.width)||0))/100;
+  const TIPOS_C=["Estampadas","Lisas","Bordadas","Bordadas y estampadas","Jacquard"];
+  const DESC={"Estampadas":"Diseños florales, gráficos y de temporada","Lisas":"Brillantina, opalina, XTX y muselina","Bordadas":"Muselinas y Decorísima con bordado","Bordadas y estampadas":"La nueva colección 2026","Jacquard":"Diseño tejido, cortina semipesada"};
+  const tipos=TIPOS_C.map(t=>[t,tc.filter(p=>p.tipo===t).length]).filter(x=>x[1]);
+  const fmt=v=>v.toFixed(2).replace(".",",");
+  return `<section class="sec" id="deco-cortinas" style="scroll-margin-top:24px">
+    <div class="cl">
+      <div><span class="eyebrow">Confección deco · Cortinas</span>
+        <h2 class="cl-h">Cortinas a la medida de tu ventana, con telas tejidas en nuestra planta</h2>
+        <p class="cl-lead">Elige la tela en nuestro catálogo y la confeccionamos en la medida que necesites. Con anchos de hasta ${fmt(anchoMax)} m, cubrimos ventanales grandes sin uniones.</p>
+        <div class="btns"><a class="btn" href="#telas-decoracion" data-use="Telas Cortinas">Ver telas de cortina</a><a class="btn ghost" href="#contacto">Cotizar confección</a></div></div>
+      <dl class="cl-facts">
+        <div><dt>Telas</dt><dd>${tc.length}<small>referencias para cortina</small></dd></div>
+        <div><dt>Colores</dt><dd>${colores}<small>variantes con código propio</small></dd></div>
+        <div><dt>Ancho</dt><dd>${fmt(anchoMax)} m<small>máximo, sin uniones</small></dd></div>
+        <div><dt>Colgado</dt><dd>3<small>clásico, loops o aros</small></dd></div>
+      </dl>
+    </div>
+    <div class="cl-sub"><h3>Explora las telas por tipo</h3><a class="link" href="#telas-decoracion" data-use="Telas Cortinas">Ver las ${tc.length} telas</a></div>
+    <div class="cl-types">${tipos.map(([t,n])=>`<a href="#telas-decoracion" data-use="Telas Cortinas" data-tipo="${t}"><b>${t}</b><span>${DESC[t]||""}</span><span>${n} ${n===1?"tela":"telas"}</span><em>Ver telas</em></a>`).join("")}</div>
+    <div class="cl-sub"><h3>Cómo pedir tus cortinas</h3></div>
+    <div class="steps s4">
+      <div class="step"><b>Elige la tela</b><p>Busca en el catálogo por tipo, color o referencia.</p></div>
+      <div class="step"><b>Envía tus medidas</b><p>Ancho y alto del ventanal, y el tipo de colgado: clásico, loops o aros.</p></div>
+      <div class="step"><b>Recibe la cotización</b><p>Con precio y fecha de entrega.</p></div>
+      <div class="step"><b>Confección y entrega</b><p>Cortamos, confeccionamos y despachamos a tu ciudad.</p></div>
+    </div>
+  </section>`;
+}
 function vDeco(){
   const cats=Object.entries(DECO_CATS);
   return `<div class="wrap"><nav class="crumbs" aria-label="Ruta"><a href="#inicio">Inicio</a>/<a href="#confeccion">Confección</a>/<span>Deco</span></nav>
   <div class="cat-h"><div><h1>Deco</h1><p>Cortinas, manteles y toldillos confeccionados en nuestra planta con nuestras propias telas, listos o a medida. Cada producto tiene su ficha técnica.</p></div>
     <div class="tabs"><a class="tab" href="#confeccion-vestuario">Vestuario</a><a class="tab on" href="#confeccion-deco">Deco</a></div></div>
-  <div class="dnav">${cats.map(([k,v])=>`<a class="chip" href="#deco-${k}">${v.name}<span>${PC.filter(p=>p.cat===k).length}</span></a>`).join("")}</div>
-  ${cats.map(([k,v])=>{const items=PC.filter(p=>p.cat===k);return `<section class="sec" id="deco-${k}" style="scroll-margin-top:24px"><div class="sec-h"><div><span class="eyebrow">Confección deco</span><h2 style="margin-top:10px">${v.name}</h2><p style="color:var(--ink-2);max-width:60ch;margin-top:10px">${v.blurb}</p></div><span class="n">${items.length} ${items.length===1?"producto":"productos"}</span></div>
+  <div class="dnav">${cats.map(([k,v])=>`<a class="chip" href="#deco-${k}">${v.name}${k==="cortinas"?"":`<span>${PC.filter(p=>p.cat===k).length}</span>`}</a>`).join("")}</div>
+  ${cats.map(([k,v])=>{if(k==="cortinas")return decoCortinas();const items=PC.filter(p=>p.cat===k);return `<section class="sec" id="deco-${k}" style="scroll-margin-top:24px"><div class="sec-h"><div><span class="eyebrow">Confección deco</span><h2 style="margin-top:10px">${v.name}</h2><p style="color:var(--ink-2);max-width:60ch;margin-top:10px">${v.blurb}</p></div><span class="n">${items.length} ${items.length===1?"producto":"productos"}</span></div>
     <div class="grid">${items.map(cardC).join("")}</div>
-    ${k==="cortinas"?`<p style="margin-top:28px;color:var(--ink-2)">Tipos de colgado: clásico, loops y aros. Para medidas distintas o cualquier otra tela de cortina del catálogo, <a href="#contacto">escríbenos</a>.</p>`:""}
     ${k==="manteles"?`<p style="margin-top:28px;color:var(--ink-2)">Medidas estándar: ${MANTEL_SIZES.map(x=>x[0].toLowerCase()+" "+x[1]).join(" · ")}.</p>`:""}
   </section>`}).join("")}
   </div>`;
@@ -1326,7 +1378,7 @@ function buildMenus(){
   $("#mnav").addEventListener("click",e=>{if(e.target.closest("a"))$("#mnav").hidden=true;});
   $("#sbtn").onclick=e=>{e.preventDefault();if(location.hash!=="#inicio"&&location.hash!=="")location.hash="inicio";setTimeout(()=>{const q=$("#q");q&&(q.scrollIntoView({block:"center"}),q.focus());},60);};
 }
-let PENDING_USE=null,PENDING_Q=null;
+let PENDING_USE=null,PENDING_Q=null,PENDING_TIPO=null;
 function bindHome(){
   $("#sform").onsubmit=e=>{e.preventDefault();PENDING_Q=$("#q").value.trim();location.hash="telas";};
   document.querySelector(".pcats").addEventListener("click",e=>{const a=e.target.closest("a[data-use]");if(a)PENDING_USE=a.dataset.use;});
@@ -1360,11 +1412,11 @@ function route(){
   $("#btnProd").classList.toggle("on",/^(telas|confeccion|deco-|p-|c-)/.test(h));
   let after=null;
   if(h==="inicio"||h===""){app.innerHTML=vInicio();after=()=>{hero();bindHome();};}
-  else if(h==="telas"||h.startsWith("telas-")){const l=h.split("-")[1]||null;const L=TREE.telas[l]?l:null;if(PENDING_USE||PENDING_Q){resetF(L);if(PENDING_USE)F.uses.add(PENDING_USE);if(PENDING_Q)F.q=PENDING_Q;PENDING_USE=PENDING_Q=null;}app.innerHTML=vTelas(L);after=bindTelas;}
+  else if(h==="telas"||h.startsWith("telas-")){const l=h.split("-")[1]||null;const L=TREE.telas[l]?l:null;if(PENDING_USE||PENDING_Q||PENDING_TIPO){resetF(L);if(PENDING_USE)F.uses.add(PENDING_USE);if(PENDING_TIPO)F.tipos.add(PENDING_TIPO);if(PENDING_Q)F.q=PENDING_Q;PENDING_USE=PENDING_Q=PENDING_TIPO=null;}app.innerHTML=vTelas(L);after=bindTelas;}
   else if(h.startsWith("p-")){const p=P.find(x=>x.id===h.slice(2));if(p){app.innerHTML=vFicha(p);after=bindFicha;}else{location.hash="#telas";return;}}
   else if(h.startsWith("c-")){const p=PC.find(x=>x.id===h.slice(2));if(p){app.innerHTML=vFichaC(p);after=bindFicha;}else{location.hash="#confeccion-deco";return;}}
   else if(h==="confeccion-vestuario"){app.innerHTML=vVestuario();}
-  else if(h==="confeccion-deco"||h.startsWith("deco-")){app.innerHTML=vDeco();after=()=>{const el=document.getElementById(h);if(el&&h!=="confeccion-deco")setTimeout(()=>el.scrollIntoView({behavior:"smooth",block:"start"}),30);};}
+  else if(h==="confeccion-deco"||h.startsWith("deco-")){app.innerHTML=vDeco();after=()=>{const dc=document.getElementById("deco-cortinas");if(dc)dc.addEventListener("click",e=>{const a=e.target.closest("a[data-use]");if(a){PENDING_USE=a.dataset.use;PENDING_TIPO=a.dataset.tipo||null;}});const el=document.getElementById(h);if(el&&h!=="confeccion-deco")setTimeout(()=>el.scrollIntoView({behavior:"smooth",block:"start"}),30);};}
   else if(h.startsWith("confeccion")){app.innerHTML=vConfeccion();}
   else if(h==="nosotros"){app.innerHTML=vNosotros();after=bindGal;}
   else if(h==="contacto"){app.innerHTML=vContacto();after=bindContacto;}
