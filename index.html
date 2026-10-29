@@ -295,6 +295,8 @@ main{min-height:60vh}
 .spec span{color:var(--ink-2)}
 .spec b{font-weight:500;text-align:right}
 /* confección deco · presentación de cortinas (sin imágenes) */
+.cl-hero{width:100%;max-width:100%;aspect-ratio:16/7;background:#E8DFD2 url(img/cortinas-deco.jpg) center 30%/cover no-repeat;margin-bottom:clamp(24px,4vw,40px)}
+@media (max-width:820px){.cl-hero{aspect-ratio:4/3;background-position:38% 30%}}
 .cl{display:grid;grid-template-columns:1.25fr 1fr;gap:clamp(28px,5vw,72px);align-items:end;padding-block:clamp(24px,4vw,48px);border-block:1px solid var(--line)}
 .cl-h{font-size:clamp(30px,4.2vw,54px);font-weight:300;line-height:1.08;letter-spacing:-.005em;margin:14px 0 18px;text-wrap:balance}
 .cl-lead{color:var(--ink-2);font-size:18px;max-width:54ch}
@@ -1133,6 +1135,7 @@ function decoCortinas(){
   const tipos=TIPOS_C.map(t=>[t,tc.filter(p=>p.tipo===t).length]).filter(x=>x[1]);
   const fmt=v=>v.toFixed(2).replace(".",",");
   return `<section class="sec" id="deco-cortinas" style="scroll-margin-top:24px">
+    <div class="cl-hero" role="img" aria-label="Cortinas de velo blanco en un ventanal amplio con luz natural"></div>
     <div class="cl">
       <div><span class="eyebrow">Confección deco · Cortinas</span>
         <h2 class="cl-h">Cortinas a la medida de tu ventana, con telas tejidas en nuestra planta</h2>
