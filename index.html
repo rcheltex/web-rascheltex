@@ -612,6 +612,7 @@ const cw=list=>list.map(([c,r])=>colorway(c,r));
 /* pop = participación en ventas dentro de la categoría; solo se usa para ordenar "Destacadas", no se muestra. */
 /* Fotos por línea de producto, en img/. Se aplican por clase CSS y se reemplazan cambiando el archivo. */
 const FOTOS={
+  velo:{cls:"ph-velo",url:"img/tela-cortina.jpg",pos:"center",tag:"Foto de referencia",alt:"Foto de tela de cortina en azul claro"},
   cort:{cls:"ph-cort",url:"img/cortina-prueba.jpg",pos:"center",tag:"Foto de prueba",alt:"Foto de la cortina"},
   colch:{cls:"ph-colch",url:"img/colchonera.jpg",pos:"center 60%",tag:"Foto de referencia",alt:"Foto de colchón con tela colchonera"},
   lycra:{cls:"ph-lycra",url:"img/algodon-lycra.jpg",pos:"center",tag:"Foto de referencia",alt:"Muestra de tela algodón lycra"},
@@ -769,7 +770,7 @@ const CORTINAS=[{"line":"decoracion","use":"Telas Cortinas","tipo":"Lisas","base
 {"line":"decoracion","use":"Telas Cortinas","tipo":"Estampadas","base":"Muselina Super","name":"Selene","comp":"100% poliéster","width":"280 cm ± 2%","yield":"5,41 m/kg ± 7%","pattern":"muselina","usos":["cortina"],"hang":true,"pop":0.01,"desc":"Tela estampada para cortina, base Muselina Super, de 2,80 m de ancho, en 3 colores.","colors":[{"code":"4602BCWB8A","label":"Blanco / Gris y Azul turquesa","bg":"#F4F3EF","fg":["#9A9C9F","#1F8FA8"]},
 {"code":"4601BCWB8A","label":"Blanco / Negro y Gris","bg":"#F4F3EF","fg":["#2A2A2D","#9A9C9F"]},
 {"code":"4603BCWB8A","label":"Marfil / Café y Dorado","bg":"#EFE6CF","fg":["#6E4B34","#C29A4B"]}]}];
-CORTINAS.forEach(o=>add({...o,care:CARE_CORT,careOk:true,photo:"cort"}));
+CORTINAS.forEach(o=>add({...o,care:CARE_CORT,careOk:true,photo:"velo",photo2:"cort"}));
 
 /* --- Decoración · Tela Toldillo --- */
 const tt=(name,yld,pat)=>add({line:"decoracion",use:"Tela Toldillo",base:"Tul para toldillo",name,comp:"100% poliéster",width:name==="Shust"?"300 cm ± 2%":"280 cm ± 2%",yield:yld,pattern:pat,care:CARE_POLY,usos:["toldillo"],
@@ -1057,7 +1058,7 @@ function vFicha(p){
   return `<div class="wrap"><nav class="crumbs" aria-label="Ruta"><a href="#inicio">Inicio</a>/<a href="#telas">Telas</a>/<a href="#telas-${p.line}">${LINE_NAME[p.line]}</a>/<span>${esc(p.use)}</span></nav>
   <article class="pd"><h1>${esc(p.name)}</h1><div class="coll">${esc(LINE_NAME[p.line])} · ${esc(p.use)}</div>
     <div class="gal"><div class="main" id="gmain"><span class="tag" id="gtag">Ilustración · foto real pendiente</span></div>
-      <div class="thumbs"><button class="arr" type="button" id="tp" aria-label="Anterior">‹</button><div class="row" id="trow">${p.photo?`<button class="t ${FOTOS[p.photo].cls}" type="button" data-ph="1" aria-label="${FOTOS[p.photo].alt}"></button>`:""}${p.colors.map((c,i)=>`<button class="t" type="button" data-i="${i}" style="${bgi(img(p,i,140))}" aria-label="${esc(c.label)}"></button>`).join("")}</div><button class="arr" type="button" id="tn" aria-label="Siguiente">›</button></div>
+      <div class="thumbs"><button class="arr" type="button" id="tp" aria-label="Anterior">‹</button><div class="row" id="trow">${phThumbs(p)}${p.colors.map((c,i)=>`<button class="t" type="button" data-i="${i}" style="${bgi(img(p,i,140))}" aria-label="${esc(c.label)}"></button>`).join("")}</div><button class="arr" type="button" id="tn" aria-label="Siguiente">›</button></div>
       <p class="desc">${esc(p.desc)}</p>
       ${lineUses?`<div class="eyebrow" style="margin-top:32px">Confecciona con esta tela</div><div class="made" style="grid-template-columns:repeat(2,1fr)">
         <a href="#deco-cortinas"><svg viewBox="0 0 26 26">${ICON.cortina[1]}</svg><span>Cortinas</span></a>
@@ -1092,14 +1093,16 @@ function setColor(i){
   document.querySelectorAll("#trow .t").forEach(t=>t.classList.toggle("on",+t.dataset.i===CUR.ci&&!t.dataset.ph));
   const t=document.querySelector(`#trow .t[data-i="${CUR.ci}"]`);t&&t.scrollIntoView({block:"nearest",inline:"nearest"});
 }
-function showPhoto(){
-  const f=FOTOS[CUR.p.photo],g=$("#gmain");g.style.backgroundImage="";g.classList.add(f.cls);$("#gtag").textContent=f.tag;
-  document.querySelectorAll("#trow .t").forEach(t=>t.classList.toggle("on",!!t.dataset.ph));
+/* Miniaturas de foto: la principal (photo) y, si existe, una segunda (photo2). */
+const phThumbs=p=>[p.photo,p.photo2].filter(Boolean).map(k=>`<button class="t ${FOTOS[k].cls}" type="button" data-ph="${k}" aria-label="${FOTOS[k].alt}"></button>`).join("");
+function showPhoto(k){
+  const f=FOTOS[k],g=$("#gmain");Object.values(FOTOS).forEach(x=>g.classList.remove(x.cls));g.style.backgroundImage="";g.classList.add(f.cls);$("#gtag").textContent=f.tag;
+  document.querySelectorAll("#trow .t").forEach(t=>t.classList.toggle("on",t.dataset.ph===k));
 }
 function bindFicha(){
-  $("#trow").onclick=e=>{const t=e.target.closest(".t");if(!t)return;t.dataset.ph?showPhoto():setColor(+t.dataset.i);};
+  $("#trow").onclick=e=>{const t=e.target.closest(".t");if(!t)return;t.dataset.ph?showPhoto(t.dataset.ph):setColor(+t.dataset.i);};
   $("#tp").onclick=()=>setColor(CUR.ci-1);$("#tn").onclick=()=>setColor(CUR.ci+1);
-  setColor(0);if(CUR.p.photo)showPhoto();
+  setColor(0);if(CUR.p.photo)showPhoto(CUR.p.photo);
 }
 
 function vConfeccion(){
@@ -1187,7 +1190,7 @@ function vFichaC(p){
   return `<div class="wrap"><nav class="crumbs" aria-label="Ruta"><a href="#inicio">Inicio</a>/<a href="#confeccion">Confección</a>/<a href="#confeccion-deco">Deco</a>/<a href="#deco-${p.cat}">${cat.name}</a></nav>
   <article class="pd"><h1>${esc(p.name)}</h1><div class="coll">Confección deco · ${esc(cat.name)}</div>
     <div class="gal"><div class="main" id="gmain"><span class="tag" id="gtag">Ilustración · foto real pendiente</span></div>
-      <div class="thumbs"><button class="arr" type="button" id="tp" aria-label="Anterior">‹</button><div class="row" id="trow">${p.photo?`<button class="t ${FOTOS[p.photo].cls}" type="button" data-ph="1" aria-label="${FOTOS[p.photo].alt}"></button>`:""}${p.colors.map((c,i)=>`<button class="t" type="button" data-i="${i}" style="${bgi(img(p,i,140))}" aria-label="${esc(c.label)}"></button>`).join("")}</div><button class="arr" type="button" id="tn" aria-label="Siguiente">›</button></div>
+      <div class="thumbs"><button class="arr" type="button" id="tp" aria-label="Anterior">‹</button><div class="row" id="trow">${phThumbs(p)}${p.colors.map((c,i)=>`<button class="t" type="button" data-i="${i}" style="${bgi(img(p,i,140))}" aria-label="${esc(c.label)}"></button>`).join("")}</div><button class="arr" type="button" id="tn" aria-label="Siguiente">›</button></div>
       <p class="desc">${esc(p.desc)}</p>
       <div class="eyebrow" style="margin-top:32px">Hecho con nuestra tela</div><div class="made" style="grid-template-columns:1fr">
         <a href="${fab?`#p-${fab.id}`:"#telas-decoracion"}"><svg viewBox="0 0 26 26">${ICON[cat.icon][1]}</svg><span>${fab?`Ver ficha de la tela ${esc(fab.name)}`:`Ver telas de decoración`}</span></a></div>
