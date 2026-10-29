@@ -1049,9 +1049,8 @@ function vFicha(p){
     <div class="gal"><div class="main" id="gmain"><span class="tag" id="gtag">Ilustración · foto real pendiente</span></div>
       <div class="thumbs"><button class="arr" type="button" id="tp" aria-label="Anterior">‹</button><div class="row" id="trow">${p.photo?`<button class="t ${FOTOS[p.photo].cls}" type="button" data-ph="1" aria-label="${FOTOS[p.photo].alt}"></button>`:""}${p.colors.map((c,i)=>`<button class="t" type="button" data-i="${i}" style="${bgi(img(p,i,140))}" aria-label="${esc(c.label)}"></button>`).join("")}</div><button class="arr" type="button" id="tn" aria-label="Siguiente">›</button></div>
       <p class="desc">${esc(p.desc)}</p>
-      ${lineUses?`<div class="eyebrow" style="margin-top:32px">Confecciona con esta tela</div><div class="made">
+      ${lineUses?`<div class="eyebrow" style="margin-top:32px">Confecciona con esta tela</div><div class="made" style="grid-template-columns:repeat(2,1fr)">
         <a href="#deco-cortinas"><svg viewBox="0 0 26 26">${ICON.cortina[1]}</svg><span>Cortinas</span></a>
-        <a href="#deco-manteles"><svg viewBox="0 0 26 26">${ICON.mantel[1]}</svg><span>Manteles</span></a>
         <a href="#deco-toldillos"><svg viewBox="0 0 26 26">${ICON.toldillo[1]}</svg><span>Toldillos</span></a></div>`:""}
     </div>
     <div>
@@ -1065,7 +1064,6 @@ function vFicha(p){
         <tr><th scope="row">Ancho</th><td class="mono">${esc(p.width)}</td></tr>
         ${p.weight?`<tr><th scope="row">Peso</th><td class="mono">${esc(p.weight)}</td></tr>`:""}
         <tr><th scope="row">Rendimiento</th><td class="mono">${p.yield==="Pendiente"?'<em class="pend">Pendiente</em>':esc(p.yield)}</td></tr>
-        ${p.hang?`<tr><th scope="row">Tipo de colgado</th><td>Clásico · Loops · Aros</td></tr>`:""}
         <tr class="care"><td colspan="2"><div class="care-w"><div class="ch">Instrucciones de lavado${p.careOk?"":` <em class="pend">Por validar</em>`}</div><span class="icons">${p.care.map(icoCare).join("")}</span></div></td></tr>
         <tr><th scope="row">Usos de tela</th><td><span class="icons">${p.usos.map(ico).join("")}</span></td></tr>
       </tbody></table>
