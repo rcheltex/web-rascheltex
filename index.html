@@ -1548,6 +1548,10 @@ function route(){
 buildMenus();
 document.querySelector(".skip").addEventListener("click",e=>{e.preventDefault();$("#app").focus();}); // no cambia la ruta (#)
 addEventListener("hashchange",route);
+/* Un enlace a la página en la que ya estás no cambia la dirección, así que el navegador no avisa: se vuelve a cargar la vista a mano.
+   Sirve para pasar de un uso a otro dentro de la misma línea (p. ej. de Telas Colchoneras a Tapicería). Sin uso pedido, quita los filtros. */
+document.addEventListener("click",e=>{const a=e.target.closest('a[href^="#"]');if(!a||a.classList.contains("skip")||a.getAttribute("href")!==location.hash)return;
+  if(location.hash.startsWith("#telas")&&!(PENDING_USE||PENDING_Q||PENDING_TIPO))F=null;route();});
 route();
 </script>
 
