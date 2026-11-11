@@ -983,8 +983,8 @@ function vInicio(){
   </section>
   <section class="wrap sec prods" aria-labelledby="prodH">
     <h2 id="prodH" class="prods-t">Productos</h2>
-    <div class="pcats">${Object.entries(TREE.telas).map(([k,v])=>{const pick={decoracion:["jardin-japones",0],industria:["opalina-50",0],moda:["caricia",0]}[k];const s=P.find(p=>p.id===pick[0])||P.find(p=>p.line===k);
-      return `<div class="pcat"><a class="pimg${s.photo?" "+FOTOS[s.photo].cls:""}" href="#telas-${k}" aria-label="${v.name}" ${s.photo?"":`style="${bgi(img(s,pick[1],640))}"`}></a>
+    <div class="pcats">${Object.entries(TREE.telas).map(([k,v])=>{const pick={decoracion:["jardin-japones",0],industria:["opalina-50",0],moda:["caricia",0]}[k];const s=P.find(p=>p.id===pick[0])||P.find(p=>p.line===k);const ph={industria:"tela1"}[k]||s.photo; // Industria usa la foto de detalle de tela
+      return `<div class="pcat"><a class="pimg${ph?" "+FOTOS[ph].cls:""}" href="#telas-${k}" aria-label="${v.name}" ${ph?"":`style="${bgi(img(s,pick[1],640))}"`}></a>
         <h3><a href="#telas-${k}">${v.name}</a></h3><p>${v.blurb}</p>
         <ul>${v.uses.map(u=>`<li><a href="#telas-${k}" data-use="${esc(u)}">${u}</a><span>${P.filter(p=>p.use===u).length}</span></li>`).join("")}</ul>
         <a class="link" href="#telas-${k}">Ver ${v.name.toLowerCase()}</a></div>`}).join("")}</div>
