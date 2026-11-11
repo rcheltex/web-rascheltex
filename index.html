@@ -391,6 +391,8 @@ main{min-height:60vh}
 .cinfo{display:grid;gap:0}
 .cinfo div{display:flex;justify-content:space-between;gap:16px;padding:14px 0;border-bottom:1px solid var(--line)}
 .cinfo span{color:var(--stone)}
+.cinfo div.col{flex-direction:column;gap:4px}
+.cinfo a{overflow-wrap:anywhere}
 .stores{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:20px 0 0;padding:0;list-style:none}
 /* Fondo blanco fijo para que los logos se vean bien también en modo oscuro */
 .stores li{border:1px solid var(--line);background:#fff;min-height:110px;display:grid;place-items:center;padding:14px 12px}
@@ -1493,7 +1495,7 @@ function bindGal(){
 }
 function vContacto(){return `<div class="wrap"><nav class="crumbs"><a href="#inicio">Inicio</a>/<span>Contacto</span></nav>
   <div class="page"><div><h1>Contacto</h1><p style="margin-top:16px;color:var(--ink-2)">Escríbenos. El formulario abre WhatsApp con tu mensaje listo para enviar.</p>
-    <div class="cinfo" style="margin-top:32px"><div><span>WhatsApp ventas</span><b>${WHATSAPP?`<span class="mono">+${WHATSAPP}</span>`:"Pendiente"}</b></div><div><span>Correo</span><b><a href="mailto:servicioalcliente@rascheltex.com.co" style="overflow-wrap:anywhere">servicioalcliente@rascheltex.com.co</a></b></div></div></div>
+    <div class="cinfo" style="margin-top:32px"><div><span>WhatsApp ventas</span><b>${WHATSAPP?`<span class="mono">+${WHATSAPP}</span>`:"Pendiente"}</b></div><div class="col"><span>Para ventas</span><b><a href="mailto:servicioalcliente@rascheltex.com.co">servicioalcliente@rascheltex.com.co</a></b></div><div class="col"><span>Para asuntos regulatorios, asuntos varios o para trabajar con nosotros</span><b><a href="mailto:talento_humano@rascheltex.com.co">talento_humano@rascheltex.com.co</a></b></div></div></div>
   <form class="form" id="cform">
     <div class="two"><label for="fn">Nombre<input id="fn" required autocomplete="name"></label><label for="fe">Empresa<input id="fe" autocomplete="organization"></label></div>
     <div class="two"><label for="fc">Ciudad<input id="fc"></label><label for="fi">Me interesa<select id="fi"><option>Telas de decoración</option><option>Telas industriales</option><option>Telas de moda</option><option>Confección de vestuario · paquete completo</option><option>Confección deco</option><option>Otro</option></select></label></div>
