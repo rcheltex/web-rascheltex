@@ -306,6 +306,12 @@ main{min-height:60vh}
 .mt-forms span{font-size:14px;color:var(--ink-2);font-variant-numeric:tabular-nums}
 .mt-hero .mt-ph.cort{background-image:url(img/cortinas-deco.jpg);background-position:78% center}
 .mt-forms.num{grid-template-columns:repeat(4,1fr)}
+/* Toldillos: panel ilustrado (no hay foto todavía) con los colores disponibles */
+.mt-ill{background:var(--accent-soft);color:var(--ink-2);display:grid;grid-template-rows:1fr auto;align-items:center;justify-items:center;padding:clamp(20px,3vw,36px);gap:18px;min-height:clamp(320px,34vw,460px)}
+.mt-ill svg{width:min(100%,380px);height:auto;fill:none;stroke:currentColor;stroke-width:1.4;stroke-linecap:round;stroke-linejoin:round}
+.mt-ill .sw{display:flex;flex-wrap:wrap;justify-content:center;gap:8px}
+.mt-ill .sw i{width:22px;height:22px;border-radius:50%;box-shadow:inset 0 0 0 1px rgba(0,0,0,.12)}
+@media (max-width:820px){.mt-ill{order:-1;min-height:0}}
 .mt-forms.num b{font-size:clamp(22px,2vw,28px);white-space:nowrap;font-weight:300;line-height:1.1;font-variant-numeric:tabular-nums}
 .mt-forms.num span{font-size:13px;line-height:1.4}
 @media (max-width:820px){.mt-forms.num{grid-template-columns:1fr 1fr;row-gap:8px}.mt-hero .mt-ph.cort{background-position:center}}
@@ -1231,13 +1237,43 @@ function decoManteles(){
     <div class="grid">${items.map(cardC).join("")}</div>
   </section>`;
 }
+function decoToldillos(){
+  const items=PC.filter(p=>p.cat==="toldillos");
+  const pliegues=[110,150,200,250,290].map(x=>`<path d="M200 46 C${200+(x-200)*.35} 120 ${x} 170 ${x} 262"/>`).join("");
+  const ill=`<svg viewBox="0 0 400 300" aria-hidden="true">
+    <defs><pattern id="tul" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><path d="M0 0v7M0 0h7" stroke-width=".5" opacity=".45"/></pattern></defs>
+    <path d="M200 8v26"/><ellipse cx="200" cy="40" rx="16" ry="5"/>
+    <rect x="96" y="196" width="208" height="40" rx="4"/><path d="M96 214h208"/><rect x="112" y="186" width="54" height="16" rx="8"/><rect x="234" y="186" width="54" height="16" rx="8"/>
+    <path d="M104 236v22M296 236v22M40 272h320"/>
+    <path d="M186 42 C150 120 78 170 66 262 Q200 276 334 262 C322 170 250 120 214 42 Z" fill="url(#tul)"/>
+    ${pliegues}
+  </svg>`;
+  return `<section class="sec" id="deco-toldillos" style="scroll-margin-top:24px">
+    <div class="mt-hero">
+      <div class="tx"><span class="eyebrow">Confección deco · Toldillos</span>
+        <h2 class="cl-h">Toldillos que protegen tu descanso, confeccionados con nuestro propio tul</h2>
+        <p class="cl-lead">Malla fina de poliéster que deja pasar el aire y mantiene fuera a los mosquitos. Los confeccionamos en tres telas de tul, en tamaños de sencillo a queen y en nueve colores.</p>
+        <div class="mt-forms num">
+          <div><b>${items.length}</b><span>telas de tul</span></div>
+          <div><b>${TOLDILLOS.length}</b><span>tamaños, de sencillo a queen</span></div>
+          <div><b>${TOLD_COLORS.length}</b><span>colores</span></div>
+          <div><b>100%</b><span>poliéster</span></div>
+        </div>
+      </div>
+      <div class="mt-ill" role="img" aria-label="Ilustración de un toldillo de tul colgado sobre una cama, y los nueve colores disponibles">${ill}
+        <div class="sw">${TOLD_COLORS.map(([n,h])=>`<i style="background:${h}" title="${n}"></i>`).join("")}</div></div>
+    </div>
+    <div class="cl-sub"><h3>Elige tu toldillo</h3><span class="n" style="color:var(--stone)">${items.length} ${items.length===1?"producto":"productos"}</span></div>
+    <div class="grid">${items.map(cardC).join("")}</div>
+  </section>`;
+}
 function vDeco(){
   const cats=Object.entries(DECO_CATS);
   return `<div class="wrap"><nav class="crumbs" aria-label="Ruta"><a href="#inicio">Inicio</a>/<a href="#confeccion">Confección</a>/<span>Deco</span></nav>
   <div class="cat-h"><div><h1>Deco</h1><p>Cortinas, manteles y toldillos confeccionados en nuestra planta con nuestras propias telas, listos o a medida. Cada producto tiene su ficha técnica.</p></div>
     <div class="tabs"><a class="tab" href="#confeccion-vestuario">Vestuario</a><a class="tab on" href="#confeccion-deco">Deco</a></div></div>
   <div class="dnav">${cats.map(([k,v])=>`<a class="chip" href="#deco-${k}">${v.name}${k==="cortinas"?"":`<span>${PC.filter(p=>p.cat===k).length}</span>`}</a>`).join("")}</div>
-  ${cats.map(([k,v])=>{if(k==="cortinas")return decoCortinas();if(k==="manteles")return decoManteles();const items=PC.filter(p=>p.cat===k);return `<section class="sec" id="deco-${k}" style="scroll-margin-top:24px"><div class="sec-h"><div><span class="eyebrow">Confección deco</span><h2 style="margin-top:10px">${v.name}</h2><p style="color:var(--ink-2);max-width:60ch;margin-top:10px">${v.blurb}</p></div><span class="n">${items.length} ${items.length===1?"producto":"productos"}</span></div>
+  ${cats.map(([k,v])=>{if(k==="cortinas")return decoCortinas();if(k==="manteles")return decoManteles();if(k==="toldillos")return decoToldillos();const items=PC.filter(p=>p.cat===k);return `<section class="sec" id="deco-${k}" style="scroll-margin-top:24px"><div class="sec-h"><div><span class="eyebrow">Confección deco</span><h2 style="margin-top:10px">${v.name}</h2><p style="color:var(--ink-2);max-width:60ch;margin-top:10px">${v.blurb}</p></div><span class="n">${items.length} ${items.length===1?"producto":"productos"}</span></div>
     <div class="grid">${items.map(cardC).join("")}</div>
   </section>`}).join("")}
   </div>`;
