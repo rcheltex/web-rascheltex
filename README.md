@@ -10,7 +10,8 @@ Sitio de Rascheltex: catálogo de telas (decoración, industria y moda) y confec
 
 ## Cómo verlo
 
-Abre `index.html` en el navegador. No necesita instalación ni servidor.
+- En línea: https://rcheltex.github.io/web-rascheltex/ (GitHub Pages, se actualiza con cada cambio en `main`).
+- En tu computador: abre `index.html` en el navegador. No necesita instalación ni servidor.
 
 ## Datos pendientes
 
