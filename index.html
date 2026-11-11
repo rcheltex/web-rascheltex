@@ -306,7 +306,7 @@ main{min-height:60vh}
 .mt-forms span{font-size:14px;color:var(--ink-2);font-variant-numeric:tabular-nums}
 .mt-hero .mt-ph.cort{background-image:url(img/cortinas-deco.jpg);background-position:78% center}
 .mt-forms.num{grid-template-columns:repeat(4,1fr)}
-.mt-forms.num b{font-size:clamp(24px,2.4vw,32px);font-weight:300;line-height:1.1;font-variant-numeric:tabular-nums}
+.mt-forms.num b{font-size:clamp(22px,2vw,28px);white-space:nowrap;font-weight:300;line-height:1.1;font-variant-numeric:tabular-nums}
 .mt-forms.num span{font-size:13px;line-height:1.4}
 @media (max-width:820px){.mt-forms.num{grid-template-columns:1fr 1fr;row-gap:8px}.mt-hero .mt-ph.cort{background-position:center}}
 @media (max-width:820px){.mt-hero{grid-template-columns:1fr}.mt-hero .mt-ph{order:-1;min-height:0;aspect-ratio:4/3;background-position:center 45%}}
@@ -1009,7 +1009,7 @@ function catalogBlock(line){
   const cnt=(k,v)=>scope.filter(p=>p[k]===v).length;
   const box=(f,v,label,n)=>`<label><input type="checkbox" id="${f}-${slug(v)}" data-f="${f}" value="${esc(v)}" ${F[f].has(v)?"checked":""}>${label}<span class="cnt">${n}</span></label>`;
   const dd=(key,title,body)=>`<details class="dd" data-dd="${key}"><summary>${title}<span class="k" data-k="${key}" hidden></span></summary><div class="pop">${body}</div></details>`;
-  return `<div class="fbar">
+  return `<div id="useIntro"></div><div class="fbar">
     ${!line?dd("lines","Línea",Object.entries(TREE.telas).map(([k,v])=>box("lines",k,v.name,cnt("line",k))).join("")):""}
     ${dd("uses","Uso",uses.map(u=>box("uses",u,u,cnt("use",u))).join(""))}
     ${tipos.length?dd("tipos","Tipo",tipos.map(t=>box("tipos",t,t,cnt("tipo",t))).join("")):""}
@@ -1031,6 +1031,32 @@ function vTelas(line){
   <div class="frame" style="margin-top:28px">${searchBand()}</div>
   <div class="wrap">${catalogBlock(line)}</div>`;
 }
+/* Introducción que aparece sobre el catálogo cuando se filtra un solo uso (por ahora, Tapicería). */
+const USE_INTRO={
+  "Tapicería":{h:"Telas de tapicería para bondeo, recubrimiento y respaldos",
+    lead:"Bases de poliéster tejidas en nuestra planta para la industria del mueble: soporte para bondeo y recubrimiento de sofás y sillas, y bases livianas para faldones y respaldos. Peso y rendimiento controlados en cada rollo.",
+    photo:"tela2",alt:"Detalle de tela"}
+};
+function useIntro(u){
+  const it=USE_INTRO[u];if(!it)return "";
+  const ts=P.filter(p=>p.use===u),num=k=>ts.map(p=>parseFloat(String(p[k]).replace(",","."))).filter(n=>!isNaN(n));
+  const rango=(a,un)=>{const lo=Math.min(...a),hi=Math.max(...a);return (lo===hi?`${lo}`:`${lo}–${hi}`).replace(/\./g,",")+un;};
+  const comps=[...new Set(ts.map(p=>p.comp))];
+  return `<div class="mt-hero" style="margin-top:8px">
+    <div class="tx"><span class="eyebrow">${esc(LINE_NAME[ts[0].line])} · ${esc(u)}</span>
+      <h2 class="cl-h">${it.h}</h2>
+      <p class="cl-lead">${it.lead}</p>
+      <div class="mt-forms num">
+        <div><b>${ts.length}</b><span>${ts.length===1?"tela":"telas"} de ${esc(u.toLowerCase())}</span></div>
+        <div><b>${rango(num("width"),"")}</b><span>cm de ancho</span></div>
+        <div><b>${rango(num("weight"),"")}</b><span>g/m² de peso</span></div>
+        <div><b>${comps.length===1?esc(comps[0].split(" ")[0]):comps.length}</b><span>${comps.length===1?esc(comps[0].split(" ").slice(1).join(" ")):"composiciones"}</span></div>
+      </div>
+      <div class="btns"><a class="btn" href="#contacto">Cotizar telas de ${esc(u.toLowerCase())}</a></div>
+    </div>
+    <div class="mt-ph" role="img" aria-label="${esc(it.alt)}" style="background-image:url(${FOTOS[it.photo].url})"></div>
+  </div>`;
+}
 function applyTelas(){
   const scope=P.filter(p=>!F.line||p.line===F.line);
   const q=F.q.trim().toLowerCase();
@@ -1038,6 +1064,7 @@ function applyTelas(){
   r.sort(F.sort==="pop"?(a,b)=>(b.pop||0)-(a.pop||0)||a.name.localeCompare(b.name,"es"):F.sort==="new"?(a,b)=>(b.isNew|0)-(a.isNew|0)||a.name.localeCompare(b.name,"es"):F.sort==="colors"?(a,b)=>b.colors.length-a.colors.length:(a,b)=>a.name.localeCompare(b.name,"es"));
   $("#grid").innerHTML=r.length?r.map(card).join(""):`<p class="empty">No hay telas con esos filtros o esa búsqueda.</p>`;
   $("#n").textContent=`${r.length} ${r.length===1?"tela":"telas"}`;
+  const ui=$("#useIntro"),u1=F.uses.size===1?[...F.uses][0]:"";if(ui&&ui.dataset.u!==u1){ui.dataset.u=u1;ui.innerHTML=useIntro(u1);}
   $("#sort").value=F.sort;$("#onlyNew").checked=F.onlyNew;
   document.querySelectorAll(".dd .k").forEach(k=>{const n=F[k.dataset.k].size;k.hidden=!n;k.textContent=n;});
 }
