@@ -1066,7 +1066,10 @@ function vTelas(line){
 const USE_INTRO={
   "Tapicería":{h:"Telas de tapicería para bondeo, recubrimiento y respaldos",
     lead:"Bases de poliéster tejidas en nuestra planta para la industria del mueble: soporte para bondeo y recubrimiento de sofás y sillas, y bases livianas para faldones y respaldos. Peso y rendimiento controlados en cada rollo.",
-    photo:"tela2",alt:"Detalle de tela"}
+    photo:"tela2",alt:"Detalle de tela"},
+  "Mallas Industriales":{h:"Mallas industriales con apresto y gramaje controlado",
+    lead:"Mallas de poliéster tejidas en nuestras máquinas Raschel para uso técnico: versiones livianas con apresto, mallas de apresto permanente que mantienen su rigidez en proceso y mallas de alto gramaje para refuerzo, también en mano suave.",
+    photo:"tela1",alt:"Detalle de tela",cuenta:"mallas industriales",cta:"Cotizar mallas industriales"}
 };
 /* Banner de introducción (texto, cifras y botones a la izquierda; foto a la derecha). */
 function introBanner({eyebrow,h,lead,facts,btns,photo,alt}){
@@ -1086,9 +1089,9 @@ function useIntro(u){
   const it=USE_INTRO[u];if(!it)return "";
   const ts=P.filter(p=>p.use===u),comps=[...new Set(ts.map(p=>p.comp))];
   return introBanner({eyebrow:`${esc(LINE_NAME[ts[0].line])} · ${esc(u)}`,h:it.h,lead:it.lead,photo:it.photo,alt:it.alt,
-    facts:[[ts.length,`${ts.length===1?"tela":"telas"} de ${esc(u.toLowerCase())}`],[rango(numsOf(ts,"width")),"cm de ancho"],[rango(numsOf(ts,"weight")),"g/m² de peso"],
+    facts:[[ts.length,it.cuenta||`${ts.length===1?"tela":"telas"} de ${esc(u.toLowerCase())}`],[rango(numsOf(ts,"width")),"cm de ancho"],[rango(numsOf(ts,"weight")),"g/m² de peso"],
       [comps.length===1?esc(comps[0].split(" ")[0]):comps.length,comps.length===1?esc(comps[0].split(" ").slice(1).join(" ")):"composiciones"]],
-    btns:[["#contacto",`Cotizar telas de ${esc(u.toLowerCase())}`]]});
+    btns:[["#contacto",it.cta||`Cotizar telas de ${esc(u.toLowerCase())}`]]});
 }
 /* Introducción de la página de cada línea de telas (por ahora, Moda). */
 function lineIntro(line){
