@@ -853,7 +853,8 @@ addC({cat:"cortinas",name:"Panel Opalina",base:"Opalina",pattern:"opalina",hang:
 addC({cat:"cortinas",name:"Panel XTX",base:"XTX",pattern:"xtx",hang:true,fabric:"xtex-2-80",sizes:[["Panel","150 × 220 cm"]],hangTypes:"Clásico · Loops · Aros",
   desc:"Panel tipo pesado en XTX, base de tejido cerrado que filtra más la luz. Listo para colgar en 1,50 × 2,20 m.",colors:[plain("—","Blanco","#EFEEEA")]});
 const MDESC={Jacquard:"Mantel en jacquard con diseño tejido, para mesa de diario y de ocasión.",Opalina:"Mantel en opalina, liviano y de fácil cuidado.",Satín:"Mantel en satín de brillo marcado, para eventos y mesas de celebración.",XTX:"Mantel en XTX, base pesada de tejido cerrado."};
-MANTELES.forEach(m=>{addC({cat:"manteles",name:"Mantel "+m.name,base:m.base,pattern:m.pattern,sizes:MANTEL_SIZES,
+MANTELES.forEach(m=>{addC({cat:"manteles",name:"Mantel "+m.name,base:m.base,pattern:m.pattern,sizes:MANTEL_SIZES,care:CARE_CORT,careOk:true, // Mismas instrucciones de lavado que las telas de cortina
+
   desc:MDESC[m.base]+(m.name.includes("antifluido")?" Acabado antifluido.":""),colors:m.colors});});
 [["Barcelona","8,11 m/kg ± 7%"],["Marqueza","8,7 – 14,3 m/kg ± 7%"],["Shust","14,1 m/kg ± 7%"]].forEach(([n])=>addC({cat:"toldillos",name:"Toldillo "+n,base:"Tul "+n,pattern:"tull",fabric:slug(n),sizes:TOLDILLOS.map(([a,b])=>[a,b+" cm"]),
   desc:`Toldillo confeccionado en tul ${n} de poliéster, en cinco tamaños de sencillo a queen y nueve colores.`,colors:TOLD_COLORS.map(([c,h])=>plain("—",c,h))}));
@@ -1288,7 +1289,7 @@ function vFichaC(p){
         <tr><th scope="row">${p.cat==="manteles"?"Formas y medidas":meds.length>1?"Medidas":"Medida"}</th><td><div class="szl">${meds.map(([a,b])=>`<div>${meds.length>1&&a!=="Medida"?`<span>${esc(a)}</span>`:""}<b>${esc(b)}</b></div>`).join("")}</div></td></tr>
         ${p.hang?`<tr><th scope="row">Tipo de colgado</th><td>${esc(p.hangTypes||"Clásico · Loops · Aros")}</td></tr>`:""}
         <tr><th scope="row">Colores</th><td>${p.colors.length} ${p.colors.length===1?"opción":"opciones"}</td></tr>
-        <tr><th scope="row">Instrucciones de lavado <em class="pend">Por validar</em></th><td><span class="icons">${p.care.map(icoCare).join("")}</span></td></tr>
+        <tr class="care"><td colspan="2"><div class="care-w"><div class="ch">Instrucciones de lavado${p.careOk?"":` <em class="pend">Por validar</em>`}</div><span class="icons">${p.care.map(icoCare).join("")}</span></div></td></tr>
         <tr><th scope="row">Uso</th><td><span class="icons">${ico(cat.icon)}</span></td></tr>
       </tbody></table>
       <div class="colorway"><span>Color: <b id="cname"></b></span><span class="n" style="color:var(--stone)">${p.colors.length} ${p.colors.length===1?"opción":"opciones"}</span></div>
