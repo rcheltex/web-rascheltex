@@ -295,9 +295,6 @@ main{min-height:60vh}
 .spec span{color:var(--ink-2)}
 .spec b{font-weight:500;text-align:right}
 /* confección deco · presentación de cortinas (sin imágenes) */
-.cl-hero{width:100%;max-width:100%;aspect-ratio:16/7;background:#E8DFD2 url(img/cortinas-deco.jpg) center 30%/cover no-repeat;margin-bottom:clamp(24px,4vw,40px)}
-@media (max-width:820px){.cl-hero{aspect-ratio:4/3;background-position:38% 30%}}
-.cl{display:grid;grid-template-columns:1.25fr 1fr;gap:clamp(28px,5vw,72px);align-items:end;padding-block:clamp(24px,4vw,48px);border-block:1px solid var(--line)}
 /* Banner de introducción de Manteles: texto a la izquierda y foto a la derecha */
 .mt-hero{display:grid;grid-template-columns:1.25fr 1fr;background:var(--surface);border:1px solid var(--line);margin-bottom:clamp(32px,4vw,48px)}
 .mt-hero .tx{padding:clamp(28px,4.5vw,64px);display:flex;flex-direction:column;justify-content:center}
@@ -307,16 +304,14 @@ main{min-height:60vh}
 .mt-forms svg{width:30px;height:30px;stroke:var(--ink);stroke-width:1.3;fill:none;margin-bottom:6px}
 .mt-forms b{font-weight:500;font-size:15px}
 .mt-forms span{font-size:14px;color:var(--ink-2);font-variant-numeric:tabular-nums}
+.mt-hero .mt-ph.cort{background-image:url(img/cortinas-deco.jpg);background-position:78% center}
+.mt-forms.num{grid-template-columns:repeat(4,1fr)}
+.mt-forms.num b{font-size:clamp(24px,2.4vw,32px);font-weight:300;line-height:1.1;font-variant-numeric:tabular-nums}
+.mt-forms.num span{font-size:13px;line-height:1.4}
+@media (max-width:820px){.mt-forms.num{grid-template-columns:1fr 1fr;row-gap:8px}.mt-hero .mt-ph.cort{background-position:center}}
 @media (max-width:820px){.mt-hero{grid-template-columns:1fr}.mt-hero .mt-ph{order:-1;min-height:0;aspect-ratio:4/3;background-position:center 45%}}
 .cl-h{font-size:clamp(30px,4.2vw,54px);font-weight:300;line-height:1.08;letter-spacing:-.005em;margin:14px 0 18px;text-wrap:balance}
 .cl-lead{color:var(--ink-2);font-size:18px;max-width:54ch}
-.cl-facts{display:grid;grid-template-columns:1fr 1fr;gap:0;margin:0;border-top:1px solid var(--line)}
-.cl-facts div{padding:18px 16px 16px 0;border-bottom:1px solid var(--line)}
-.cl-facts div:nth-child(odd){border-right:1px solid var(--line-2)}
-.cl-facts div:nth-child(even){padding-left:18px}
-.cl-facts dt{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--stone)}
-.cl-facts dd{margin:6px 0 0;font-size:clamp(28px,3vw,40px);font-weight:300;font-variant-numeric:tabular-nums;line-height:1.1}
-.cl-facts dd small{display:block;font-size:13px;color:var(--ink-2);margin-top:4px;line-height:1.4}
 .cl-sub{display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap;margin:clamp(32px,4vw,48px) 0 16px}
 .cl-sub h3{font-size:22px;font-weight:400}
 .cl-types{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,11rem),1fr));gap:12px}
@@ -326,7 +321,7 @@ main{min-height:60vh}
 .cl-types span{color:var(--stone);font-size:14px}
 .cl-types em{font-style:normal;font-size:13px;letter-spacing:.12em;text-transform:uppercase;margin-top:8px;color:var(--accent)}
 .steps.s4{grid-template-columns:repeat(4,1fr)}
-@media (max-width:820px){.cl{grid-template-columns:1fr}.steps.s4{grid-template-columns:1fr 1fr}}
+@media (max-width:820px){.steps.s4{grid-template-columns:1fr 1fr}}
 /* confección deco · catálogo y fichas */
 .dnav{display:flex;gap:8px;flex-wrap:wrap;padding-top:24px}
 .dnav .chip{display:inline-flex;gap:8px;align-items:center}
@@ -1156,18 +1151,19 @@ function decoCortinas(){
   const tipos=TIPOS_C.map(t=>[t,tc.filter(p=>p.tipo===t).length]).filter(x=>x[1]);
   const fmt=v=>v.toFixed(2).replace(".",",");
   return `<section class="sec" id="deco-cortinas" style="scroll-margin-top:24px">
-    <div class="cl-hero" role="img" aria-label="Cortinas de velo blanco en un ventanal amplio con luz natural"></div>
-    <div class="cl">
-      <div><span class="eyebrow">Confección deco · Cortinas</span>
+    <div class="mt-hero">
+      <div class="tx"><span class="eyebrow">Confección deco · Cortinas</span>
         <h2 class="cl-h">Cortinas a la medida de tu ventana, con telas tejidas en nuestra planta</h2>
         <p class="cl-lead">Elige la tela en nuestro catálogo y la confeccionamos en la medida que necesites. Con anchos de hasta ${fmt(anchoMax)} m, cubrimos ventanales grandes sin uniones.</p>
-        <div class="btns"><a class="btn" href="#telas-decoracion" data-use="Telas Cortinas">Ver telas de cortina</a><a class="btn ghost" href="#contacto">Cotizar confección</a></div></div>
-      <dl class="cl-facts">
-        <div><dt>Telas</dt><dd>${tc.length}<small>referencias para cortina</small></dd></div>
-        <div><dt>Colores</dt><dd>${colores}<small>variantes con código propio</small></dd></div>
-        <div><dt>Ancho</dt><dd>${fmt(anchoMax)} m<small>máximo, sin uniones</small></dd></div>
-        <div><dt>Colgado</dt><dd>3<small>clásico, loops o aros</small></dd></div>
-      </dl>
+        <div class="mt-forms num">
+          <div><b>${tc.length}</b><span>telas para cortina</span></div>
+          <div><b>${colores}</b><span>colores con código propio</span></div>
+          <div><b>${fmt(anchoMax)} m</b><span>de ancho, sin uniones</span></div>
+          <div><b>3</b><span>colgados: clásico, loops o aros</span></div>
+        </div>
+        <div class="btns"><a class="btn" href="#telas-decoracion" data-use="Telas Cortinas">Ver telas de cortina</a><a class="btn ghost" href="#contacto">Cotizar confección</a></div>
+      </div>
+      <div class="mt-ph cort" role="img" aria-label="Cortinas de velo blanco en un ventanal amplio con luz natural"></div>
     </div>
     <div class="cl-sub"><h3>Explora las telas por tipo</h3><a class="link" href="#telas-decoracion" data-use="Telas Cortinas">Ver las ${tc.length} telas</a></div>
     <div class="cl-types">${tipos.map(([t,n])=>`<a href="#telas-decoracion" data-use="Telas Cortinas" data-tipo="${t}"><b>${t}</b><span>${DESC[t]||""}</span><span>${n} ${n===1?"tela":"telas"}</span><em>Ver telas</em></a>`).join("")}</div>
