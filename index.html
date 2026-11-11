@@ -245,7 +245,17 @@ main{min-height:60vh}
 /* confección */
 .lines{display:grid;grid-template-columns:1fr 1fr;gap:20px}
 .line{background:var(--surface);border:1px solid var(--line);display:grid;grid-template-rows:auto 1fr}
-.line .sw{aspect-ratio:16/9;background-size:cover}
+.line .sw{aspect-ratio:16/9;background-size:cover;position:relative}
+.line .sw.ph-in{background:#D9D9D7 url(img/algodon-lycra-gris.jpg) center/cover no-repeat}
+.line .sw.ph-pj{background:#E2DBD3 url(img/confeccion.jpg) center/contain no-repeat}
+.line .sw .tg{position:absolute;left:14px;top:14px;background:rgba(20,22,25,.72);color:#fff;font-size:12px;letter-spacing:.06em;padding:6px 10px}
+.line .b{grid-template-rows:auto auto auto auto auto 1fr}
+.ln-row{display:grid;grid-template-columns:90px 1fr;gap:12px;align-items:baseline;padding:12px 0;border-top:1px solid var(--line-2)}
+.ln-row>span{font-size:14px;color:var(--ink)}
+.ln-row b{font-weight:400;font-size:14px;color:var(--ink-2)}
+.ln-row .chips{margin-top:0}
+.ln-row a.chip:hover{border-color:var(--accent);color:var(--accent)}
+.ln-cta{justify-self:start;align-self:end;margin-top:12px}
 .line .b{padding:28px;display:grid;gap:12px;align-content:start}
 .line h3{font-size:30px;font-weight:300}
 .line ul{margin:0;padding:0;list-style:none;display:grid;gap:0}
@@ -1327,15 +1337,27 @@ function vVestuario(){
   <div class="wrap">
   <section class="sec how"><div class="how-h"><span class="eyebrow">Cómo funciona</span><h2>Llevamos tus ideas a la realidad en ocho simples pasos</h2></div>
     <div class="steps s8">${pasos.map(([t,d])=>`<div class="step"><b>${t}</b><p>${d}</p></div>`).join("")}</div></section>
-  <section class="sec" style="padding-top:0"><div class="sec-h"><div><span class="eyebrow">Prendas</span><h2 style="margin-top:10px">Qué confeccionamos</h2></div></div>
+  <section class="sec" id="vest-prendas"><div class="sec-h"><div><span class="eyebrow">Prendas</span><h2 style="margin-top:10px">Qué confeccionamos</h2>
+      <p style="color:var(--ink-2);max-width:60ch;margin-top:10px">Dos líneas de producto, hechas de principio a fin con nuestras telas y entregadas con tu marca.</p></div></div>
     <div class="lines">
-      <div class="line" id="vest-interior"><div class="sw" role="img" aria-label="Ilustración de encaje" style="${bgi(swatch("encaje","#F4F3EF",["#2A2A2D"],"vi",640,false))}"></div><div class="b"><div class="vh"><svg class="vic" viewBox="0 0 26 26" aria-hidden="true">${ICON.interior[1]}</svg><h3>Ropa interior</h3></div>
-        <p style="color:var(--ink-2)">Prendas interiores para dama, hombre y niño, en punto de algodón lycra o microfibra, con detalles en encaje y tull.</p>
-        <div class="garm">${garm}</div>
-        <ul><li><span style="color:var(--ink)">Telas</span><span>Algodón lycra · microfibra · encaje · tull</span></li><li><span style="color:var(--ink)">Incluye</span><span>Tela, insumos, confección, marquilla y empaque</span></li><li><span style="color:var(--ink)">Tallas</span><span>Pendiente</span></li></ul></div></div>
-      <div class="line" id="vest-pijamas"><div class="sw" role="img" aria-label="Ilustración de tela algodón lycra" style="${bgi(swatch("jersey","#A9CCE8",["#7FA6C9"],"vp",640,false))}"></div><div class="b"><div class="vh"><svg class="vic" viewBox="0 0 26 26" aria-hidden="true">${ICON.pijama[1]}</svg><h3>Pijamas</h3></div>
-        <p style="color:var(--ink-2)">Pijamas en algodón lycra, en color liso o estampado en nuestra planta.</p>
-        <ul><li><span style="color:var(--ink)">Telas</span><span>Algodón lycra</span></li><li><span style="color:var(--ink)">Incluye</span><span>Tela, insumos, confección, marquilla y empaque</span></li><li><span style="color:var(--ink)">Tallas</span><span>Pendiente</span></li></ul></div></div>
+      <article class="line" id="vest-interior">
+        <div class="sw ph-in" role="img" aria-label="Detalle de tejido de algodón lycra gris jaspeado"><span class="tg">Algodón lycra · microfibra · encaje · tull</span></div>
+        <div class="b"><div class="vh"><svg class="vic" viewBox="0 0 26 26" aria-hidden="true">${ICON.interior[1]}</svg><h3>Ropa interior</h3></div>
+          <p style="color:var(--ink-2)">Prendas interiores para dama, hombre y niño, en punto de algodón lycra o microfibra, con detalles en encaje y tull.</p>
+          <div class="garm">${garm}</div>
+          <div class="ln-row"><span>Telas</span><div class="chips">${[["Algodón Lycra","Algodón lycra"],["Microfibra","Microfibra"],["Encajes","Encaje"],["Tull","Tull"]].map(([u,t])=>`<a class="chip" href="#telas-moda" data-use="${u}">${t}</a>`).join("")}</div></div>
+          <div class="ln-row"><span>Incluye</span><b>Tela, insumos, confección, marquilla y empaque</b></div>
+          <a class="btn ghost ln-cta" href="#contacto">Cotizar ropa interior</a></div>
+      </article>
+      <article class="line" id="vest-pijamas">
+        <div class="sw ph-pj" role="img" aria-label="Pijama de camiseta gris de manga larga y pantalón a cuadros"><span class="tg">Algodón lycra liso o estampado</span></div>
+        <div class="b"><div class="vh"><svg class="vic" viewBox="0 0 26 26" aria-hidden="true">${ICON.pijama[1]}</svg><h3>Pijamas</h3></div>
+          <p style="color:var(--ink-2)">Pijamas en algodón lycra, en color liso o estampado en nuestra planta.</p>
+          <div class="garm" style="grid-template-columns:1fr"><div><b>Acabado</b><div class="chips"><span class="chip">Color liso</span><span class="chip">Estampado en planta</span></div></div></div>
+          <div class="ln-row"><span>Telas</span><div class="chips"><a class="chip" href="#telas-moda" data-use="Algodón Lycra">Algodón lycra</a></div></div>
+          <div class="ln-row"><span>Incluye</span><b>Tela, insumos, confección, marquilla y empaque</b></div>
+          <a class="btn ghost ln-cta" href="#contacto">Cotizar pijamas</a></div>
+      </article>
     </div></section>
   <section class="sec" style="padding-top:0"><div class="sec-h"><div><span class="eyebrow">Telas de moda</span><h2 style="margin-top:10px">Las telas de tus prendas</h2></div><a class="link" href="#telas-moda">Ver todas</a></div>
     <div class="grid">${telas}</div></section>
@@ -1501,7 +1523,7 @@ function route(){
   else if(h==="telas"||h.startsWith("telas-")){const l=h.split("-")[1]||null;const L=TREE.telas[l]?l:null;if(PENDING_USE||PENDING_Q||PENDING_TIPO){resetF(L);if(PENDING_USE)F.uses.add(PENDING_USE);if(PENDING_TIPO)F.tipos.add(PENDING_TIPO);if(PENDING_Q)F.q=PENDING_Q;PENDING_USE=PENDING_Q=PENDING_TIPO=null;}app.innerHTML=vTelas(L);after=bindTelas;}
   else if(h.startsWith("p-")){const p=P.find(x=>x.id===h.slice(2));if(p){app.innerHTML=vFicha(p);after=bindFicha;}else{location.hash="#telas";return;}}
   else if(h.startsWith("c-")){const p=PC.find(x=>x.id===h.slice(2));if(p){app.innerHTML=vFichaC(p);after=bindFicha;}else{location.hash="#confeccion-deco";return;}}
-  else if(h==="confeccion-vestuario"){app.innerHTML=vVestuario();}
+  else if(h==="confeccion-vestuario"){app.innerHTML=vVestuario();after=()=>{const vp=document.getElementById("vest-prendas");if(vp)vp.addEventListener("click",e=>{const a=e.target.closest("a[data-use]");if(a)PENDING_USE=a.dataset.use;});};}
   else if(h==="confeccion-deco"||h.startsWith("deco-")){app.innerHTML=vDeco();after=()=>{const dc=document.getElementById("deco-cortinas");if(dc)dc.addEventListener("click",e=>{const a=e.target.closest("a[data-use]");if(a){PENDING_USE=a.dataset.use;PENDING_TIPO=a.dataset.tipo||null;}});const el=document.getElementById(h);if(el&&h!=="confeccion-deco")setTimeout(()=>el.scrollIntoView({behavior:"smooth",block:"start"}),30);};}
   else if(h.startsWith("confeccion")){app.innerHTML=vConfeccion();}
   else if(h==="nosotros"){app.innerHTML=vNosotros();after=bindGal;}
