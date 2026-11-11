@@ -164,7 +164,7 @@ main{min-height:60vh}
 .card{display:block;text-decoration:none}
 .card .img{position:relative;aspect-ratio:1/1;background-size:cover;background-position:center;background-color:var(--line-2);overflow:hidden}
 .card .img .alt{position:absolute;inset:0;background-size:cover;background-position:center;opacity:0;transition:opacity .35s}
-.card:hover .img .alt{opacity:1}
+.card:hover .img .alt,.card:focus-visible .img .alt{opacity:1}
 .card .badge{position:absolute;left:10px;top:10px;background:var(--surface);color:var(--ink);font-size:11px;letter-spacing:.14em;text-transform:uppercase;padding:4px 8px}
 .card h3{font-size:17px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;margin-top:14px}
 .card .meta{display:flex;justify-content:space-between;gap:8px;color:var(--stone);font-size:13px;margin-top:2px}
@@ -995,7 +995,7 @@ function card(p){
   const dots=p.colors.slice(0,8).map(c=>`<i style="background:${c.fg[0]&&c.fg[0]!==shade(c.bg,-.14)?`linear-gradient(135deg,${c.bg} 50%,${c.fg[0]} 50%)`:c.bg}" title="${esc(c.label)}"></i>`).join("");
   const alt=p.colors.length>1?img(p,1,360):img(p,0,360,!p.hang);
   const ref=p.colors[0]&&p.colors[0].code!=="—"?"#"+p.colors[0].code:esc(p.use);
-  return `<a class="card" href="#p-${p.id}"><div class="img${p.photo?" "+FOTOS[p.photo].cls:""}" ${p.photo?"":`style="${bgi(img(p,0,360))}"`}><div class="alt" style="${bgi(alt)}"></div>${p.isNew?'<span class="badge">Nuevo</span>':""}</div>
+  return `<a class="card" href="#p-${p.id}"><div class="img${p.photo?" "+FOTOS[p.photo].cls:""}" ${p.photo?"":`style="${bgi(img(p,0,360))}"`}>${p.photo2?`<div class="alt ${FOTOS[p.photo2].cls}"></div>`:`<div class="alt" style="${bgi(alt)}"></div>`}${p.isNew?'<span class="badge">Nuevo</span>':""}</div>
   <h3>${esc(p.name)}</h3><div class="ref">${ref}</div><div class="meta"><span>${esc(p.base)}</span><span>${p.colors.length} ${p.colors.length===1?"color":"colores"}</span></div><div class="dots">${dots}</div></a>`;
 }
 const SEARCH_ICON='<svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="6.5" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="m13.5 13.5 5 5" stroke="currentColor" stroke-width="1.4"/></svg>';
