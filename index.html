@@ -1067,6 +1067,9 @@ const USE_INTRO={
   "Tapicería":{h:"Telas de tapicería para bondeo, recubrimiento y respaldos",
     lead:"Bases de poliéster tejidas en nuestra planta para la industria del mueble: soporte para bondeo y recubrimiento de sofás y sillas, y bases livianas para faldones y respaldos. Peso y rendimiento controlados en cada rollo.",
     photo:"tela2",alt:"Detalle de tela"},
+  "Telas Colchoneras":{h:"Telas colchoneras para forro y superficie de colchones",
+    lead:"Telas de poliéster en ancho de colchón, tejidas en nuestra planta: satinadas, con diseño en relieve y de uso general, en versiones livianas de alto rendimiento por kilo y de mayor gramaje para más resistencia.",
+    alt:"Colchón con tela colchonera sobre una cama de madera",cuenta:"telas colchoneras",cta:"Cotizar telas colchoneras"},
   "Mallas Industriales":{h:"Mallas industriales con apresto y gramaje controlado",
     lead:"Mallas de poliéster tejidas en nuestras máquinas Raschel para uso técnico: versiones livianas con apresto, mallas de apresto permanente que mantienen su rigidez en proceso y mallas de alto gramaje para refuerzo, también en mano suave.",
     photo:"tela1",alt:"Detalle de tela",cuenta:"mallas industriales",cta:"Cotizar mallas industriales"},
@@ -1570,10 +1573,13 @@ function route(){
 buildMenus();
 document.querySelector(".skip").addEventListener("click",e=>{e.preventDefault();$("#app").focus();}); // no cambia la ruta (#)
 addEventListener("hashchange",route);
-/* Un enlace a la página en la que ya estás no cambia la dirección, así que el navegador no avisa: se vuelve a cargar la vista a mano.
-   Sirve para pasar de un uso a otro dentro de la misma línea (p. ej. de Telas Colchoneras a Tapicería). Sin uso pedido, quita los filtros. */
-document.addEventListener("click",e=>{const a=e.target.closest('a[href^="#"]');if(!a||a.classList.contains("skip")||a.getAttribute("href")!==location.hash)return;
-  if(location.hash.startsWith("#telas")&&!(PENDING_USE||PENDING_Q||PENDING_TIPO))F=null;route();});
+/* Enlaces del sitio (#...):
+   - Uno a la página en la que ya estás no cambia la dirección, así que el navegador no avisa: se vuelve a cargar la vista a mano
+     (p. ej. pasar de Telas Colchoneras a Tapicería dentro de Industria).
+   - Uno a un catálogo de telas sin uso pedido quita los filtros que hubiera. El botón Atrás no pasa por aquí y los conserva. */
+document.addEventListener("click",e=>{const a=e.target.closest('a[href^="#"]');if(!a||a.classList.contains("skip"))return;const href=a.getAttribute("href");
+  if(href.startsWith("#telas")&&!(PENDING_USE||PENDING_Q||PENDING_TIPO))F=null;
+  if(href===location.hash)route();});
 route();
 </script>
 
