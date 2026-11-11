@@ -625,7 +625,7 @@ const plain=(code,name,hex)=>({code,label:name,bg:hex,fg:[shade(hex,-0.14)]});
 const TREE = {
   telas:{
     decoracion:{name:"Decoración",uses:["Telas Cortinas","Tela Toldillo"],blurb:"Velos, muselinas, opalinas y jacquard para cortinas; bases para toldillos."},
-    industria:{name:"Industria",uses:["Telas Colchoneras","Mallas Industriales","Tapicería"],blurb:"Soluciones técnicas para colchonería, recubrimientos y tapicería, con peso y rendimiento controlados."},
+    industria:{name:"Industria",uses:["Telas Colchoneras","Mallas Industriales","Tapicería"],blurb:"Soluciones técnicas para colchonería, recubrimientos y tapicería, con peso controlado."},
     moda:{name:"Moda",uses:["Algodón Lycra","Microfibra","Tull","Encajes","Mallas (vestuario)"],blurb:"Tejidos para confección de ropa interior, deportiva y exterior."}
   },
   confeccion:{
@@ -638,6 +638,7 @@ const slug=s=>s.normalize("NFD").replace(/[̀-ͯ]/g,"").toLowerCase().replace(/[
 /* ====== FICHAS TÉCNICAS por base textil (hoja "Pdte ajustes datos") ====== */
 const CARE=["lavar30","noblanq","noescurrir","nosecar","sombra","planchar1"]; // Instrucciones de lavado confirmadas: las mismas para todas las telas y productos
 const P=[];
+/* El rendimiento (campo yield) se conserva en los datos, pero no se muestra en el sitio. */
 function add(o){o.id=slug(o.name);o.colors=o.colors||[];o.care=CARE;P.push(o);}
 
 const cw=list=>list.map(([c,r])=>colorway(c,r));
@@ -818,7 +819,7 @@ ind("Telas Colchoneras","Brillantina colchonera","208 cm ± 2%","88 g/m² ± 5 g
 ind("Telas Colchoneras","Opalina 50","208 – 210 cm ± 2%","71 – 90 g/m² ± 3 g","5,3 m/kg ± 7%","colchonera",["Crema","#EEE2C6"],"Opalina colchonera con diseño en relieve.",["colchon"]);
 ind("Telas Colchoneras","París 50","208 cm ± 2%","90 g/m² ± 5 g","5,3 m/kg ± 7%","colchonera",["Azul","#9FB3D1"],"Tela colchonera de uso general.",["colchon"]);
 ind("Telas Colchoneras","Cretex Nº2","210 cm ± 2%","132 g/m² ± 5 g","3,64 m/kg ± 7%","colchonera",["Beige","#D8C8AB"],"Colchonera de mayor gramaje para mayor resistencia.",["colchon"]);
-ind("Telas Colchoneras","Dormit colchonera","208 cm ± 2%","72 g/m² ± 5 g","6,67 m/kg ± 5%","colchonera",["Crudo","#ECE5D3"],"Colchonera liviana de alto rendimiento por kilo.",["colchon"]);
+ind("Telas Colchoneras","Dormit colchonera","208 cm ± 2%","72 g/m² ± 5 g","6,67 m/kg ± 5%","colchonera",["Crudo","#ECE5D3"],"Colchonera liviana.",["colchon"]);
 ind("Mallas Industriales","Malla Ind Nº1 apresto permanente","150 cm ± 2%","65 g/m² ± 5 g","10,2 m/kg ± 7%","malla",["Negro","#2A2A2D"],"Malla con apresto permanente, que mantiene su rigidez en proceso.",["industrial"]);
 ind("Mallas Industriales","Malla ET 300","152 cm ± 2%","140 g/m² ± 5 g","4,7 m/kg ± 5%","malla",["Negro","#2A2A2D"],"Malla de alto gramaje para aplicaciones de refuerzo.",["industrial"]);
 ind("Mallas Industriales","Malla ET 300 suave","151 cm ± 2%","142 g/m² ± 5 g","4,66 m/kg ± 5%","malla",["Gris","#9A9C9F"],"Versión de mano suave de la ET 300.",["industrial"]);
@@ -1065,10 +1066,10 @@ function vTelas(line){
 /* Introducción que aparece sobre el catálogo cuando se filtra un solo uso (por ahora, Tapicería). */
 const USE_INTRO={
   "Tapicería":{h:"Telas de tapicería para bondeo, recubrimiento y respaldos",
-    lead:"Bases de poliéster tejidas en nuestra planta para la industria del mueble: soporte para bondeo y recubrimiento de sofás y sillas, y bases livianas para faldones y respaldos. Peso y rendimiento controlados en cada rollo.",
+    lead:"Bases de poliéster tejidas en nuestra planta para la industria del mueble: soporte para bondeo y recubrimiento de sofás y sillas, y bases livianas para faldones y respaldos. Peso controlado en cada rollo.",
     photo:"tela2",alt:"Detalle de tela"},
   "Telas Colchoneras":{h:"Telas colchoneras para forro y superficie de colchones",
-    lead:"Telas de poliéster en ancho de colchón, tejidas en nuestra planta: satinadas, con diseño en relieve y de uso general, en versiones livianas de alto rendimiento por kilo y de mayor gramaje para más resistencia.",
+    lead:"Telas de poliéster en ancho de colchón, tejidas en nuestra planta: satinadas, con diseño en relieve y de uso general, en versiones livianas y de mayor gramaje para más resistencia.",
     alt:"Colchón con tela colchonera sobre una cama de madera",cuenta:"telas colchoneras",cta:"Cotizar telas colchoneras"},
   "Mallas Industriales":{h:"Mallas industriales con apresto y gramaje controlado",
     lead:"Mallas de poliéster tejidas en nuestras máquinas Raschel para uso técnico: versiones livianas con apresto, mallas de apresto permanente que mantienen su rigidez en proceso y mallas de alto gramaje para refuerzo, también en mano suave.",
@@ -1175,7 +1176,6 @@ function vFicha(p){
         <tr><th scope="row">Composición</th><td>${esc(p.comp)}</td></tr>
         <tr><th scope="row">Ancho</th><td class="mono">${esc(p.width)}</td></tr>
         ${p.weight?`<tr><th scope="row">Peso</th><td class="mono">${esc(p.weight)}</td></tr>`:""}
-        <tr><th scope="row">Rendimiento</th><td class="mono">${p.yield==="Pendiente"?'<em class="pend">Pendiente</em>':esc(p.yield)}</td></tr>
         <tr class="care"><td colspan="2"><div class="care-w"><div class="ch">Instrucciones de lavado</div><span class="icons">${p.care.map(icoCare).join("")}</span></div></td></tr>
         <tr><th scope="row">Usos de tela</th><td><span class="icons">${p.usos.map(ico).join("")}</span></td></tr>
       </tbody></table>
@@ -1495,7 +1495,7 @@ function bindContacto(){$("#cform").addEventListener("submit",e=>{e.preventDefau
   const a=document.createElement("a");a.href=wa(msg);a.target="_blank";a.rel="noopener";document.body.appendChild(a);a.click();a.remove();
   const ok=$("#fok");ok.hidden=false;ok.innerHTML=`Si WhatsApp no se abrió, <a href="${wa(msg)}" target="_blank" rel="noopener">abre el mensaje aquí</a>.`;});}
 
-function vPoliticas(){const S=[["Pedidos y cantidades mínimas","Pendiente: mínimo por referencia (metros o kilos), múltiplos de venta y tiempos de producción."],["Muestras","Pendiente: si las muestras tienen costo, tamaño y tiempo de envío."],["Envíos","Pendiente: ciudades con cobertura, transportadoras, costos y tiempos."],["Cambios y devoluciones","Pendiente: plazos, condiciones y tolerancias de color y ancho (las fichas indican ± 2% en ancho y ± 7% en rendimiento)."],["Tratamiento de datos personales","Pendiente: política conforme a la Ley 1581 de 2012 y el Decreto 1377 de 2013."],["Términos de uso del sitio","Pendiente."]];
+function vPoliticas(){const S=[["Pedidos y cantidades mínimas","Pendiente: mínimo por referencia (metros o kilos), múltiplos de venta y tiempos de producción."],["Muestras","Pendiente: si las muestras tienen costo, tamaño y tiempo de envío."],["Envíos","Pendiente: ciudades con cobertura, transportadoras, costos y tiempos."],["Cambios y devoluciones","Pendiente: plazos, condiciones y tolerancias de color y ancho (las fichas indican ± 2% en ancho)."],["Tratamiento de datos personales","Pendiente: política conforme a la Ley 1581 de 2012 y el Decreto 1377 de 2013."],["Términos de uso del sitio","Pendiente."]];
   return `<div class="wrap"><nav class="crumbs"><a href="#inicio">Inicio</a>/<span>Políticas</span></nav><div class="page"><div><h1>Políticas</h1></div><div class="acc">${S.map(([t,b],i)=>`<details ${i?"":"open"}><summary>${t}</summary><div class="in"><p class="ph">${b}</p></div></details>`).join("")}</div></div></div>`;}
 
 /* ====== MENÚ ====== */
