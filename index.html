@@ -779,7 +779,7 @@ const CORTINAS=[{"line":"decoracion","use":"Telas Cortinas","tipo":"Lisas","base
 CORTINAS.forEach(o=>add({...o,care:CARE_CORT,careOk:true,photo:"velo",photo2:"cort"}));
 
 /* --- Decoración · Tela Toldillo --- */
-const tt=(name,yld,pat)=>add({line:"decoracion",use:"Tela Toldillo",base:"Tul para toldillo",name,comp:"100% poliéster",width:name==="Shust"?"300 cm ± 2%":"280 cm ± 2%",yield:yld,pattern:pat,care:CARE_POLY,usos:["toldillo"],
+const tt=(name,yld,pat)=>add({line:"decoracion",use:"Tela Toldillo",base:"Tul para toldillo",name,comp:"100% poliéster",width:name==="Shust"?"300 cm ± 2%":"280 cm ± 2%",yield:yld,pattern:pat,care:CARE_CORT,careOk:true,usos:["toldillo"],
   desc:"Tejido de malla fina para toldillos. Se produce en blanco, crema, celeste, rosado, verde menta, amarillo, azul rey, curuba y lila.",
   colors:[["Blanco","#F4F3EF"],["Celeste","#A9CCE8"],["Rosado","#E3A3B4"],["Verde menta","#A6D8C0"],["Lila","#B9A2D6"]].map(([n,h])=>plain("—",n,h))});
 tt("Barcelona","8,11 m/kg ± 7%","tull");tt("Marqueza","8,7 – 14,3 m/kg ± 7%","tull");tt("Shust","14,1 m/kg ± 7%","tull");
