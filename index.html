@@ -1026,8 +1026,8 @@ function vTelas(line){
   const title=line?TREE.telas[line].name:"Todas las telas";
   const blurb=line?TREE.telas[line].blurb:"Catálogo completo de telas para decoración, industria y moda.";
   return `<div class="wrap"><nav class="crumbs" aria-label="Ruta"><a href="#inicio">Inicio</a>/<a href="#telas">Telas</a>${line?`/<span>${title}</span>`:""}</nav>
-  <div class="cat-h"><div><h1>${title}</h1><p>${blurb}</p></div>
-    <div class="tabs"><a class="tab ${!line?"on":""}" href="#telas">Todas</a>${Object.entries(TREE.telas).map(([k,v])=>`<a class="tab ${line===k?"on":""}" href="#telas-${k}">${v.name}</a>`).join("")}</div></div></div>
+  <div class="cat-h"><div><h1>${title}</h1>${lineIntro(line)?"":`<p>${blurb}</p>`}</div>
+    <div class="tabs"><a class="tab ${!line?"on":""}" href="#telas">Todas</a>${Object.entries(TREE.telas).map(([k,v])=>`<a class="tab ${line===k?"on":""}" href="#telas-${k}">${v.name}</a>`).join("")}</div></div>${lineIntro(line)}</div>
   <div class="frame" style="margin-top:28px">${searchBand()}</div>
   <div class="wrap">${catalogBlock(line)}</div>`;
 }
@@ -1037,25 +1037,37 @@ const USE_INTRO={
     lead:"Bases de poliéster tejidas en nuestra planta para la industria del mueble: soporte para bondeo y recubrimiento de sofás y sillas, y bases livianas para faldones y respaldos. Peso y rendimiento controlados en cada rollo.",
     photo:"tela2",alt:"Detalle de tela"}
 };
+/* Banner de introducción (texto, cifras y botones a la izquierda; foto a la derecha). */
+function introBanner({eyebrow,h,lead,facts,btns,photo,alt}){
+  return `<div class="mt-hero" style="margin-top:8px">
+    <div class="tx"><span class="eyebrow">${eyebrow}</span>
+      <h2 class="cl-h">${h}</h2>
+      <p class="cl-lead">${lead}</p>
+      <div class="mt-forms num">${facts.map(([b,t])=>`<div><b>${b}</b><span>${t}</span></div>`).join("")}</div>
+      <div class="btns">${btns.map(([href,t,ghost])=>`<a class="btn${ghost?" ghost":""}" href="${href}">${t}</a>`).join("")}</div>
+    </div>
+    <div class="mt-ph" role="img" aria-label="${esc(alt)}" style="background-image:url(${FOTOS[photo].url})"></div>
+  </div>`;
+}
+const numsOf=(ts,k)=>ts.map(p=>parseFloat(String(p[k]).replace(",","."))).filter(n=>!isNaN(n));
+const rango=a=>{const lo=Math.min(...a),hi=Math.max(...a);return (lo===hi?`${lo}`:`${lo}–${hi}`).replace(/\./g,",");};
 function useIntro(u){
   const it=USE_INTRO[u];if(!it)return "";
-  const ts=P.filter(p=>p.use===u),num=k=>ts.map(p=>parseFloat(String(p[k]).replace(",","."))).filter(n=>!isNaN(n));
-  const rango=(a,un)=>{const lo=Math.min(...a),hi=Math.max(...a);return (lo===hi?`${lo}`:`${lo}–${hi}`).replace(/\./g,",")+un;};
-  const comps=[...new Set(ts.map(p=>p.comp))];
-  return `<div class="mt-hero" style="margin-top:8px">
-    <div class="tx"><span class="eyebrow">${esc(LINE_NAME[ts[0].line])} · ${esc(u)}</span>
-      <h2 class="cl-h">${it.h}</h2>
-      <p class="cl-lead">${it.lead}</p>
-      <div class="mt-forms num">
-        <div><b>${ts.length}</b><span>${ts.length===1?"tela":"telas"} de ${esc(u.toLowerCase())}</span></div>
-        <div><b>${rango(num("width"),"")}</b><span>cm de ancho</span></div>
-        <div><b>${rango(num("weight"),"")}</b><span>g/m² de peso</span></div>
-        <div><b>${comps.length===1?esc(comps[0].split(" ")[0]):comps.length}</b><span>${comps.length===1?esc(comps[0].split(" ").slice(1).join(" ")):"composiciones"}</span></div>
-      </div>
-      <div class="btns"><a class="btn" href="#contacto">Cotizar telas de ${esc(u.toLowerCase())}</a></div>
-    </div>
-    <div class="mt-ph" role="img" aria-label="${esc(it.alt)}" style="background-image:url(${FOTOS[it.photo].url})"></div>
-  </div>`;
+  const ts=P.filter(p=>p.use===u),comps=[...new Set(ts.map(p=>p.comp))];
+  return introBanner({eyebrow:`${esc(LINE_NAME[ts[0].line])} · ${esc(u)}`,h:it.h,lead:it.lead,photo:it.photo,alt:it.alt,
+    facts:[[ts.length,`${ts.length===1?"tela":"telas"} de ${esc(u.toLowerCase())}`],[rango(numsOf(ts,"width")),"cm de ancho"],[rango(numsOf(ts,"weight")),"g/m² de peso"],
+      [comps.length===1?esc(comps[0].split(" ")[0]):comps.length,comps.length===1?esc(comps[0].split(" ").slice(1).join(" ")):"composiciones"]],
+    btns:[["#contacto",`Cotizar telas de ${esc(u.toLowerCase())}`]]});
+}
+/* Introducción de la página de cada línea de telas (por ahora, Moda). */
+function lineIntro(line){
+  if(line!=="moda")return "";
+  const ts=P.filter(p=>p.line===line),nuevas=ts.filter(p=>p.isNew).length;
+  return introBanner({eyebrow:"Telas · Moda",h:"Tejidos para ropa interior, pijamas y ropa deportiva",
+    lead:"Algodón lycra, microfibra, tull, encajes y mallas, tejidos y teñidos en nuestra planta. Telas con elongación y buena recuperación para prendas ajustadas, y bases livianas para forros y ropa deportiva. Si además necesitas la prenda terminada, la confeccionamos con el paquete completo.",
+    photo:"lycra",alt:"Detalle de tejido de algodón lycra gris jaspeado",
+    facts:[[ts.length,"telas de moda"],[TREE.telas[line].uses.length,"tipos de tejido"],[rango(numsOf(ts,"width")),"cm de ancho"],[nuevas,nuevas===1?"novedad":"novedades"]],
+    btns:[["#confeccion-vestuario","Ver paquete completo"],["#contacto","Cotizar telas",true]]});
 }
 function applyTelas(){
   const scope=P.filter(p=>!F.line||p.line===F.line);
