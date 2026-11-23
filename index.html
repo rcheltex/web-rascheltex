@@ -334,6 +334,21 @@ main{min-height:60vh}
 .cl-types{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,11rem),1fr));gap:12px}
 .cl-types a{display:grid;grid-template-rows:auto 1fr auto auto;gap:4px;text-decoration:none;border:1px solid var(--line);background:var(--surface);padding:18px 18px 16px;transition:border-color .2s}
 .cl-types a:hover{border-color:var(--ink)}
+.colg{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:0}
+.colg figure{margin:0;border:1px solid var(--line);background:var(--surface)}
+.colg .ill{aspect-ratio:6/4;display:grid;place-items:center;background:var(--line-2);color:var(--ink-2)}
+.colg svg{width:58%;height:auto;fill:none;stroke:currentColor;stroke-width:1.3;stroke-linecap:round;stroke-linejoin:round}
+.colg figcaption{display:grid;gap:4px;padding:16px 18px 18px}
+.colg b{font-size:17px;font-weight:500}
+.colg span{color:var(--ink-2);font-size:14px}
+.tsz{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}
+.tsz div{border:1px solid var(--line);background:var(--surface);padding:18px;display:grid;gap:6px}
+.tsz b{font-size:17px;font-weight:500}
+.tsz span{color:var(--ink-2);font-size:14px;font-variant-numeric:tabular-nums}
+@media (max-width:820px){.colg{grid-template-columns:1fr}.tsz{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.srv-q{display:grid;gap:8px;align-content:start;border:1px solid var(--line);background:var(--surface);padding:22px 20px}
+.srv-q b{font-size:19px;font-weight:500}
+.srv-q span{color:var(--ink-2);font-size:15px}
 .cl-types b{font-size:17px;font-weight:500}
 .cl-types span{color:var(--stone);font-size:14px}
 .cl-types em{font-style:normal;font-size:13px;letter-spacing:.12em;text-transform:uppercase;margin-top:8px;color:var(--accent)}
@@ -439,6 +454,18 @@ main{min-height:60vh}
 .nhero canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
 /* Portada principal: imagen de respaldo del video (primer cuadro) */
 .hero-ph{background-image:url(img/portada-video.jpg);background-position:center 30%}
+/* Portada del inicio: textura de tela */
+.hero-tex{background:#DCE6EF url(img/tela-cortina.jpg) center 45%/cover no-repeat}
+.hsplit{display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--line);border-top:0;background:var(--surface)}
+.hsplit a{display:grid;gap:6px;padding:clamp(20px,3vw,36px) clamp(20px,4vw,48px);text-decoration:none;transition:background .2s}
+.hsplit a+a{border-left:1px solid var(--line)}
+.hsplit a:hover{background:var(--line-2)}
+.hsplit b{font-size:clamp(26px,3vw,38px);font-weight:300;letter-spacing:.04em}
+.hsplit span:last-child{color:var(--ink-2);font-size:15px}
+@media (max-width:600px){.hsplit{grid-template-columns:1fr}.hsplit a+a{border-left:0;border-top:1px solid var(--line)}}
+.pcat .pimg.sw-conf{background:#E2DBD3 url(img/confeccion.jpg) center/contain no-repeat}
+.pcat .pimg.ph-in{background:#D9D9D7 url(img/algodon-lycra-gris.jpg) center/cover no-repeat}
+.pcat .pimg.ph-cortdeco{background:#E8DFD2 url(img/cortinas-deco.jpg) 70% center/cover no-repeat}
 /* Video de portada en bucle (video/portada.mp4 y video/portada-movil.mp4) */
 .hero-vid{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 30%;display:block}
 @media (prefers-reduced-motion:reduce){.hero-vid{display:none}}
@@ -562,7 +589,7 @@ main{min-height:60vh}
         <p>Manufactura textil integrada desde 1973. Telas para decoración, industria y moda, y confección de vestuario y hogar.</p>
       </div>
       <div><h6>Telas</h6><a href="#telas-decoracion">Decoración</a><a href="#telas-industria">Industria</a><a href="#telas-moda">Moda</a></div>
-      <div><h6>Confección</h6><a href="#confeccion-vestuario">Vestuario</a><a href="#confeccion-deco">Deco</a></div>
+      <div><h6>Confección</h6><a href="#confeccion-vestuario">Vestuario</a><a href="#confeccion-deco">Deco</a><a href="#confeccion-servicios">Servicios de confección</a></div>
       <div><h6>Empresa</h6><a href="#nosotros">Quiénes somos</a><a href="#contacto">Contacto</a><a href="#politicas">Políticas</a></div>
     </div>
     <div class="bot"><span>© 2026 Rascheltex International · Bogotá, Colombia</span><span>Los colores en pantalla pueden variar respecto a la tela real.</span></div>
@@ -626,12 +653,13 @@ const plain=(code,name,hex)=>({code,label:name,bg:hex,fg:[shade(hex,-0.14)]});
 const TREE = {
   telas:{
     decoracion:{name:"Decoración",uses:["Telas Cortinas","Tela Toldillo"],blurb:"Velos, muselinas, opalinas y jacquard para cortinas; bases para toldillos."},
-    industria:{name:"Industria",uses:["Telas Colchoneras","Mallas Industriales","Tapicería"],blurb:"Soluciones técnicas para colchonería, recubrimientos y tapicería, con peso controlado."},
+    industria:{name:"Industria",uses:["Telas Colchoneras","Mallas Industriales","Mallas Esponjilla","Tapicería"],blurb:"Soluciones técnicas para colchonería, recubrimientos y tapicería, con peso controlado."},
     moda:{name:"Moda",uses:["Algodón Lycra","Microfibra","Tull","Encajes","Mallas (vestuario)"],blurb:"Tejidos para confección de ropa interior, deportiva y exterior."}
   },
   confeccion:{
     vestuario:{name:"Vestuario",uses:["Ropa Interior","Pijamas"]},
-    deco:{name:"Deco",uses:["Cortinas","Manteles","Toldillos"]}
+    deco:{name:"Deco",uses:["Cortinas","Manteles","Toldillos"]},
+    servicios:{name:"Servicios de confección",uses:["Paquete completo","Licitaciones"]}
   }
 };
 const slug=s=>s.normalize("NFD").replace(/[̀-ͯ]/g,"").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");
@@ -830,6 +858,7 @@ ind("Tapicería","Faldex","180 cm ± 2%","71 g/m² ± 5 g","7,81 m/kg ± 7%","ta
 ind("Tapicería","Cretex Nº2-155","155 cm ± 2%","132 g/m² ± 5 g","4,88 m/kg ± 7%","tapiceria",["Gris","#9A9C9F"],"Soporte resistente para recubrimiento.",["tapiceria"]);
 ind("Tapicería","Nápoles","150 cm ± 2%","136 g/m² ± 5 g","4,9 m/kg ± 5%","tapiceria",["Beige","#D8C8AB"],"Tela tapicera para bondeo.",["tapiceria"]);
 
+add({line:"industria",use:"Mallas Esponjilla",base:"Malla esponjilla",name:"Malla esponjilla",comp:"Pendiente",width:"Pendiente",yield:"—",pattern:"malla",usos:["industrial"],desc:"Malla esponjilla.",colors:[]}); // Datos técnicos pendientes
 P.filter(p=>p.use==="Telas Colchoneras").forEach(p=>p.photo="colch");
 
 /* --- Moda --- */
@@ -1005,29 +1034,33 @@ const searchBand=()=>`<div class="sband"><form class="sbox" id="sform" role="sea
 
 function vInicio(){
   resetF(null);
+  const conf=[["vestuario","Vestuario","Ropa interior y pijamas que encuentras en almacenes de grandes superficies.","#confeccion-vestuario","ph-in"],
+    ["deco","Deco","Paneles de cortina listos para colgar, manteles y toldillos.","#confeccion-deco","ph-cortdeco"],
+    ["servicios","Servicios de confección","Paquete completo de vestuario y decoración para grandes superficies, distribuidores y licitaciones.","#confeccion-servicios","sw-conf"]];
   return `
   <h1 class="sr">Rascheltex: telas y confección textil en Colombia</h1>
   <section class="frame">
-    <div class="nhero hero-ph" role="img" aria-label="Video: cortinas de velo blanco que se abren y se cierran frente a un ventanal"><video class="hero-vid" id="heroVid" muted loop playsinline autoplay preload="auto" poster="img/portada-video.jpg" aria-hidden="true"></video>
-      <div class="bc">Rascheltex &gt; Telas</div>
-    </div>
-    ${searchBand()}
+    <div class="nhero hero-tex" role="img" aria-label="Detalle de tela de cortina en azul claro"></div>
+    <nav class="hsplit" aria-label="Secciones principales">
+      <a href="#home-telas"><span class="eyebrow">Telas</span><b>Telas</b><span>Decoración · Industria · Moda</span></a>
+      <a href="#home-confeccion"><span class="eyebrow">Confección</span><b>Confección</b><span>Vestuario · Deco · Servicios de confección</span></a>
+    </nav>
   </section>
-  <section class="wrap sec prods" aria-labelledby="prodH">
-    <h2 id="prodH" class="prods-t">Productos</h2>
+  <section class="wrap sec prods" id="home-telas" aria-labelledby="prodH" style="scroll-margin-top:24px">
+    <h2 id="prodH" class="prods-t">Telas</h2>
     <div class="pcats">${Object.entries(TREE.telas).map(([k,v])=>{const pick={decoracion:["jardin-japones",0],industria:["opalina-50",0],moda:["caricia",0]}[k];const s=P.find(p=>p.id===pick[0])||P.find(p=>p.line===k);const ph={industria:"tela1"}[k]||s.photo; // Industria usa la foto de detalle de tela
       return `<div class="pcat"><a class="pimg${ph?" "+FOTOS[ph].cls:""}" href="#telas-${k}" aria-label="${v.name}" ${ph?"":`style="${bgi(img(s,pick[1],640))}"`}></a>
         <h3><a href="#telas-${k}">${v.name}</a></h3><p>${v.blurb}</p>
-        <ul>${v.uses.map(u=>`<li><a href="#telas-${k}" data-use="${esc(u)}">${u}</a><span>${P.filter(p=>p.use===u).length}</span></li>`).join("")}</ul>
+        <ul>${v.uses.map(u=>`<li><a href="#telas-${k}" data-use="${esc(u)}">${u}</a></li>`).join("")}</ul>
         <a class="link" href="#telas-${k}">Ver ${v.name.toLowerCase()}</a></div>`}).join("")}</div>
   </section>
-  <section class="band"><div class="wrap sec split">
-    <div class="sw sw-conf" role="img" aria-label="Pijama confeccionado: camiseta gris de manga larga y pantalón a cuadros"></div>
-    <div><span class="eyebrow">Servicio de confección</span><h2>Tú eliges la tela, nosotros la confeccionamos</h2>
-      <p>Confeccionamos ropa interior y pijamas, además de cortinas, manteles y toldillos en medidas estándar o a pedido.</p>
-      <div class="chips">${[...TREE.confeccion.vestuario.uses.map(u=>[u,"#confeccion-vestuario"]),...TREE.confeccion.deco.uses.map(u=>[u,"#deco-"+slug(u)])].map(([u,h])=>`<a class="chip" href="${h}">${u}</a>`).join("")}</div>
-      <div style="margin-top:28px"><a class="btn" href="#confeccion">Conocer confección</a></div></div>
-  </div></section>`;
+  <section class="wrap sec prods" id="home-confeccion" aria-labelledby="confH" style="scroll-margin-top:24px;padding-top:0">
+    <h2 id="confH" class="prods-t">Confección</h2>
+    <div class="pcats">${conf.map(([k,t,d,h,cls])=>`<div class="pcat"><a class="pimg ${cls}" href="${h}" aria-label="${t}"></a>
+        <h3><a href="${h}">${t}</a></h3><p>${d}</p>
+        <ul>${(TREE.confeccion[k].uses).map(u=>`<li><a href="${k==="deco"?"#deco-"+slug(u):h}">${u}</a></li>`).join("")}</ul>
+        <a class="link" href="${h}">Ver ${t.toLowerCase()}</a></div>`).join("")}</div>
+  </section>`;
 }
 
 let F;
@@ -1089,6 +1122,9 @@ const USE_INTRO={
   "Telas Colchoneras":{h:"Telas colchoneras para forro y superficie de colchones",
     lead:"Telas de poliéster en ancho de colchón, tejidas en nuestra planta: satinadas, con diseño en relieve y de uso general, en versiones livianas y de mayor gramaje para más resistencia.",
     alt:"Colchón con tela colchonera sobre una cama de madera",cuenta:"telas colchoneras",cta:"Cotizar telas colchoneras"},
+  "Mallas Esponjilla":{h:"Mallas esponjilla",
+    lead:"Mallas tejidas en nuestras máquinas Raschel. Escríbenos y te enviamos anchos, pesos, colores y muestras.",
+    facts:[],cta:"Cotizar mallas esponjilla"},
   "Mallas Industriales":{h:"Mallas industriales con apresto y gramaje controlado",
     lead:"Mallas de poliéster tejidas en nuestras máquinas Raschel para uso técnico: versiones livianas con apresto, mallas de apresto permanente que mantienen su rigidez en proceso y mallas de alto gramaje para refuerzo, también en mano suave.",
     photo:"tela1",alt:"Detalle de tela",cuenta:"mallas industriales",cta:"Cotizar mallas industriales"},
@@ -1111,7 +1147,7 @@ function introBanner({eyebrow,h,lead,facts,btns,photo,alt}){
     <div class="tx"><span class="eyebrow">${eyebrow}</span>
       <h2 class="cl-h">${h}</h2>
       <p class="cl-lead">${lead}</p>
-      <div class="mt-forms num" style="--n:${facts.length}">${facts.map(([b,t])=>`<div><b>${b}</b><span>${t}</span></div>`).join("")}</div>
+      ${facts.length?`<div class="mt-forms num" style="--n:${facts.length}">${facts.map(([b,t])=>`<div><b>${b}</b><span>${t}</span></div>`).join("")}</div>`:""}
       <div class="btns">${btns.map(([href,t,ghost,uso])=>`<a class="btn${ghost?" ghost":""}" href="${href}"${uso?` data-use="${esc(uso)}"`:""}>${t}</a>`).join("")}</div>
     </div>
     <div class="mt-ph" role="img" aria-label="${esc(alt)}" style="background-image:url(${FOTOS[photo].url})"></div>
@@ -1124,7 +1160,7 @@ function useIntro(u,verCatalogo){
   const ts=P.filter(p=>p.use===u),comps=[...new Set(ts.map(p=>p.comp))];
   const med=(k,re)=>numsOf(ts.filter(p=>re.test(String(p[k]||""))),k); // solo medidas con el formato esperado
   const anchos=med("width",/^\d/),pesos=med("weight",/g\/m²/),colores=new Set(ts.flatMap(p=>p.colors.map(c=>c.label))).size;
-  const facts=[...(it.antes||[]),
+  const facts=it.facts||[...(it.antes||[]),
     ts.length>1?[ts.length,it.cuenta||`telas de ${esc(u.toLowerCase())}`]:[colores,colores===1?"color":"colores"],
     ...(anchos.length?[[rango(anchos),"cm de ancho"]]:[]),
     ...(pesos.length?[[rango(pesos),"g/m² de peso"]]:[]),
@@ -1143,7 +1179,7 @@ function lineIntro(line){
     lead:"Algodón lycra, microfibra, tull, encajes y mallas, tejidos y teñidos en nuestra planta. Telas con elongación y buena recuperación para prendas ajustadas, y bases livianas para forros y ropa deportiva. Si además necesitas la prenda terminada, la confeccionamos con el paquete completo.",
     photo:"lycra",alt:"Detalle de tejido de algodón lycra gris jaspeado",
     facts:[[ts.length,"telas de moda"],[TREE.telas[line].uses.length,"tipos de tejido"],[rango(numsOf(ts,"width")),"cm de ancho"],[nuevas,nuevas===1?"novedad":"novedades"]],
-    btns:[["#confeccion-vestuario","Ver paquete completo"],["#contacto","Cotizar telas",true]]});
+    btns:[["#confeccion-servicios","Ver paquete completo"],["#contacto","Cotizar telas",true]]});
 }
 function applyTelas(){
   const scope=P.filter(p=>p.use===USO_CATALOGO);
@@ -1229,25 +1265,22 @@ function bindFicha(){
 function vConfeccion(){
   const n=k=>PC.filter(p=>p.cat===k).length;
   return `<div class="wrap"><nav class="crumbs"><a href="#inicio">Inicio</a>/<span>Confección</span></nav>
-  <div class="cat-h"><div><h1>Confección</h1><p>Confeccionamos con nuestras propias telas en dos líneas: vestuario y decoración para el hogar.</p></div>
-  <div class="tabs"><a class="tab" href="#confeccion-vestuario">Vestuario</a><a class="tab" href="#confeccion-deco">Deco</a></div></div>
+  <div class="cat-h"><div><h1>Confección</h1><p>Confeccionamos con nuestras propias telas: vestuario, decoración para el hogar y servicios de confección para otras marcas.</p></div>
+  <div class="tabs"><a class="tab" href="#confeccion-vestuario">Vestuario</a><a class="tab" href="#confeccion-deco">Deco</a><a class="tab" href="#confeccion-servicios">Servicios</a></div></div>
   <section class="sec" style="padding-top:40px"><div class="lines">
     <div class="line" id="confeccion-vestuario-card"><div class="sw" style="${bgi(swatch("jersey","#E2C2A6",["#000"],"v",640,false))}"></div><div class="b"><span class="eyebrow">Línea</span><h3>Vestuario</h3>
-      <p style="color:var(--ink-2)">Confección de prendas en algodón lycra, microfibra, tull y encaje.</p>
+      <p style="color:var(--ink-2)">Ropa interior y pijamas en algodón lycra, microfibra, tull y encaje.</p>
       <ul><li><span style="color:var(--ink)">Ropa interior</span><span>Dama: pantys, cacheteros, leggins y camisetas · Hombre y niño: bóxer y camisetas</span></li><li><span style="color:var(--ink)">Pijamas</span><span>Algodón lycra</span></li></ul>
-      <p style="color:var(--ink-2)">Ahora también como <b style="font-weight:500;color:var(--ink)">paquete completo</b>: de nuestra tela a tu prenda terminada.</p>
+      <p style="color:var(--ink-2)">A la venta en almacenes de grandes superficies.</p>
       <a class="link" href="#confeccion-vestuario">Conocer vestuario</a></div></div>
     <div class="line" id="confeccion-deco-card"><div class="sw" style="${bgi(swatch("muselina","#F4F3EF",["#C29A4B","#9A9C9F"],"d",640,true))}"></div><div class="b"><span class="eyebrow">Línea</span><h3>Deco</h3>
       <p style="color:var(--ink-2)">Cortinas, manteles y toldillos listos o a medida, cada uno con su ficha técnica.</p>
-      <ul><li><a href="#deco-cortinas">Cortinas a medida</a><span>${P.filter(p=>p.use==="Telas Cortinas").length} telas para elegir · clásico, loops o aros</span></li><li><a href="#deco-manteles">Manteles</a><span>${n("manteles")} productos · redondo, rectangular y cuadrado</span></li><li><a href="#deco-toldillos">Toldillos</a><span>Sencillo a queen · 9 colores</span></li></ul>
+      <ul><li><a href="#deco-cortinas">Paneles de cortina</a><span>Listos para colgar · clásico, loops o aros</span></li><li><a href="#deco-manteles">Manteles</a><span>${n("manteles")} productos · redondo, rectangular y cuadrado</span></li><li><a href="#deco-toldillos">Toldillos</a><span>Sencillo a queen · 9 colores</span></li></ul>
       <a class="link" href="#confeccion-deco">Conocer deco</a></div></div>
-  </div></section>
-  <section class="sec" style="padding-top:0"><div class="sec-h"><h2>Cómo funciona</h2></div><div class="steps">
-    <div class="step"><b>Elige la tela</b><p>Del catálogo o con ayuda de un asesor.</p></div>
-    <div class="step"><b>Define medidas</b><p>Tallas, medidas estándar o a pedido.</p></div>
-    <div class="step"><b>Recibe la cotización</b><p>Por WhatsApp, con precio y tiempo de entrega.</p></div>
-    <div class="step"><b>Producción</b><p>Corte y confección en planta.</p></div>
-    <div class="step"><b>Entrega</b><p>Despacho a tu ciudad.</p></div></div></section>
+  </div>
+  <div class="line" id="confeccion-servicios-card" style="margin-top:20px;grid-template-rows:none;grid-template-columns:minmax(0,1fr) minmax(0,1.4fr)"><div class="sw sw-conf" style="aspect-ratio:auto;min-height:260px"></div><div class="b"><span class="eyebrow">Servicio</span><h3>Servicios de confección</h3>
+      <p style="color:var(--ink-2)">Paquete completo de vestuario y decoración: tejemos la tela, la teñimos o estampamos, confeccionamos y empacamos con tu marca. Para grandes superficies, grandes distribuidores y licitaciones.</p>
+      <a class="link" href="#confeccion-servicios">Conocer los servicios</a></div></div></section>
   </div>`;
 }
 
@@ -1266,11 +1299,19 @@ function decoCortinas(){
   const DESC={"Estampadas":"Diseños florales, gráficos y de temporada","Lisas":"Brillantina, opalina, XTX y muselina","Bordadas":"Muselinas y Decorísima con bordado","Bordadas y estampadas":"La nueva colección 2026","Jacquard":"Diseño tejido, cortina semipesada"};
   const tipos=TIPOS_C.map(t=>[t,tc.filter(p=>p.tipo===t).length]).filter(x=>x[1]);
   const fmt=v=>v.toFixed(2).replace(".",",");
+  const paneles=PC.filter(p=>p.cat==="cortinas");
+  /* Dibujos de los tipos de colgado, mientras llegan las fotos */
+  const varilla='<path d="M8 18h104"/><circle cx="8" cy="18" r="3"/><circle cx="112" cy="18" r="3"/>';
+  const xs=[22,37,52,67,82,97];
+  const COLGADOS=[
+    ["Clásico","Con ganchos sobre la varilla o el riel.",varilla+xs.map(x=>`<path d="M${x} 18v8"/>`).join("")+'<path d="M16 26h88"/>'+xs.map(x=>`<path d="M${x} 26c-3 22 3 44 0 66"/>`).join("")+'<path d="M16 26v66M104 26v66"/>'],
+    ["Loops","Presillas de la misma tela que pasan por la varilla.",varilla+xs.map(x=>`<path d="M${x-4} 30V19a4 4 0 0 1 8 0v11"/>`).join("")+'<path d="M16 30h88M16 30v62M104 30v62"/>'+xs.map(x=>`<path d="M${x} 30c-3 20 3 42 0 62"/>`).join("")],
+    ["Aros","Ojaletes metálicos en la parte superior de la tela.",'<path d="M16 10h88M16 10v82M104 10v82"/>'+xs.map(x=>`<circle cx="${x}" cy="18" r="4.5"/>`).join("")+'<path d="M6 18h110"/>'+xs.map(x=>`<path d="M${x} 24c-4 22 4 46 0 68"/>`).join("")]];
   return `<section class="sec" id="deco-cortinas" style="scroll-margin-top:24px">
     <div class="mt-hero">
       <div class="tx"><span class="eyebrow">Confección deco · Cortinas</span>
-        <h2 class="cl-h">Cortinas a la medida de tu ventana, con telas tejidas en nuestra planta</h2>
-        <p class="cl-lead">Elige la tela en nuestro catálogo y la confeccionamos en la medida que necesites. Con anchos de hasta ${fmt(anchoMax)} m, cubrimos ventanales grandes sin uniones.</p>
+        <h2 class="cl-h">Paneles de cortina listos para colgar</h2>
+        <p class="cl-lead">Confeccionamos paneles listos para colgar, en diferentes tipos de colgado y medidas, para grandes superficies y distribuidores. Los hacemos con telas tejidas en nuestra planta, en anchos de hasta ${fmt(anchoMax)} m.</p>
         <div class="mt-forms num">
           <div><b>${tc.length}</b><span>telas para cortina</span></div>
           <div><b>${colores}</b><span>colores con código propio</span></div>
@@ -1281,15 +1322,12 @@ function decoCortinas(){
       </div>
       <div class="mt-ph cort" role="img" aria-label="Cortinas de velo blanco en un ventanal amplio con luz natural"></div>
     </div>
+    <div class="cl-sub"><h3>Tipos de colgado</h3></div>
+    <div class="colg">${COLGADOS.map(([t,d,svg])=>`<figure><div class="ill"><svg viewBox="0 0 120 100" aria-hidden="true">${svg}</svg></div><figcaption><b>${t}</b><span>${d}</span></figcaption></figure>`).join("")}</div>
+    ${paneles.length?`<div class="cl-sub"><h3>Nuestros paneles</h3><span class="n" style="color:var(--stone)">${paneles.length} ${paneles.length===1?"producto":"productos"}</span></div>
+    <div class="grid">${paneles.map(cardC).join("")}</div>`:""}
     <div class="cl-sub"><h3>Explora las telas por tipo</h3><a class="link" href="#telas-decoracion" data-use="Telas Cortinas">Ver las ${tc.length} telas</a></div>
     <div class="cl-types">${tipos.map(([t,n])=>`<a href="#telas-decoracion" data-use="Telas Cortinas" data-tipo="${t}"><b>${t}</b><span>${DESC[t]||""}</span><span>${n} ${n===1?"tela":"telas"}</span><em>Ver telas</em></a>`).join("")}</div>
-    <div class="cl-sub"><h3>Cómo pedir tus cortinas</h3></div>
-    <div class="steps s4">
-      <div class="step"><b>Elige la tela</b><p>Busca en el catálogo por tipo, color o referencia.</p></div>
-      <div class="step"><b>Envía tus medidas</b><p>Ancho y alto del ventanal, y el tipo de colgado: clásico, loops o aros.</p></div>
-      <div class="step"><b>Recibe la cotización</b><p>Con precio y fecha de entrega.</p></div>
-      <div class="step"><b>Confección y entrega</b><p>Cortamos, confeccionamos y despachamos a tu ciudad.</p></div>
-    </div>
   </section>`;
 }
 function decoManteles(){
@@ -1324,13 +1362,15 @@ function decoToldillos(){
       </div>
       <div class="mt-ph" role="img" aria-label="Toldillo de tul amarillo colgado sobre una cama, en una habitación con ventanas al jardín" style="background-image:url(img/toldillo.jpg);background-position:center 55%"></div>
     </div>
+    <div class="cl-sub"><h3>Tamaños</h3><span class="n" style="color:var(--stone)">Medidas en centímetros</span></div>
+    <div class="tsz">${TOLDILLOS.map(([t,m])=>`<div><b>${t}</b><span>${m} cm</span></div>`).join("")}</div>
   </section>`;
 }
 function vDeco(){
   const cats=Object.entries(DECO_CATS);
   return `<div class="wrap"><nav class="crumbs" aria-label="Ruta"><a href="#inicio">Inicio</a>/<a href="#confeccion">Confección</a>/<span>Deco</span></nav>
   <div class="cat-h"><div><h1>Deco</h1><p>Cortinas, manteles y toldillos confeccionados en nuestra planta con nuestras propias telas, listos o a medida. Cada producto tiene su ficha técnica.</p></div>
-    <div class="tabs"><a class="tab" href="#confeccion-vestuario">Vestuario</a><a class="tab on" href="#confeccion-deco">Deco</a></div></div>
+    <div class="tabs"><a class="tab" href="#confeccion-vestuario">Vestuario</a><a class="tab on" href="#confeccion-deco">Deco</a><a class="tab" href="#confeccion-servicios">Servicios</a></div></div>
   <div class="dnav">${cats.map(([k,v])=>`<a class="chip" href="#deco-${k}">${v.name}${k==="manteles"?`<span>${PC.filter(p=>p.cat===k).length}</span>`:""}</a>`).join("")}</div>
   ${cats.map(([k,v])=>{if(k==="cortinas")return decoCortinas();if(k==="manteles")return decoManteles();if(k==="toldillos")return decoToldillos();const items=PC.filter(p=>p.cat===k);return `<section class="sec" id="deco-${k}" style="scroll-margin-top:24px"><div class="sec-h"><div><span class="eyebrow">Confección deco</span><h2 style="margin-top:10px">${v.name}</h2><p style="color:var(--ink-2);max-width:60ch;margin-top:10px">${v.blurb}</p></div><span class="n">${items.length} ${items.length===1?"producto":"productos"}</span></div>
     <div class="grid">${items.map(cardC).join("")}</div>
@@ -1374,31 +1414,14 @@ function vFichaC(p){
 
 function vVestuario(){
   
-  const pasos=[["Contáctanos",`Escríbenos a <a href="mailto:servicioalcliente@rascheltex.com.co">servicioalcliente@rascheltex.com.co</a> detallando tus requerimientos.`],["Respuesta","Te responderemos para explorar los detalles de tus necesidades."],["Cotización","Te enviaremos una cotización y los términos del negocio."],["Muestras","Si la cotización es aceptada, haremos muestras de los artículos solicitados."],["Orden de compra","Una vez aprobada la muestra, generaremos una orden de compra detallada."],["Producción","Pasamos a hacer la producción de acuerdo con la orden de compra."],["Auditorías","Una vez completada la producción, agendaremos auditorías."],["Entrega","Te hacemos llegar tu pedido hasta tu puerta."]];
   const PRENDAS=[["Dama",["Pantys","Cacheteros","Leggins","Camisetas"]],["Hombre",["Bóxer","Camisetas"]],["Niño",["Bóxer","Camisetas"]]];
   const garm=PRENDAS.map(([t,l])=>`<div><b>${t}</b><div class="chips">${l.map(x=>`<span class="chip">${x}</span>`).join("")}</div></div>`).join("");
-  const need=["Tipo de prenda y público: dama, hombre o niño","Cantidad aproximada por referencia y color","Curva de tallas","Tela o color de referencia, del catálogo o una muestra física","Prenda, foto o boceto de referencia","Marca: marquilla, etiqueta y empaque que quieres usar"];
   return `<div class="wrap"><nav class="crumbs"><a href="#inicio">Inicio</a>/<a href="#confeccion">Confección</a>/<span>Vestuario</span></nav>
-  <div class="cat-h"><div><h1>Vestuario</h1><p>Ropa interior y pijamas confeccionadas en nuestra planta con nuestras propias telas, como paquete completo para tu marca.</p></div>
-  <div class="tabs"><a class="tab on" href="#confeccion-vestuario">Vestuario</a><a class="tab" href="#confeccion-deco">Deco</a></div></div></div>
-  <section class="band"><div class="wrap sec split pack">
-    <div><span class="pack-k">Nuevo · Paquete completo</span><span class="eyebrow" style="display:block">Confección de vestuario para tu marca</span>
-      <h2>De nuestro hilo a tu prenda terminada</h2>
-      <p>Encarga tu producción de ropa interior y pijamas como paquete completo. Nosotros tejemos la tela, la teñimos o estampamos, cortamos, confeccionamos y empacamos las prendas con tu marca. Tú recibes el producto listo para vender.</p>
-      <ul class="pack-list">
-        <li><span><b>Tejemos la tela.</b> A diferencia de un taller de confección, la tela sale de nuestras propias máquinas Raschel y circulares.</span></li>
-        <li><span><b>Un solo proveedor</b> para toda la cadena, sin coordinar tejeduría, tintorería, taller y empaque por separado.</span></li>
-        <li><span><b>Muestra física antes de producir</b>, para aprobar tela, talla y acabados.</span></li>
-        <li><span><b>Una sola cotización</b> con precio por prenda y fecha de entrega.</span></li>
-      </ul>
-    </div>
-    <div class="sw sw-conf" role="img" aria-label="Pijama confeccionado: camiseta gris de manga larga y pantalón a cuadros"></div>
-  </div></section>
+  <div class="cat-h"><div><h1>Vestuario</h1><p>Ropa interior y pijamas confeccionadas en nuestra planta con nuestras propias telas, a la venta en almacenes de grandes superficies.</p></div>
+  <div class="tabs"><a class="tab on" href="#confeccion-vestuario">Vestuario</a><a class="tab" href="#confeccion-deco">Deco</a><a class="tab" href="#confeccion-servicios">Servicios</a></div></div></div>
   <div class="wrap">
-  <section class="sec how"><div class="how-h"><span class="eyebrow">Cómo funciona</span><h2>Llevamos tus ideas a la realidad en ocho simples pasos</h2></div>
-    <div class="steps s8">${pasos.map(([t,d])=>`<div class="step"><b>${t}</b><p>${d}</p></div>`).join("")}</div></section>
   <section class="sec" id="vest-prendas"><div class="sec-h"><div><span class="eyebrow">Prendas</span><h2 style="margin-top:10px">Qué confeccionamos</h2>
-      <p style="color:var(--ink-2);max-width:60ch;margin-top:10px">Dos líneas de producto, hechas de principio a fin con nuestras telas y entregadas con tu marca.</p></div></div>
+      <p style="color:var(--ink-2);max-width:60ch;margin-top:10px">Dos líneas de producto, hechas de principio a fin con nuestras telas.</p></div></div>
     <div class="lines">
       <article class="line" id="vest-interior">
         <div class="sw ph-in" role="img" aria-label="Detalle de tejido de algodón lycra gris jaspeado"><span class="tg">Algodón lycra · microfibra · encaje · tull</span></div>
@@ -1406,8 +1429,7 @@ function vVestuario(){
           <p style="color:var(--ink-2)">Prendas interiores para dama, hombre y niño, en punto de algodón lycra o microfibra, con detalles en encaje y tull.</p>
           <div class="garm">${garm}</div>
           <div class="ln-row"><span>Telas</span><div class="chips">${[["Algodón Lycra","Algodón lycra"],["Microfibra","Microfibra"],["Encajes","Encaje"],["Tull","Tull"]].map(([u,t])=>`<a class="chip" href="#telas-moda" data-use="${u}">${t}</a>`).join("")}</div></div>
-          <div class="ln-row"><span>Incluye</span><b>Tela, insumos, confección, marquilla y empaque</b></div>
-          <a class="btn ghost ln-cta" href="#contacto">Cotizar ropa interior</a></div>
+                    </div>
       </article>
       <article class="line" id="vest-pijamas">
         <div class="sw ph-pj" role="img" aria-label="Pijama de camiseta gris de manga larga y pantalón a cuadros"><span class="tg">Algodón lycra liso o estampado</span></div>
@@ -1415,19 +1437,57 @@ function vVestuario(){
           <p style="color:var(--ink-2)">Pijamas en algodón lycra, en color liso o estampado en nuestra planta.</p>
           <div class="garm" style="grid-template-columns:1fr"><div><b>Acabado</b><div class="chips"><span class="chip">Color liso</span><span class="chip">Estampado en planta</span></div></div></div>
           <div class="ln-row"><span>Telas</span><div class="chips"><a class="chip" href="#telas-moda" data-use="Algodón Lycra">Algodón lycra</a></div></div>
-          <div class="ln-row"><span>Incluye</span><b>Tela, insumos, confección, marquilla y empaque</b></div>
-          <a class="btn ghost ln-cta" href="#contacto">Cotizar pijamas</a></div>
+                    </div>
       </article>
     </div></section>
   <section class="sec split" style="align-items:start;border-top:1px solid var(--line)">
+    <div><span class="eyebrow">Dónde comprar</span><h2>En almacenes de grandes superficies</h2>
+      <p>Nuestra ropa interior y nuestras pijamas se venden en estos almacenes y en nuestro punto de venta en Bogotá.</p>
+      <div class="btns"><a class="btn ghost" href="#contacto">Ver punto de venta</a></div></div>
+    <div><ul class="stores" style="margin-top:0">${TIENDAS.map(([t,l])=>`<li><img src="${l}" alt="${t}" loading="lazy"></li>`).join("")}</ul></div>
+  </section>
+  <section class="band"><div class="wrap sec split">
+    <div><span class="eyebrow">Para marcas y distribuidores</span><h2>¿Necesitas producir con tu marca?</h2>
+      <p>Hacemos paquete completo de vestuario y decoración para grandes superficies, grandes distribuidores y licitaciones.</p>
+      <div class="btns"><a class="btn" href="#confeccion-servicios">Ver servicios de confección</a></div></div>
+    <div class="sw sw-conf" role="img" aria-label="Pijama confeccionado: camiseta gris de manga larga y pantalón a cuadros"></div>
+  </div></section>
+  </div>`;
+}
+
+function vServicios(){
+  const pasos=[["Contáctanos",`Escríbenos a <a href="mailto:servicioalcliente@rascheltex.com.co">servicioalcliente@rascheltex.com.co</a> detallando tus requerimientos.`],["Respuesta","Te responderemos para explorar los detalles de tus necesidades."],["Cotización","Te enviaremos una cotización y los términos del negocio."],["Muestras","Si la cotización es aceptada, haremos muestras de los artículos solicitados."],["Orden de compra","Una vez aprobada la muestra, generaremos una orden de compra detallada."],["Producción","Pasamos a hacer la producción de acuerdo con la orden de compra."],["Auditorías","Una vez completada la producción, agendaremos auditorías."],["Entrega","Te hacemos llegar tu pedido hasta tu puerta."]];
+  const need=["Producto: prenda (dama, hombre o niño) o artículo de decoración","Cantidad aproximada por referencia y color","Tallas o medidas","Tela o color de referencia, del catálogo o una muestra física","Foto, boceto o muestra de referencia","Marca: marquilla, etiqueta y empaque que quieres usar"];
+  const quien=[["Grandes superficies","Producción de marca propia para almacenes de cadena, con un solo proveedor desde la tela hasta el empaque."],["Grandes distribuidores","Volumen constante de vestuario y decoración para distribución, con tiempos de entrega acordados."],["Licitaciones","Participamos en licitaciones de vestuario y decoración, con producción en nuestra planta."]];
+  return `<div class="wrap"><nav class="crumbs"><a href="#inicio">Inicio</a>/<a href="#confeccion">Confección</a>/<span>Servicios de confección</span></nav>
+  <div class="cat-h"><div><h1>Servicios de confección</h1><p>Paquete completo de vestuario y decoración para grandes superficies, grandes distribuidores y licitaciones.</p></div>
+  <div class="tabs"><a class="tab" href="#confeccion-vestuario">Vestuario</a><a class="tab" href="#confeccion-deco">Deco</a><a class="tab on" href="#confeccion-servicios">Servicios</a></div></div></div>
+  <section class="band"><div class="wrap sec split pack">
+    <div><span class="pack-k">Paquete completo</span><span class="eyebrow" style="display:block">Vestuario y decoración con tu marca</span>
+      <h2>De nuestro hilo a tu producto terminado</h2>
+      <p>Encarga tu producción como paquete completo: ropa interior y pijamas, y cortinas, manteles y toldillos. Nosotros tejemos la tela, la teñimos o estampamos, cortamos, confeccionamos y empacamos con tu marca. Tú recibes el producto listo para vender.</p>
+      <ul class="pack-list">
+        <li><span><b>Tejemos la tela.</b> A diferencia de un taller de confección, la tela sale de nuestras propias máquinas Raschel y circulares.</span></li>
+        <li><span><b>Un solo proveedor</b> para toda la cadena, sin coordinar tejeduría, tintorería, taller y empaque por separado.</span></li>
+        <li><span><b>Muestra física antes de producir</b>, para aprobar tela, medidas y acabados.</span></li>
+        <li><span><b>Una sola cotización</b> con precio por unidad y fecha de entrega.</span></li>
+      </ul>
+    </div>
+    <div class="sw sw-conf" role="img" aria-label="Pijama confeccionado: camiseta gris de manga larga y pantalón a cuadros"></div>
+  </div></section>
+  <div class="wrap">
+  <section class="sec"><div class="sec-h"><div><span class="eyebrow">Para quién</span><h2 style="margin-top:10px">Confeccionamos para grandes superficies y grandes distribuidores</h2></div></div>
+    <div class="cl-types">${quien.map(([t,d])=>`<div class="srv-q"><b>${t}</b><span>${d}</span></div>`).join("")}</div></section>
+  <section class="sec how"><div class="how-h"><span class="eyebrow">Cómo funciona</span><h2>Llevamos tus ideas a la realidad en ocho simples pasos</h2></div>
+    <div class="steps s8">${pasos.map(([t,d])=>`<div class="step"><b>${t}</b><p>${d}</p></div>`).join("")}</div></section>
+  <section class="sec split" style="align-items:start;border-top:1px solid var(--line)">
     <div><span class="eyebrow">Cotiza</span><h2>Qué necesitamos para cotizar</h2>
-      <p>Con estos datos te respondemos por WhatsApp con el precio por prenda del paquete completo y la fecha de entrega. Si te falta alguno, escríbenos igual y lo definimos juntos.</p>
-      <div class="btns"><a class="btn wa" href="#contacto">Cotizar por WhatsApp</a><a class="btn ghost" href="#nosotros">Conocer la planta</a></div></div>
+      <p>Con estos datos te respondemos con el precio por unidad del paquete completo y la fecha de entrega. Si te falta alguno, escríbenos igual y lo definimos juntos.</p>
+      <div class="btns"><a class="btn" href="#contacto">Cotizar</a><a class="btn ghost" href="#nosotros">Conocer la planta</a></div></div>
     <div><ul class="pack-list" style="margin-top:0">${need.map(n=>`<li><span>${n}</span></li>`).join("")}</ul></div>
   </section>
   </div>`;
 }
-
 function vNosotros(){
   const chain=[["Tejido","Telas de malla de poliéster en máquinas Raschel y telas de algodón."],["Teñido","Teñido de las telas en nuestra planta."],["Estampado","Estampado de telas en nuestra planta."],["Confección","Camisetas, ropa interior, paneles, manteles y toldillos."],["Embalaje","Empaque del producto terminado."]];
   return `<div class="wrap"><nav class="crumbs"><a href="#inicio">Inicio</a>/<span>Quiénes somos</span></nav></div>
@@ -1532,7 +1592,8 @@ function buildMenus(){
 }
 let PENDING_USE=null,PENDING_Q=null,PENDING_TIPO=null;
 function bindHome(){
-  $("#sform").onsubmit=e=>{e.preventDefault();PENDING_Q=$("#q").value.trim();location.hash="telas";};
+  /* Los accesos "Telas" y "Confección" bajan a su sección sin cambiar la ruta */
+  document.querySelector(".hsplit").addEventListener("click",e=>{const a=e.target.closest("a");if(!a)return;e.preventDefault();document.querySelector(a.getAttribute("href")).scrollIntoView({behavior:"smooth"});});
   document.querySelector(".pcats").addEventListener("click",e=>{const a=e.target.closest("a[data-use]");if(a)PENDING_USE=a.dataset.use;});
 }
 
@@ -1570,7 +1631,7 @@ function route(){
   document.querySelectorAll(".nav [data-nav]").forEach(a=>a.classList.toggle("on",h.startsWith(a.dataset.nav)));
   $("#btnProd").classList.toggle("on",/^(telas|confeccion|deco-|p-|c-)/.test(h));
   let after=null;
-  if(h==="inicio"||h===""){app.innerHTML=vInicio();after=()=>{hero();bindHome();heroVideo();};}
+  if(h==="inicio"||h===""){app.innerHTML=vInicio();after=bindHome;}
   else if(h==="telas"||h.startsWith("telas-")){const l=h.split("-")[1]||null;const L=TREE.telas[l]?l:null;if(PENDING_USE||PENDING_Q||PENDING_TIPO){resetF(L);if(PENDING_USE)F.uses.add(PENDING_USE);if(PENDING_TIPO)F.tipos.add(PENDING_TIPO);if(PENDING_Q)F.q=PENDING_Q;PENDING_USE=PENDING_Q=PENDING_TIPO=null;}app.innerHTML=vTelas(L);after=bindTelas;}
   else if(h.startsWith("p-")){const p=P.find(x=>x.id===h.slice(2));if(p&&p.use!==USO_CATALOGO){PENDING_USE=p.use;location.hash="#telas-"+p.line;return;}
     if(p){app.innerHTML=vFicha(p);after=bindFicha;}else{location.hash="#telas";return;}}
@@ -1578,11 +1639,12 @@ function route(){
     if(p){app.innerHTML=vFichaC(p);after=bindFicha;}else{location.hash="#confeccion-deco";return;}}
   else if(h==="confeccion-vestuario"){app.innerHTML=vVestuario();after=()=>{const vp=document.getElementById("vest-prendas");if(vp)vp.addEventListener("click",e=>{const a=e.target.closest("a[data-use]");if(a)PENDING_USE=a.dataset.use;});};}
   else if(h==="confeccion-deco"||h.startsWith("deco-")){app.innerHTML=vDeco();after=()=>{const dc=document.getElementById("deco-cortinas");if(dc)dc.addEventListener("click",e=>{const a=e.target.closest("a[data-use]");if(a){PENDING_USE=a.dataset.use;PENDING_TIPO=a.dataset.tipo||null;}});const el=document.getElementById(h);if(el&&h!=="confeccion-deco")setTimeout(()=>el.scrollIntoView({behavior:"smooth",block:"start"}),30);};}
+  else if(h==="confeccion-servicios"){app.innerHTML=vServicios();}
   else if(h.startsWith("confeccion")){app.innerHTML=vConfeccion();}
   else if(h==="nosotros"){app.innerHTML=vNosotros();after=bindGal;}
   else if(h==="contacto"){app.innerHTML=vContacto();after=bindContacto;}
   else if(h==="politicas"){app.innerHTML=vPoliticas();}
-  else{app.innerHTML=vInicio();after=()=>{hero();bindHome();heroVideo();};}
+  else{app.innerHTML=vInicio();after=bindHome;}
   if(!h.startsWith("deco-"))window.scrollTo(0,0);
   const h1=app.querySelector("h1:not(.sr)"),nombre={nosotros:"Quiénes somos"}[h]||(h1&&h1.textContent.trim());
   document.title=nombre?`${nombre} · Rascheltex`:"Rascheltex · Telas y confección textil en Colombia";
