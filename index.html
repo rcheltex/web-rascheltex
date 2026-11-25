@@ -1304,7 +1304,7 @@ function decoCortinas(){
   const varilla='<path d="M8 18h104"/><circle cx="8" cy="18" r="3"/><circle cx="112" cy="18" r="3"/>';
   const xs=[22,37,52,67,82,97];
   const COLGADOS=[
-    ["Clásico","Con ganchos sobre la varilla o el riel.",varilla+xs.map(x=>`<path d="M${x} 18v8"/>`).join("")+'<path d="M16 26h88"/>'+xs.map(x=>`<path d="M${x} 26c-3 22 3 44 0 66"/>`).join("")+'<path d="M16 26v66M104 26v66"/>'],
+    ["Clásico","La varilla pasa por una jareta cosida en la parte superior de la tela.",varilla+'<path d="M16 12h88M16 24h88M16 12v80M104 12v80"/>'+xs.map(x=>`<path d="M${x} 12v12"/><path d="M${x} 24c-3 22 3 46 0 68"/>`).join("")],
     ["Loops","Presillas de la misma tela que pasan por la varilla.",varilla+xs.map(x=>`<path d="M${x-4} 30V19a4 4 0 0 1 8 0v11"/>`).join("")+'<path d="M16 30h88M16 30v62M104 30v62"/>'+xs.map(x=>`<path d="M${x} 30c-3 20 3 42 0 62"/>`).join("")],
     ["Aros","Ojaletes metálicos en la parte superior de la tela.",'<path d="M16 10h88M16 10v82M104 10v82"/>'+xs.map(x=>`<circle cx="${x}" cy="18" r="4.5"/>`).join("")+'<path d="M6 18h110"/>'+xs.map(x=>`<path d="M${x} 24c-4 22 4 46 0 68"/>`).join("")]];
   return `<section class="sec" id="deco-cortinas" style="scroll-margin-top:24px">
